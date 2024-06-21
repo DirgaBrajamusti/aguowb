@@ -21,4 +21,4 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker buildx build --push -t docker.pkg.github.com/${{ github.repository }}/my-image:${{ github.sha }} -f Dockerfile.windows .
+          docker buildx build --push -t docker.pkg.github.com/${{ github.repository }}/my-image:${{ github.sha }} -f Dockerfile .
