@@ -1,0 +1,828 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+.active {
+    color: #00BDAA;
+    line-height: 14px;
+    text-align: left;
+    font-weight: bold;
+    font-style: italic;    
+}
+.inactive {
+    color: #FD5151;
+    line-height: 14px;
+    text-align: left;
+    font-weight: bold;
+    font-style: italic;    
+}
+.mercy_input_text_invalid {
+    border: 1px solid #DE0D0D;
+}
+
+.ts_file_button {
+    height: 25px;
+    width: 100px;
+    background: blue;
+    color: white;
+    border: 0;
+    -webkit-appearance: none;
+    
+    color: #FFFFFF;
+    /*font-family: 'Poppins-SemiBold';*/
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    text-align: left;
+    
+    background-color: #00B4A5;
+    border: 1px solid #AFAFB9;
+    border-radius: 4px;
+    width: 79px;
+    height: 17px;
+}
+
+.input_Upload_file {
+    background-color: #FFFFFF !important;
+    border: 1px solid #AFAFB9 !important;
+    border-radius: 4px !important;
+    height: 34px !important;
+}
+
+.button_Choose_file {
+    background-color: #D0D0D0 !important;
+    border: 1px solid #AFAFB9 !important;
+    border-radius: 2px !important;
+    width: 73px !important;
+    height: 18px !important;
+    
+    color: #FFFFFF;
+    font-family: 'Poppins-SemiBold';
+    font-size: 10px;
+    line-height: 12px;
+    text-align: center;
+}
+
+.data_cell_green {
+    background-color: #60C159 !important;
+}
+
+.data_cell_red {
+    background-color: #E73232 !important;
+}
+
+.data_cell_yellow {
+    background-color: #FFBD50 !important;
+}
+
+#mercyTable_info{display:none;}
+
+#mercyTable.table td{
+    padding: 7px 5px !important;
+}
+
+#mercyTable.table td div{
+    height: 24px !important;
+    width:100% !important;
+    padding: 5px 5px 0px 5px !important;
+}
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Upload Barge Quality Plan 
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Upload Barge Quality Plan 
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:100px !important;">
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 0px 0px 0px 15px !important;">
+            <div style="width: 175px;">                
+                <div class="margin_padding_0 mercy_form_Label">Site</div>
+                <div style="width:100%;padding:0px 10px 0px 0px !important;">
+                    <select id="ddl_Site" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 0px 0px 0px 15px !important;">
+            <div style="width: 450px;">
+                <div style="width:100%" class="margin_padding_0 mercy_form_Label">Upload file</div>
+                <div style="width:100%;padding:0px 10px 10px 0px;">
+                    <input type="text" class="form-control shadow-none mercy_input_text input_Upload_file" id="txtUploadfile" placeholder="no file selected" readonly/>
+                </div>
+                <div style="width:100%;padding:10px 20px 10px 0px;margin-top:-53px;text-align:right;">
+                    <input id="fileInput" style="display: none !important;" type="file"/> 
+                    <input type="submit" class="button_Choose_file" value="Choose file" id="btnChooseFile" style="padding: 0px 0px 2px 0px !important;"/>
+                </div>
+                <div style="width:100%;padding:10px 110px 10px 0px;margin-top:-45px;text-align:right;display:none;" id="btnDownload_RunWhat_div">
+                    <input type="submit" class="ts_file_button" value="Download file" id="btnDownload_RunWhat" style="padding: 0px 0px 2px 14px !important;width:90px !important;"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 0px 0px 0px 15px !important;">
+            <div style="width: 120px;display:none;margin-top:37px;" id="btnSave_outer">
+                <div class="mercy_button" style="width:100px;"><div class="mercy_text_center" id="btnSave">Save</div></div>
+            </div>
+        </div>
+        <div class="col col-md-auto margin_padding_0" style="padding-top:37px !important;">
+            <div style="width: 10px;margin:auto;">
+                <img src="/images/spinner.gif" style="padding: 0 60px 0 0;display:none;" id="imgLoading" />
+            </div>
+        </div>
+        <div class="col-12 col-md margin_padding_0">
+            <div class="row margin_padding_0">
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:100px !important;">
+        <div class="col margin_padding_0" style="padding: 0px 20px 40px 20px !important;">
+            <div class="row margin_padding_0" style="padding-bottom:20px;">
+                <table id="mercyTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>No_Line</th>
+                            <th>No</th>
+                            <th>Trip No</th>
+                            <th>Barge, Ton (plan)</th>
+                            <th>Barge, Ton (Actual)</th>
+                            <th>TM (plan)</th>
+                            <th>TM (actual)</th>
+                            <th>M (plan)</th>
+                            <th>M (actual)</th>
+                            <th>ASH (plan)</th>
+                            <th>ASH (actual)</th>
+                            <th>TS (plan)</th>
+                            <th>TS (actual)</th>
+                            <th>CV, ADB (Plan)</th>
+                            <th>CV, ADB (Actual)</th>
+                            <th>CV, AR (Plan)</th>
+                            <th>CV, AR (Actual)</th>
+                            <th>Product</th>
+                            <th>Tug Name</th>
+                            <th>Barge Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+// Flag
+var is_still_AJAX_dataList = false;
+
+// DataGrid
+var obj_html_Table;
+var obj_html_Site;
+
+// row
+var isNew = false;
+var is_Mode_Editor = false;
+var lineNumber_Data = 0;
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+var object_id_Deleted = [];
+
+var file_Changed = false;
+
+var file_Physical = 0;
+
+$(document).ready(function (){
+    $(document).attr('title', 'Upload Barge Quality Plan : Mercy');
+
+    $(window).resize(function (){
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+
+    $('#fileInput').on('change', function () {
+        // Message: jika upload file Format lama
+        if ($('#fileInput')[0].files[0].name.endsWith(".xls")) {
+            $("#fileInput").val('');
+            $("#txtUploadfile").val('');
+            alert('Tidak boleh file .xls\nGunakan file Format Baru .xlsx');
+            return;
+        }
+        
+        // Message: jika berusaha Upload file selain .xlsx
+        if ( ! $('#fileInput')[0].files[0].name.endsWith(".xlsx")) {
+            $("#fileInput").val('');
+            $("#txtUploadfile").val('');
+            alert('Gunakan file Excel .xlsx');
+            return;
+        }
+        
+        $('#imgLoading').show();
+        file_Changed = true;
+        
+        $("#txtUploadfile").val($('#fileInput')[0].files[0].name);
+        
+        ChooseFile();
+    });
+    
+    $('#btnChooseFile').on('click', function () {
+        $('#fileInput').click();
+    });
+    
+    $('#btnSave').on('click', function () {
+        Save();
+    });
+    
+    Create_ddl_Site();
+    
+    get_user_menu = '1';
+    get_user_relation = '1';
+    
+    Show_UserInformation();
+});
+
+function Clear_DataGrid_(p_id){
+    try {
+        $('#' + p_id).DataTable().clear().destroy();
+        //$('#'+p_id).DataTable().destroy();
+    }catch(err){}
+    
+    try {
+        $('#'+p_id+' tbody').empty();
+    }catch(err){}
+}
+
+function Clear_DataGrid(){
+    Create_Table();
+}
+
+function Create_Table(){
+    Clear_DataGrid_('mercyTable');
+
+    try {
+        obj_html_Table = $('#mercyTable').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                {
+                    "render": function (data, type, full, meta){
+                        return lineNumber_Data;
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return (isNew?'':'<div>' + lineNumber_Data.toString() + '.</div>');
+                    }
+                    , className: "mercy_text_right"
+                    , orderable: false
+                    , width: "20px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(true, full.TripNo);
+                    }
+                    , orderable: false
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.Barge_Ton_plan_isvalid, addCommas(full.Barge_Ton_plan_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.Barge_Ton_actual_isvalid, addCommas(full.Barge_Ton_actual_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.TM_plan_isvalid, addCommas(full.TM_plan_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.TM_actual_isvalid, addCommas(full.TM_actual_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.M_plan_isvalid, addCommas(full.M_plan_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.M_actual_isvalid, addCommas(full.M_actual_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.ASH_plan_isvalid, addCommas(full.ASH_plan_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.ASH_actual_isvalid, addCommas(full.ASH_actual_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.TS_plan_isvalid, addCommas(full.TS_plan_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.TS_actual_isvalid, addCommas(full.TS_actual_Str));
+                    }
+                    , className: "mercy_column_center "
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.CV_ADB_plan_isvalid, addCommas(full.CV_ADB_plan_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.CV_ADB_actual_isvalid, addCommas(full.CV_ADB_actual_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.CV_AR_plan_isvalid, addCommas(full.CV_AR_plan_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.CV_AR_actual_isvalid, addCommas(full.CV_AR_actual_Str));
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.Product_isvalid, addCommas(full.Product));
+                    }
+                    , orderable: false
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.TugName_isvalid, addCommas(full.TugName));
+                    }
+                    , orderable: false
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Text(full.BargeName_isvalid, addCommas(full.BargeName));
+                    }
+                    , orderable: false
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return Data_Column_Status(full.Status);
+                    }
+                    , orderable: false
+                    , width: "50px"
+                }
+            ]
+            , "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
+            , "order": [[0, 'asc']]
+        });
+
+        obj_html_Table.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }catch(err){}
+}
+
+function Create_ddl_Site() {
+    if (obj_html_Site != null) return;
+
+    obj_html_Site = $('#ddl_Site').select2({
+        placeholder: 'Select Site'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Site').change(function (e) {
+        OnChange_ddl_Site();
+    });
+}
+
+function OnChange_ddl_Site(){
+    if (ignore_trigger_change_ddl_Site) return;
+}
+
+function Populate_Data_ddl_Site() {
+    try {
+        var option;
+        var first = '';
+
+        uInfo.Relations.Sites.forEach(
+            function (item) {
+                // create the option and append to Select2
+                option = new Option(item.SiteName, item.SiteId, true, true);
+                obj_html_Site.append(option);//.trigger('change');
+                
+                if (first == '') first=item.SiteId;
+            }
+        );
+        
+        // Inisial value for "Site"
+        ignore_trigger_change_ddl_Site = true;
+        $('#ddl_Site').val(first).trigger('change');
+        ignore_trigger_change_ddl_Site = false;
+    }catch(err){}
+}
+
+function Clear_ddl_Site() {}
+
+function Show_UserInformation() {
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/User/Info'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation, 'check_page': current_Page_URL}
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // make it "Intuitive"
+            if ( ! permission.Is_View){
+                alert('Permission is not enough. Read access is needed.');
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            after_GetUserInfo(data.User);
+            uInfo = data.User;
+            
+            Populate_Data_ddl_Site();
+            
+            Create_Table();
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            //Show_Report();
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function ChooseFile(){
+    Clear_DataGrid();
+    
+    if (is_still_AJAX_dataList) return;
+    
+    is_still_AJAX_dataList = true;
+    
+    $('#imgLoading').show();
+    
+    var formData = new FormData();
+    
+    if (file_Changed){
+        try{
+            formData.append('file', $('#fileInput')[0].files[0]);
+        }catch(err){}
+    }
+    
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/BargeQualityPlan/ChooseFile'
+        , data: formData
+        , processData: false  // tell jQuery not to process the data
+        , contentType: false  // tell jQuery not to set contentType
+        , type: 'POST'
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                //window.location = '/NoAccess';
+                return;
+            }
+            
+            file_Physical = data.Data;
+            ParsingContent();
+        },
+        error: function (error){
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+function ParsingContent(){
+    $.ajax({
+        url: api_Request + '/Api/BargeQualityPlan/ParsingContent'
+        , type: 'GET'
+        , data: {'.id': file_Physical, site:$('#ddl_Site').val()}
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                //window.location = '/NoAccess';
+                return;
+            }
+            
+            DisplayContent();
+        },
+        error: function (error) {
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+function DisplayContent(){
+    $.ajax({
+        url: api_Request + '/Api/BargeQualityPlan/DisplayContent'
+        , type: 'GET'
+        , data: {'.id': file_Physical}
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            is_still_AJAX_dataList = false;
+            
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                //window.location = '/NoAccess';
+                return;
+            }
+            
+            // reset
+            lineNumber_Data = 0;
+            
+            // proses Data
+            data.Items.forEach(
+                function (item){
+                    isNew = false;
+                    object_Created_Count++;
+                    lineNumber_Data++;
+                    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                    
+                    // save to Array
+                    object_id_Created.push(object_id_additional);
+                    
+                    // add to Table
+                    obj_html_Table.row.add(item).draw(false);
+                }
+            );
+            
+            // Resize Table: because this DataTable is filled with new Data
+            resize_Table();
+            
+            $('#imgLoading').hide();
+            
+            $('#btnSave_outer').show();
+        },
+        error: function (error) {
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+function Save(){
+    if (file_Physical <= 0) return;
+    
+    $('#imgLoading').show();
+    
+    $.ajax({
+        url: api_Request + '/Api/BargeQualityPlan/Save'
+        , type: 'GET'
+        , data: {'.id': file_Physical}
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            is_still_AJAX_dataList = false;
+            
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                //window.location = '/NoAccess';
+                return;
+            }
+            
+            file_Physical = 0;
+            Create_Table();
+            
+            $('#imgLoading').hide();
+            
+            $('#btnSave_outer').hide();
+
+            $("#fileInput").val('');
+            $("#txtUploadfile").val('');
+
+            alert(data.Count + ' of ' + data.Count2 + ' records successfully upload');
+        },
+        error: function (error) {
+            is_still_AJAX_dataList = false;
+            
+            $('#imgLoading').hide();
+            $(this).remove();
+        }
+    });
+}
+
+
+function Data_Column_Text(p_isValid, p_value){
+    return '<div class="' + (p_isValid?'':'data_cell_red') + '">'
+            + p_value
+            + '</div>'
+            ;
+}
+
+function Data_Column_Status(p_status){
+    var xclass = 'mercy_data_new';
+    
+    switch(p_status){
+        case 'New':
+            xclass = 'mercy_data_new';
+            break;
+        case 'Update':
+            xclass = 'mercy_data_update';
+            break;
+        case 'Invalid':
+            xclass = 'mercy_data_invalid';
+            break;
+    }
+    
+    return '<div class="' + (xclass) + '">'
+            + p_status
+            + '</div>'
+            ;
+}
+
+function addCommas(nStr) {
+    try {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+
+        return x1 + x2;
+    }catch (err) { }
+
+    return nStr.toString();
+}
+
+</script>

@@ -1,0 +1,514 @@
+﻿@using MERCY.Web.FrontEnd.Helpers;
+@using System.Configuration;
+
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+div.dataTables_wrapper {
+    width: 100% !important;
+}
+
+.invisible-button {
+    display: none;
+}
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet"/>
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Coal Inventory
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Coal Inventory > End Of Month Inventory
+    </div>
+    <div class="card mt-3 py-3">
+        <div class="row p-3" style="border-radius: 4px;">
+            <div class="col-4 col-md-4">
+                <div style="width:100%" class="filter_title">Company Name</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_company" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+            <div class="col-4 col-md-4">
+                <div style="width:100%" class="filter_title">Location</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_location" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+            <div class="col-4 col-md-4">
+                <div style="width:100%" class="filter_title">Report Period</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div class="input-group date">
+                        <input id="ddl_period" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="M-yyyy" placeholder="M-yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-3 p-3">
+        <div class="row mb-5">
+            <div class="col-6">
+                <div class="row">
+                    <div id="container_button_add" class="col-4">
+                        <div id="button_add" class="mercy_button">
+                            <div class="mercy_text_center">Add Coal Stock</div>
+                        </div>
+                    </div>
+                    <div id="container_button_finalize" class="col-4">
+                        <div id="button_finalize" class="mercy_button" onclick="finalizeInventory()">
+                            <div class="mercy_text_center">Finalize</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 d-flex flex-column">
+                <div class="align-self-end" style="width:250px;">
+                    <div>
+                        <input id="txt_search" type="text" class="shadow-none mercy_text_search" style="width: 250px !important;" placeholder="Search" />
+                    </div>
+                    <div style="height:20px; width:100%; padding:0px 0px 0px 5px !important ;margin:-28px 0px 0px 0px !important;">
+                        <img src="/images/ic-search.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row margin_padding_0">
+            <table id="mercyTable" class="display nowrap table table-striped table-hover mercy-table mercy_table_header" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>
+                        <div style="color: white; text-align: center !important;">Action</div>
+                    </th>
+                    <th>Company</th>
+                    <th>Rom Location</th>
+                    <th>Tonnage</th>
+                    <th>Periode</th>
+                    <th>Survey Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>
+                        <span style="color: #00b4a5">GRAND TOTAL</span>
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var coalTable = null;
+    
+    var objHtmlCompany = null;
+    var objHtmlLocation = null;
+    
+    var maxInputPeriod = null;
+
+    $(document).ready(function () {
+        get_user_menu = '1';
+        get_user_relation = '1';
+        
+        $('#button_add').on('click', function (ev) {
+            window.location = mercyUrl('EndOfMonthInventoryv/Form')
+        })
+        
+        $('#ddl_period').datepicker({
+            todayBtn: 1,
+            autoclose: false,
+            endDate: moment().subtract(1, 'months').toDate(),
+            beforeShowDay: function (date) {
+                return date.getDate() === 1
+            }
+        });
+        $('#ddl_period').datepicker('update', moment().subtract(1, 'months').startOf('month').toDate());
+        $('#ddl_period').datepicker().on('changeDate', function (ev) {
+            onDdlPeriodChange();
+        });
+        
+        $('#txt_search').on('keyup', function (ev) {
+            // `13` is a key for `enter`
+            if (ev.keyCode === 13) {
+                ev.preventDefault();
+                searchName();
+            }
+        });
+        
+        createDdlCompany();
+        createDdlLocation();
+        
+        Show_UserInformation();
+    });
+    
+    function Show_UserInformation() {
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/User/Info'
+            , type: 'POST'
+            , data: { u_menu: get_user_menu, u_relation: get_user_relation }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+                
+                createTable();
+                
+                populateCompany(function () {
+                    populateLocation(function () {
+                        populateCoalInventory();
+                    });
+                });
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function createTable() {
+        coalTable = $('#mercyTable').DataTable({
+            "responsive": true,
+            "searching": false,
+            "bPaginate": false,
+            "bInfo": false,
+            "scrollX": true,
+            "columns": [
+                { "data": "Id", "name": "Id", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta) {
+                        return '<div>' +
+                        `<a href="EndOfMonthInventoryv/Form?id=${full.Id}&isEdit=${true}"><i class="fa fa-edit" style="${validateEditButton(moment(full.Period).format('MMM-YYYY'))} cursor: pointer;font-size: 20px; color:white; margin-right: 10px;"></i></a>` +
+                        `<a href="EndOfMonthInventoryv/Form?id=${full.Id}&isView=${true}"><i class="fa fa-eye" style="cursor: pointer;font-size: 20px;color:white"></i></a>` +
+                        '</div>';
+                    },
+                    "className": "mercy_action_icon",
+                    "orderable": false,
+                    "autoWidth": true
+                },
+                { "data": "CompanyCode", "name": "CompanyCode", "autoWidth": true, "defaultContent": "" },
+                { "data": "ROMLocationName", "name": "ROMLocationName", "autoWidth": true, "defaultContent": "" },
+                { "data": "Tonnage", "name": "Tonnage", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta) {
+                        return `<span>${moment(full.Period).format('MMM-YYYY')}</span>`
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                {
+                    "render": function (data, type, full, meta) {
+                        return `<span>${moment(full.SurveyDate).format('DD-MMM-YYYY')}</span>`
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                { "data": "StartTimeString", "name": "StartTimeString", "autoWidth": true, "defaultContent": "" },
+                { "data": "EndTimeString", "name": "EndTimeString", "autoWidth": true, "defaultContent": "" }
+            ],
+            "order": [[0, 'asc']],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api();
+                if (api.column(4, { page: 'current' }).data().length) {
+                    var totalTonnage = api.column(4, { page: 'current' }).data().reduce(function (a, b) { return a + b });
+                    $(api.column(4).footer()).html(`<span style="color: #00b4a5; text-align: left;">${totalTonnage}</span>`);
+                    return;
+                }
+                $(api.column(4).footer()).html(`<span style="color: #00b4a5; text-align: left;">0</span>`);
+                return;
+            }
+        });
+        
+        coalTable.on('draw', function () {});
+        coalTable.columns.adjust().draw();
+    }
+    
+    function populateCoalInventory() {
+        $.ajax({
+            url: api_Request + '/Api/CoalInventory',
+            type: 'GET',
+            data: {
+                company: objHtmlCompany.val(),
+                location: objHtmlLocation.val(),
+                period: moment($('#ddl_period').val(), 'MMM-YYYY').format('YYYY-MM-DD'),
+                txt: $('#txt_search').val()
+            },
+            dataType: "json",
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            cache: false,
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+             
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+                
+                maxInputPeriod = data.MaxInputPeriod;
+                if (!data.Items.length) {
+                    validatePeriod();
+                    validateFinalizedData(data);
+                    coalTable.clear().draw();
+                    return;
+                }
+                
+                validatePeriod();
+                validateFinalizedData(data);
+                coalTable.clear().draw();
+                data.Items.forEach(function (item) {
+                   coalTable.row.add(item).draw(false); 
+                });
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function populateCompany(callback) {
+        try {
+            uInfo.Relations.Companies.forEach(function (item) {
+                var companyOption = new Option(item.CompanyCode, item.CompanyCode, true, true);
+                objHtmlCompany.append(companyOption);
+            });
+            
+            objHtmlCompany.val($('#ddl_company option:eq(0)').val());
+            callback();
+        } catch (e) {
+          // Nothing expected here
+        }
+    }
+    
+    function createDdlCompany() {
+        if (objHtmlCompany !== null) return;
+        
+        objHtmlCompany = $('#ddl_company').select2({
+            placeholder: 'Select Company',
+            tags: false,
+            multiple: false,
+            minimumResultsForSearch: -1
+        });
+        
+        objHtmlCompany.change(function () {
+            onDdlCompanyChange();
+        });
+    }
+    
+    function onDdlCompanyChange() {
+        objHtmlLocation.empty();
+        populateLocation(function () {
+            populateCoalInventory();
+        });
+    }
+    
+    function populateLocation(callback) {
+        $.ajax({
+            url: api_Request + '/Api/CoalInventory/GetRomLocation',
+            type: 'GET',
+            data: { companyCode: $('#ddl_company').val() },
+            dataType: "json",
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            cache: false,
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+                
+                var locationOption = new Option('ALL', 'all', false, false);
+                objHtmlLocation.append(locationOption);
+                
+                data.Items.forEach(function (item) {
+                    locationOption = new Option(item.Name, item.Id, false, false);
+                    objHtmlLocation.append(locationOption);
+                });
+                
+                objHtmlLocation.val($('#ddl_location option:eq(0)').val());
+                callback();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function finalizeInventory() {
+        var formData = new FormData();
+        
+        formData.append('period', moment($('#ddl_period').val(), 'MMM-YYYY').format('YYYY-MM-DD'));
+        formData.append('company', objHtmlCompany.val());
+        
+        $.ajax({
+            url: api_Request + '/Api/CoalInventory/Finalize',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            cache: false,
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    alert('Failed To Finalize Inventory');
+                    return;
+                }
+                
+                sendFinalizeEmail();
+                window.location.reload();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function sendFinalizeEmail() {
+        var formData = new FormData();
+        
+        formData.append('period', moment($('#ddl_period').val(), 'MMM-YYYY').format('YYYY-MM-DD'));
+        formData.append('company', objHtmlCompany.val());
+        
+        $.ajax({
+            url: api_Request + '/Api/Notification/FinalizeCoalInventory',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            cache: false,
+            success: function (data) {
+                // Do nothing here was expected
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function createDdlLocation() {
+        if (objHtmlLocation !== null) return;
+        
+        objHtmlLocation = $('#ddl_location').select2({
+            placeholder: 'Select Location',
+            tags: false,
+            multiple: false
+        });
+        
+        objHtmlLocation.change(function () {
+            onDdlLocationChange();
+        });
+    }
+    
+    function onDdlLocationChange() {
+        populateCoalInventory();
+    }
+    
+    function onDdlPeriodChange() {
+        populateCoalInventory();
+    }
+    
+    function searchName() {
+        populateCoalInventory();
+    }
+    
+    function validatePeriod() {
+        if (!moment().isSameOrBefore(moment(`${maxInputPeriod}`, 'DD'), 'day')) {
+            $('#container_button_add').removeClass('col-4');
+            $('#button_add').addClass('invisible-button');
+            return;
+        }
+        $('#container_button_add').addClass('col-4');
+        $('#button_add').removeClass('invisible-button');
+    }
+    
+    function validateEditButton(data) {
+        return moment(data, 'MMM-YYYY').isSame(moment().subtract(1, 'months'), 'month') &&
+            moment().isSameOrBefore(moment(`${maxInputPeriod}`, 'DD'), 'day')
+                ? ''
+                : 'display: none;'
+    }
+    
+    function validateFinalizedData(data) {
+        if (data.Status) {
+            $('#container_button_finalize').removeClass('col-4');
+            $('#button_finalize').addClass('invisible-button');
+            return;
+        }
+        
+        $('#container_button_finalize').addClass('col-4');
+        $('#button_finalize').removeClass('invisible-button');
+    }
+</script>

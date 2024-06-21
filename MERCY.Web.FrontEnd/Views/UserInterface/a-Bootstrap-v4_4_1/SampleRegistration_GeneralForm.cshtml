@@ -1,0 +1,2009 @@
+﻿@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style scoped>
+    .form-title {
+        color: #4752B1;
+        font-family: 'Poppins-SemiBold';
+        font-size: 15px;
+    }
+
+    .btn-info {
+        background-color: #00B4A5;
+    }
+
+    .btn-outline-info {
+        border: 1px solid #00B4A5;
+    }
+
+    .border-schemes {
+        border: 1px solid #4752B1;
+    }
+
+    .card-schemes {
+        height: 420px;
+        overflow: auto;
+    }
+
+    #tableSchemes_wrapper, #tableReqSchemes_wrapper {
+        width: auto !important;
+    }
+
+    .max-table-schemes {
+        max-height: 300px;
+        overflow: auto;
+    }
+    
+    .modal-xl {
+        max-width: 1050px;
+    }
+
+    .border-print-card {
+        border: solid 1px #000000;
+        border-radius: 5px;
+        width: 13.5cm !important;
+        height: 2.7cm !important;
+        font-size: 11px !important;
+    }
+    
+    .mercy_custom_input_text {
+        color: #000000;
+        font-family: 'Poppins-Regular';
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 14px;
+        text-align: left;
+    }
+    
+    .mercy_custom_textarea_text {
+        color: #000000;
+        font-family: 'Poppins-Regular';
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 14px;
+        text-align: left;
+        min-height: 124px;
+    }
+    
+    .disabled-div {
+        background: #F1F1FC;
+    }
+    
+    .btn-tab {
+      background-color: #4752B1;
+      border-radius: 10px;
+      color: white;
+    }
+     
+    .btn-tab-inactive {
+      opacity: 0.5;
+    }
+    
+    div.dataTables_wrapper {
+        width: 100% !important;
+    }
+
+    #chart {
+        min-height: 400px;
+    }
+    
+    #printArea {
+        display: none;
+    }
+    
+    @@media print {
+        #mercytopbar {
+            display: none;
+        }
+        
+        #mainDiv {
+            display: none;
+        }
+        
+        #printArea {
+            display: block;
+            overflow: hidden;
+        }
+        
+        div.pageBreaker {
+            clear: both;
+            display: block;
+            page-break-after: always;
+        }
+
+        @@page {
+            size: landscape;
+        }
+
+        .title-print {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<div id="mainDiv" class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Sample Registration
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Sample Registration > Add New
+    </div>
+    <div class="card mt-3 p-3 pb-4">
+        <div class="row">
+            <div class="col-5">
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Geo Prefix / Sample ID</p>
+                    <div class="d-flex flex-row">
+                        <input id="ddl_Geo_Prefix" class="w-100 px-2 mr-2 mercy_input mercy_custom_input_text" placeholder="Enter geo prefix">
+                        <input id="ddl_Sample_Id" class="w-100 px-2 ml-2 mercy_input mercy_custom_input_text" placeholder="Enter sample ID">
+                    </div>
+                </div>
+                <div id="container_lab_id" class="d-none mb-2">
+                    <p class="mercy_form_label m-0">Laboratory ID</p>
+                    <input id="ddl_Lab_Id" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter lab ID">
+                </div>
+                <div class="mb-2 d-flex flex-row">
+                    <div class="pl-0 col">
+                        <p class="mercy_form_Label m-0">Date Sampled (Start)</p>
+                        <div class="input-group date">
+                            <input id="txtDateSampleStart" class="mercy_select mercy_custom_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy hh:ii" placeholder="dd-M-yyyy hh:mm"/>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text mercy_date_icon"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pl-0 col">
+                        <p class="mercy_form_Label m-0">Date Sampled (End)</p>
+                        <div class="input-group date">
+                            <input id="txtDateSampleEnd" class="mercy_select mercy_custom_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy hh:ii" placeholder="dd-M-yyyy hh:mm"/>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text mercy_date_icon"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="container_tonnage" class="mb-2 d-flex flex-row">
+                    <div class="w-100 d-flex flex-column">
+                        <p class="mercy_form_Label m-0">Tonnage</p>
+                        <input id="ddl_Tonnage" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter tonnage">
+                    </div>
+                </div>
+                <div id="container_mass_sample" class="d-none mb-2">
+                    <p class="mercy_form_label m-0">Mass Sample Receive (Kg)</p>
+                    <input id="ddl_mass_sample" type="number" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter mass sample">
+                </div>
+                <div id="container_anc" class="d-none mb-2">
+                    <p class="mercy_form_label m-0">ANC</p>
+                    <input id="ddl_anc" type="number" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter ANC">
+                </div>
+                <div id="container_nag" class="d-none mb-2">
+                    <p class="mercy_form_label m-0">NAG</p>
+                    <input id="ddl_nag" type="number" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter NAG">
+                </div>
+                <div id="container_destination" class="mb-2">
+                    <p class="mercy_form_Label m-0">Destination</p>
+                    <select id="ddl_Destination" class="w-100 mercy_select mercy_custom_input_text">
+                        <option selected value style="color: darkgrey">-- Select Option --</option>
+                    </select>
+                </div>
+                <div class="mb-2 d-flex flex-row">
+                    <div class="w-100 d-flex flex-column">
+                        <p class="mercy_form_Label m-0">Remark</p>
+                        <textarea id="ddl_Remark" class="w-100 p-2 mercy_input mercy_custom_textarea_text" placeholder="Enter remark"></textarea>
+                    </div>
+                </div>
+                <div class="mb-2 d-flex flex-column">
+                    <button id="btnAddToTable" type="button" class="btn btn-info w-50" onclick="addDataToTable()">
+                        Add To Table List
+                        </button>
+                    </div>
+            </div>
+            <div class="col-5">
+                <div class="mb-2 row">
+                    <div class="col">
+                        <p class="mercy_form_Label m-0">Shift</p>
+                        <select id="ddl_Shift" class="w-100 mercy_select mercy_custom_input_text"></select>
+                    </div>
+                    <div class="col">
+                        <p class="mercy_form_Label m-0">Seq</p>
+                        <input id="ddl_Seq" class="w-100 px-2 mercy_input mercy_custom_input_text">
+                    </div>
+                </div>
+                <div id="container_sample_type" class="d-none mb-2">
+                    <p class="mercy_form_label m-0">Sample Type</p>
+                    <input id="ddl_sample_type" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter sample type">
+                </div>
+                <div id="thicknessContainer" class="mb-2 row">
+                    <div id="container_thickness_to" class="col">
+                        <p class="mercy_form_Label m-0">Thickness (To)</p>
+                        <input id="ddl_Thickness_To" type="number" class="w-100 px-2 mercy_input mercy_custom_input_text">
+                    </div>
+                    <div id="container_thickness_from" class="col">
+                        <p class="mercy_form_Label m-0">Thickness (From)</p>
+                        <input id="ddl_Thickness_From" type="number" class="w-100 px-2 mercy_input mercy_custom_input_text">
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Received</p>
+                    <div class="input-group date">
+                        <input id="txtDateReceived" class="mercy_select mercy_custom_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy hh:ii" placeholder="dd-M-yyyy hh:mm"/>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="container_ts" class="d-none mb-2">
+                    <p class="mercy_form_label m-0">TS</p>
+                    <input id="ddl_ts" type="number" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter TS">
+                </div>
+                <div id="container_barge" class="d-none mb-2">
+                    <p class="mercy_form_Label m-0">Barge Name</p>
+                    <select id="ddl_Barge_Name" class="w-100 mercy_select mercy_custom_input_text"></select>
+                </div>
+                <div id="container_ph" class="d-none">
+                    <div class="d-flex flex-row">
+                        <div class="w-100 mr-1">
+                            <p class="mercy_form_label m-0">NAG pH 4.5</p>
+                            <input id="ddl_nag_ph_4" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter NAG pH 4.5">
+                        </div>
+                        <div class="w-100 ml-1">
+                            <p class="mercy_form_label m-0">NAG pH 7.0</p>
+                            <input id="ddl_nag_ph_7" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter NAG pH 7.0">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-2 d-flex flex-row">
+                    <div class="w-100 d-flex flex-column">
+                        <p class="mercy_form_Label m-0">Location</p>
+                        <input id="ddl_Location" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter location">
+                    </div>
+                </div>
+                <div id="container_nag_type" class="d-none mb-2">
+                    <p class="mercy_form_label m-0">Field NAG Type</p>
+                    <input id="ddl_nag_type" class="w-100 px-2 mercy_input mercy_custom_input_text" placeholder="Enter NAG type">
+                </div>
+                <div id="container_ddl_Tunnel" class="mb-2">
+                    <p class="mercy_form_Label m-0">Tunnel</p>
+                    <select id="ddl_Tunnel" class="w-100 mercy_select mercy_custom_input_text">
+                        <option selected value style="color: darkgrey">-- Select Option --</option>
+                    </select>
+                </div>
+                <div class="d-flex flex-row">
+                    <div id="activeStatusContainer" class="custom-control custom-switch mr-1">
+                        <input id="ddl_IsActive" type="checkbox" class="custom-control-input" onchange="toggleActiveStatus()">
+                        <label id="ddl_IsActive_Label" class="custom-control-label" for="ddl_IsActive">Is Active</label>
+                    </div>
+                    <div id="activeStatusLoading" class="d-none spinner-border spinner-border-sm align-self-center text-success ml-1" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 px-4">
+                <button id="btnRegister" type="button" class="btn btn-info w-100 mb-3" onclick="showGeneralSubmitModal()">
+                    Register
+                </button>
+                <button id="btnCancel" type="button" class="btn btn-outline-info w-100 mb-3" onclick="Close_Session_Cancel()">
+                    Cancel
+                </button>
+                <div class="d-flex flex-column">
+                    <div id="editStatusLoading" class="d-none spinner-border spinner-border-md align-self-center text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="amd_tabs" class="my-3 flex-row d-none">
+    <div id="previewGeneralTableTab" class="mr-1 p-2 btn-tab" style="width: 125px;">
+        <span>NAPP Report</span>
+    </div>
+    <div id="previewGeneralChartTab" class="ml-1 p-2 btn-tab btn-tab-inactive d-none" style="width: 125px;">
+        <span>Chart</span>
+    </div>
+</div>
+
+<div class="card mt-3 p-3 pb-4">
+    <div id="previewGeneralTableContainer" class="tab-view">
+        <table id="previewGeneralTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th></th>
+                    <th>Site</th>
+                    <th>External ID</th>
+                    <th>Sample ID</th>
+                    <th></th>
+                    <th>Client</th>
+                    <th></th>
+                    <th>Project</th>
+                    <th>Date Of Job</th>
+                    <th>Date Sample Start</th>
+                    <th>Date Sample End</th>
+                    <th>Received Date</th>
+                    <th>Tonnage</th>
+                    <th>Shift</th>
+                    <th>Barge Name</th>
+                    <th>Thickness To</th>
+                    <th>Thickness From</th>
+                    <th>Tunnel</th>
+                    <th>Location</th>
+                    <th>Remark</th>
+                </tr>
+            </thead>
+        </table>
+        <table id="previewAMDTable" class="d-none nowrap table table-striped table-hover mercy_table mercy_table_header">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th></th>
+                    <th>Site</th>
+                    <th></th>
+                    <th>Client</th>
+                    <th></th>
+                    <th>Project</th>
+                    <th>Sample ID</th>
+                    <th>Laboratory ID</th>
+                    <th>Sample Type</th>
+                    <th>Date Sample Start</th>
+                    <th>Date Sample End</th>
+                    <th>Received Date</th>
+                    <th>Mass Sample Received (Kg)</th>
+                    <th>% TS</th>
+                    <th>MPA</th>
+                    <th>ANC</th>
+                    <th>NAPP</th>
+                    <th>NAG</th>
+                    <th>NAG pH 4.5</th>
+                    <th>NAG pH 7.0</th>
+                    <th>Field NAG Type</th>
+                    <th>Location</th>
+                    <th>Remark</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div id="previewGeneralChartContainer" class="tab-view d-none">
+        <div id="chart"></div>
+    </div>
+</div>
+
+<div id="modalGeneralTable" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px;">
+                <div class="d-flex flex-column">
+                    <div class="card mt-3 p-3 pb-4">
+                        <table id="submitGeneralTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+                            <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th></th>
+                                <th>Site</th>
+                                <th>External ID</th>
+                                <th>Sample ID</th>
+                                <th></th>
+                                <th>Client</th>
+                                <th></th>
+                                <th>Project</th>
+                                <th>Date Of Job</th>
+                                <th>Date Sample Start</th>
+                                <th>Date Sample End</th>
+                                <th>Received Date</th>
+                                <th>Tonnage</th>
+                                <th>Shift</th>
+                                <th>Barge Name</th>
+                                <th>Thickness To</th>
+                                <th>Thickness From</th>
+                                <th>Tunnel</th>
+                                <th>Location</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                        </table>
+                        <table id="submitAMDTable" class="d-none nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+                            <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th></th>
+                                <th>Site</th>
+                                <th></th>
+                                <th>Client</th>
+                                <th></th>
+                                <th>Project</th>
+                                <th>Sample ID</th>
+                                <th>Laboratory ID</th>
+                                <th>Sample Type</th>
+                                <th>Date Sample Start</th>
+                                <th>Date Sample End</th>
+                                <th>Received Date</th>
+                                <th>Mass Sample Received (Kg)</th>
+                                <th>% TS</th>
+                                <th>MPA</th>
+                                <th>ANC</th>
+                                <th>NAPP</th>
+                                <th>NAG</th>
+                                <th>NAG pH 4.5</th>
+                                <th>NAG pH 7.0</th>
+                                <th>Field NAG Type</th>
+                                <th>Location</th>
+                                <th>Remark</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="my-3 d-flex flex-row justify-content-between">
+                    <div class="d-flex flex-row">
+                        <button id="btnSubmit" type="button" class="btn btn-info w-100 mr-1" onclick="postGeneralData()">Submit</button>
+                        <button id="btnDismiss" type="button" class="btn btn-outline-info w-100 mx-1" onclick="dismissGeneralSubmitModal()">Cancel</button>
+                        <div class="w-100 ml-1">
+                            <div id="spinnerRegister" class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="align-self-center">
+                        <input type="checkbox" id="generalPrint" name="generalPrint">
+                        <label for="generalPrint">Print Label</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalSession" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px;">
+                <div class="d-flex flex-column">
+                    <p class="align-self-center">Your session is expired, do you want to extend the time ?</p>
+                </div>
+                <div class="my-3 d-flex flex-column">
+                    <div class="w-50 d-flex flex-row align-self-center">
+                        <button id="btnExtend" type="button" class="btn btn-info w-100 mr-1" onclick="extendSession()">Extend</button>
+                        <button id="btnCloseSession" type="button" class="btn btn-outline-info w-100 mx-1" onclick="Close_Session()">Close Session</button>
+                        <div id="spinnerSessionContainer" class="d-none ml-1">
+                            <div id="spinnerSession" class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="printArea"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    var generalTable = null;
+    var amdTable = null;
+    var generalSubmitTable = null;
+    var amdSubmitTable = null;
+    var detailId = null;
+    var projectId = null;
+    var barges = [];
+    var sequenceData = [];
+    var tunnels = [];
+    var PYRITE_OXIDATION = 30.625
+
+    $(document).ready(function () {
+        $(document).attr('title', 'Sample Registration - General : Mercy');
+        
+        var decodedUri = decodeURIComponent(window.location.href);
+        var splitUri = decodedUri.split('?');
+
+        get_user_menu = '1';
+        get_user_relation = '1';
+        
+        showUserInformation();
+        
+        validateProjectType();
+        validateClient();
+        showSessionModal();
+
+        createTableList();
+        createSubmitTable();
+
+        $('#printArea').appendTo(document.body);
+        
+        $('#spinnerRegister').addClass('d-none');
+        
+        $('#txtDateSampleStart').datetimepicker();
+        
+        $('#txtDateSampleEnd').datetimepicker();
+        
+        $('#txtDateReceived').datetimepicker();
+        
+        $('#ddl_Barge_Name').on('change', function () {
+            onBargeNameChange();
+        });
+        
+        if (splitUri.length < 2) {
+            getLastSequence(() => {
+                $('#ddl_Shift').on('change', function () {
+                    onShiftChange();
+                })
+            })
+        }
+        
+        $('#activeStatusContainer').addClass('d-none');
+        
+        if (splitUri.length >= 2) {
+            $('#ddl_Shift').on('change', function () {
+                onShiftChange();
+            })
+
+            $('#activeStatusContainer').removeClass('d-none');
+            var parameterSplit = splitUri[1].split('=');
+            detailId = parameterSplit[1].replace(/'/g, '');
+            
+            fetchGeneralDetail(detailId);
+        }
+
+        if (isImmCrushing()) {
+            $('#ddl_Location').val('CHP3');
+        }
+
+        $('.btn-tab').click(onBtnTabClick);
+    })
+    
+    function validateProjectType(isEdit = false, detailProjectType, company, callback = () => {}) {
+        var projectType = null;
+        
+        if (!isEdit) {
+            if (!localStorage.getItem('SampleRegistrationData')) {
+                return;
+            }
+            projectType = JSON.parse(localStorage.getItem('SampleRegistrationData')).typeProject;
+        } else {
+            projectType = detailProjectType
+        }
+        
+        /* Rules ::
+            General: Barge & Destination disabled
+            Barge: Just Barge enabled
+            Crushing: Just Destination enabled
+        */
+
+        fetchDataToShift(company);
+        switch (projectType.toLowerCase()) {
+            case "general":
+                $('#container_ddl_Tunnel').addClass('d-none');
+                $('#ddl_Barge_Name').prop('disabled', true);
+                $('#ddl_Barge_Name').addClass('disabled-div');
+
+                $('#ddl_Destination').prop('disabled', true);
+                $('#ddl_Destination').addClass('disabled-div');
+                
+                if (isEdit) {
+                    callback();
+                    break;
+                }
+                break;
+            case "barge":
+                $('#container_ddl_Tunnel').addClass('d-none');
+                $('#ddl_Barge_Name').prop('disabled', false);
+                $('#ddl_Barge_Name').removeClass('disabled-div');
+
+                $('#ddl_Destination').prop('disabled', true);
+                $('#ddl_Destination').addClass('disabled-div');
+                
+                if (isEdit) {
+                    fetchDataToBargeName(true, company, () => {
+                        callback();
+                    })
+                    break;
+                }
+                
+                fetchDataToBargeName();
+                break;
+            case "crushing":
+                $('#container_ddl_Tunnel').removeClass('d-none');
+                $('#ddl_Barge_Name').prop('disabled', true);
+                $('#ddl_Barge_Name').addClass('disabled-div');
+
+                $('#ddl_Destination').prop('disabled', false);
+                $('#ddl_Destination').removeClass('disabled-div');
+                
+                if (isEdit) {
+                    fetchTunnels(true, company, () => {
+                        fetchDataToDestination(true, () => {
+                            callback();
+                        })
+                    });
+                    break;
+                }
+                
+                fetchTunnels();
+                fetchDataToDestination();
+                break;
+            case "amd": {
+                $('#amd_tabs').removeClass('d-none').addClass('d-flex');
+                $('#container_ddl_Tunnel').addClass('d-none');
+                $('#container_destination').addClass('d-none');
+                $('#previewGeneralTable')
+                .removeClass('display')
+                .addClass('d-none')
+                
+                $('#submitGeneralTable')
+                .removeClass('display')
+                .addClass('d-none')
+                
+                $('#container_tonnage')
+                .removeClass('d-flex')
+                .addClass('d-none');
+                
+                $('#thicknessContainer')
+                .removeClass('row')
+                .addClass('d-none');
+                
+                $('#container_thickness_to')
+                .removeClass('col')
+                .addClass('d-none');
+                
+                $('#container_thickness_from')
+                .removeClass('col')
+                .addClass('d-none');
+                
+                $('#previewAMDTable')
+                .removeClass('d-none')
+                .addClass('display');
+                
+                $('#submitAMDTable')
+                .removeClass('d-none')
+                .addClass('display');
+                
+                $('#container_lab_id').removeClass('d-none');
+                $('#container_mass_sample').removeClass('d-none');
+                $('#container_anc').removeClass('d-none');
+                $('#container_nag').removeClass('d-none');
+                $('#container_sample_type').removeClass('d-none');
+                $('#container_ts').removeClass('d-none');
+                $('#container_ph').removeClass('d-none');
+                $('#container_nag_type').removeClass('d-none');
+                $('#previewGeneralChartTab').removeClass('d-none');
+                break;               
+            }
+            default:
+                $('#container_ddl_Tunnel').addClass('d-none');
+                $('#ddl_Barge_Name').prop('disabled', false);
+                $('#ddl_Barge_Name').removeClass('disabled-div');
+                
+                $('#ddl_Destination').prop('disabled', false);
+                $('#ddl_Destination').removeClass('disabled-div');
+                
+                if (isEdit) {
+                    fetchDataToBargeName(true, company, () => {
+                        fetchDataToDestination(true, () => {
+                            callback();
+                        })
+                    })
+                    break;
+                }
+                
+                fetchDataToBargeName();
+                fetchDataToDestination();
+                break;
+        }
+    }
+    
+    function validateClient() {
+        if (!localStorage.getItem('SampleRegistrationData')) {
+            return;
+        }
+        
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+        
+        if (prevFormData.client.name.toLowerCase() === 'geology') {
+            $('#thicknessContainer').removeClass('d-none');
+            return;
+        }
+        
+        $('#thicknessContainer').addClass('d-none');
+    }
+
+    function showUserInformation() {
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/User/Info'
+            , type: 'POST'
+            , data: { u_menu: get_user_menu, u_relation: get_user_relation }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+
+                resize_Table();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function fetchTunnels(isEdit = false, company, callback = () => { }) {
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+
+        $.ajax({
+            url: api_Request + '/Api/Tunnel',
+            type: 'POST',
+            data: {
+                u_menu: get_user_menu,
+                u_relation: get_user_relation,
+                company: getCompanyCode(prevFormData)
+            },
+            dataType: "json",
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            cache: false,
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+                
+                tunnels = data.Items;
+                tunnels
+                    .filter((item) => item.IsActive)
+                    .forEach((item) => {
+                        $('#ddl_Tunnel').append(new Option(item.Name, item.TunnelId));
+                    });
+                
+                callback();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function fetchGeneralDetail(id) {
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Get'
+            , type: 'GET'
+            , data: {
+                id: id,
+                u_menu: get_user_menu,
+                u_relation: get_user_relation
+            }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+                
+                projectId = data.Item.ProjectId;
+                
+                validateProjectType(true, data.Item.ProjectTypeName, data.Item.CompanyCode, () => {
+                    fillEditField(data);
+                });
+                createTableList(true, data.Item.ProjectTypeName);
+            }
+            , error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function updateStatus(id, status, callback, error) {
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Update'
+            , type: 'POST'
+            , data: JSON.stringify({
+                id: id,
+                IsActive: status,
+                ThicknessTo: null,
+                ThicknessFrom: null,
+                Location: null,
+                Remark: null,
+                DetailGeneral: null,
+                DetailLoading: null
+            })
+            , dataType: "json"
+            , processData: false
+            , contentType: 'application/json'
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    error();
+                    window.location = '/';
+                    return;
+                }
+                
+                callback();
+            }
+            , error: function (err) {
+                error();
+                $(this).remove();
+            }
+        });
+    }
+    
+    function editGeneralForm() {
+        $('#btnRegister').prop('disabled', true);
+        $('#editStatusLoading').removeClass('d-none');
+
+        var dataToPost = {
+            id: detailId,
+            ThicknessTo: $('#ddl_Thickness_To').val(),
+            ThicknessFrom: $('#ddl_Thickness_From').val(),
+            TunnelId: $('#ddl_Tunnel').val(),
+            Remark: $('#ddl_Remark').val(),
+            location: $('#ddl_Location').val(),
+            DetailLoading: null,
+            DetailGeneral: {
+                  GeoPrefix: $('#ddl_Geo_Prefix').val(),
+                  SampleId: $('#ddl_Sample_Id').val(),
+                  Shift: $('#ddl_Shift').val(),
+                  Sequence: $('#ddl_Seq').val(),
+                  DateSampleStart: moment($('#txtDateSampleStart').val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
+                  DateSampleEnd: moment($('#txtDateSampleEnd').val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
+                  Receive: moment($('#txtDateReceived').val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
+                  Tonnage: $('#ddl_Tonnage').val(),
+                  Destination: $('#ddl_Destination').val(),
+                  BargeName: $('#ddl_Barge_Name').val() ? JSON.parse($('#ddl_Barge_Name').val()).Name : null,
+                  TripNumber: $('#ddl_Barge_Name').val() ? JSON.parse($('#ddl_Barge_Name').val()).TripNumber : null
+            }
+        }
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Update'
+            , type: 'POST'
+            , data: JSON.stringify(dataToPost)
+            , dataType: "json"
+            , processData: false
+            , contentType: 'application/json'
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    $('#btnRegister').prop('disabled', false);
+                    $('#editStatusLoading').addClass('d-none');
+                    $(this).remove();
+                    
+                    alert(data.Message);
+                    return;
+                }
+                
+                $('#btnRegister').prop('disabled', false);
+                $('#editStatusLoading').addClass('d-none');
+                
+                alert(data.Message);
+                cancelGeneralForm();
+            }
+            , error: function (err) {
+                $('#btnRegister').prop('disabled', false);
+                $('#editStatusLoading').addClass('d-none');
+                $(this).remove();
+            }
+        });
+    }
+ 
+    function createTableList(isEdit = false, detailProjectType) {
+        var projectType = null;
+        
+        if (!isEdit) {
+            if (!localStorage.getItem('SampleRegistrationData')) {
+                return;
+            }
+            projectType = JSON.parse(localStorage.getItem('SampleRegistrationData')).typeProject;
+        } else {
+            projectType = detailProjectType
+        }
+        
+        generalTable = $("#previewGeneralTable").DataTable({
+            responsive: true,
+            searching: false,
+            bPaginate: false,
+            bInfo: false,
+            scrollX: true,
+            columns: [
+                { "data": "CompanyCode", "name": "CompanyCode", "autoWidth": true, "defaultContent": "" },
+                { "data": "SiteId", "name": "SiteId", "autoWidth": true, "defaultContent": "" },
+                { "data": "SiteName", "name": "SiteName", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.ExternalId", "name": "ExternalId", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta){
+                        return '<span>' + `${full.DetailGeneral.SampleId || '-'}` + '</span>';
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                { "data": "ClientId", "name": "ClientId", "autoWidth": true, "defaultContent": "" },
+                { "data": "ClientName", "name": "ClientName", "autoWidth": true, "defaultContent": "" },
+                { "data": "ProjectId", "name": "ProjectId", "autoWidth": true, "defaultContent": "" },
+                { "data": "ProjectName", "name": "ProjectName", "autoWidth": true, "defaultContent": "" },
+                { "data": "DateOfJob", "name": "DateOfJob", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.DateSampleStart", "name": "DateSampleStart", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.DateSampleEnd", "name": "DateSampleEnd", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.Receive", "name": "Receive", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.Tonnage", "name": "Tonnage", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.Shift", "name": "Shift", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.DetailGeneral.BargeName || '-'}` + '</span>';
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                { "data": "ThicknessTo", "name": "ThicknessTo", "autoWidth": true, "defaultContent": "" },
+                { "data": "ThicknessFrom", "name": "ThicknessFrom", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta) {
+                        var tunnel = tunnels.find(function (item) { return item.TunnelId === parseInt(full.TunnelId, 10) });
+                        return '<span>' + `${tunnel ? tunnel.Name : '-'}` + '</span>'
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                { "data": "Location", "name": "Location", "autoWidth": true, "defaultContent": "" },
+                { "data": "Remark", "name": "Remark", "autoWidth": true, "defaultContent": "" }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [1, 5, 7],
+                    "visible": false
+                }
+            ],
+            order: [[1, 'asc']]
+        });
+        
+        amdTable = $('#previewAMDTable').DataTable({
+          responsive: true,
+          searching: false,
+          bPaginate: false,
+          bInfo: false,
+          scrollX: true,
+          columns: [
+              { "data": "CompanyCode", "name": "CompanyCode", "autoWidth": true, "defaultContent": "" },
+              { "data": "SiteId", "name": "SiteId", "autoWidth": true, "defaultContent": "" },
+              { "data": "SiteName", "name": "SiteName", "autoWidth": true, "defaultContent": "" },
+              { "data": "ClientId", "name": "ClientId", "autoWidth": true, "defaultContent": "" },
+              { "data": "ClientName", "name": "ClientName", "autoWidth": true, "defaultContent": "" },
+              { "data": "ProjectId", "name": "ProjectId", "autoWidth": true, "defaultContent": "" },
+              { "data": "ProjectName", "name": "ProjectName", "autoWidth": true, "defaultContent": "" },
+              {
+                  "render": function (data, type, full, meta) {
+                      return '<span>' + `${full.DetailAMD.SampleId || '-'}` + '</span>';
+                  },
+                  "autoWidth": true,
+                  "defaultContent": ""
+              },
+              { "data": "DetailAMD.LaboratoryId", "name": "LaboratoryId", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.SampleType", "name": "SampleType", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.DateSampleStart", "name": "DateSampleStart", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.DateSampleEnd", "name": "DateSampleEnd", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.Receive", "name": "Receive", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.MassSampleReceived", "name": "MassSampleReceived", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.TS", "name": "TS", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.MPA", "name": "MPA", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.ANC", "name": "ANC", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.NAPP", "name": "NAPP", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.NAG", "name": "NAG", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.NAGPH45", "name": "NAGPH45", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.NAGPH70", "name": "NAGPH70", "autoWidth": true, "defaultContent": "" },
+              { "data": "DetailAMD.NAGType", "name": "NAGType", "autoWidth": true, "defaultContent": "" },
+              { "data": "Location", "name": "Location", "autoWidth": true, "defaultContent": "" },
+              { "data": "Remark", "name": "Remark", "autoWidth": true, "defaultContent": "" }
+          ],
+          "columnDefs": [
+              {
+                  "targets": [1, 3, 5],
+                  "visible": false
+              }
+          ],
+          order: [[1, 'asc']]
+        })
+        
+        generalTable.on('draw', function () { });
+        amdTable.on('draw', function () { });
+
+        $('#btnRegister').prop('disabled', projectType.toLowerCase() === 'amd'
+        ? !amdTable.rows().data().length
+        : !generalTable.rows().data().length);
+    }
+    
+    function createSubmitTable() {
+        generalSubmitTable = $("#submitGeneralTable").DataTable({
+            responsive: true,
+            searching: false,
+            bPaginate: false,
+            bInfo: false,
+            scrollX: true,
+            columns: [
+                { "data": "CompanyCode", "name": "CompanyCode", "autoWidth": true, "defaultContent": "" },
+                { "data": "SiteId", "name": "SiteId", "autoWidth": true, "defaultContent": "" },
+                { "data": "SiteName", "name": "SiteName", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.ExternalId", "name": "ExternalId", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.DetailGeneral.SampleId || '-'}` + '</span>';
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                { "data": "ClientId", "name": "ClientId", "autoWidth": true, "defaultContent": "" },
+                { "data": "ClientName", "name": "ClientName", "autoWidth": true, "defaultContent": "" },
+                { "data": "ProjectId", "name": "ProjectId", "autoWidth": true, "defaultContent": "" },
+                { "data": "ProjectName", "name": "ProjectName", "autoWidth": true, "defaultContent": "" },
+                { "data": "DateOfJob", "name": "DateOfJob", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.DateSampleStart", "name": "DateSampleStart", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.DateSampleEnd", "name": "DateSampleEnd", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.Receive", "name": "Receive", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.Tonnage", "name": "Tonnage", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailGeneral.Shift", "name": "Shift", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.DetailGeneral.BargeName || '-'}` + '</span>';
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                { "data": "ThicknessTo", "name": "ThicknessTo", "autoWidth": true, "defaultContent": "" },
+                { "data": "ThicknessFrom", "name": "ThicknessFrom", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta) {
+                        var tunnel = tunnels.find(function (item) { return Number(item.TunnelId) === Number(full.TunnelId) });
+                        return '<span>' + `${tunnel ? tunnel.Name : '-'}` + '</span>'
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                { "data": "Location", "name": "Location", "autoWidth": true, "defaultContent": "" },
+                { "data": "Remark", "name": "Remark", "autoWidth": true, "defaultContent": "" }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [1, 5, 7],
+                    "visible": false,
+                }
+            ],
+            order: [[1, 'asc']]
+        })
+        
+        amdSubmitTable = $('#submitAMDTable').DataTable({
+            responsive: true,
+            searching: false,
+            bPaginate: false,
+            bInfo: false,
+            scrollX: true,
+            columns: [
+                { "data": "CompanyCode", "name": "CompanyCode", "autoWidth": true, "defaultContent": "" },
+                { "data": "SiteId", "name": "SiteId", "autoWidth": true, "defaultContent": "" },
+                { "data": "SiteName", "name": "SiteName", "autoWidth": true, "defaultContent": "" },
+                { "data": "ClientId", "name": "ClientId", "autoWidth": true, "defaultContent": "" },
+                { "data": "ClientName", "name": "ClientName", "autoWidth": true, "defaultContent": "" },
+                { "data": "ProjectId", "name": "ProjectId", "autoWidth": true, "defaultContent": "" },
+                { "data": "ProjectName", "name": "ProjectName", "autoWidth": true, "defaultContent": "" },
+                {
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.DetailAMD.SampleId || '-'}` + '</span>';
+                    },
+                    "autoWidth": true,
+                    "defaultContent": ""
+                },
+                { "data": "DetailAMD.LaboratoryId", "name": "LaboratoryId", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.SampleType", "name": "SampleType", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.DateSampleStart", "name": "DateSampleStart", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.DateSampleEnd", "name": "DateSampleEnd", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.Receive", "name": "Receive", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.MassSampleReceived", "name": "MassSampleReceived", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.TS", "name": "TS", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.MPA", "name": "MPA", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.ANC", "name": "ANC", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.NAPP", "name": "NAPP", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.NAG", "name": "NAG", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.NAGPH45", "name": "NAGPH45", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.NAGPH70", "name": "NAGPH70", "autoWidth": true, "defaultContent": "" },
+                { "data": "DetailAMD.NAGType", "name": "NAGType", "autoWidth": true, "defaultContent": "" },
+                { "data": "Location", "name": "Location", "autoWidth": true, "defaultContent": "" },
+                { "data": "Remark", "name": "Remark", "autoWidth": true, "defaultContent": "" }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [1, 3, 5],
+                    "visible": false
+                }
+            ],
+            order: [[1, 'asc']]
+        })
+        
+        generalSubmitTable.on('draw', function () {});
+        amdSubmitTable.on('draw', function () {});
+    }
+
+    function getCompanyCode(prevFormData) {
+        let sampleCompanyCode = localStorage.getItem('SampleCompanyCode');
+
+        if (prevFormData) {
+            return prevFormData.company;
+        }
+
+        return sampleCompanyCode
+            ? sampleCompanyCode
+            : null;
+    }
+    
+    function fetchDataToBargeName(isEdit = false, company, callback = () => { }) {
+        let prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/GetBarge'
+            , type: 'GET'
+            , data: {
+                u_menu: get_user_menu,
+                u_relation: get_user_relation,
+                company: company ?? getCompanyCode(prevFormData)
+            }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                barges = data.Items;
+                for (var i = 0; i < data.Items.length; i++) {
+                    $('#ddl_Barge_Name').append(new Option(`${data.Items[i].TripNumber} - ${data.Items[i].Name}`, JSON.stringify(data.Items[i])))
+                }
+                
+                if (isEdit) {
+                    callback();
+                }
+                
+                return;
+            }
+            , error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function onBargeNameChange() {
+        // Nothing here is expected
+    }
+    
+    function fetchDataToDestination(isEdit = false, callback = () => {}) {
+        var prevFormData = null;
+        if (localStorage.getItem('SampleRegistrationData')) {
+            prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+        }
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/GetDestination'
+            , type: 'GET'
+            , data: {
+                u_menu: get_user_menu,
+                u_relation: get_user_relation,
+                project_id: prevFormData
+                    ? prevFormData.project.id
+                    : projectId
+            }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                for (var i = 0; i < data.Items.length; i++) {
+                    $('#ddl_Destination').append(new Option(data.Items[i].Name, data.Items[i].Name));
+                }
+                
+                if (isEdit) {
+                    callback();
+                }
+                
+                return;
+            }
+            , error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function fetchDataToShift(company) {
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+
+        $.ajax({
+            url: api_Request + '/Api/Shift'
+            , type: 'GET'
+            , data: {
+                company: company ?? getCompanyCode(prevFormData)
+            }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                data.Items.forEach((item) => {
+                    $('#ddl_Shift').append(new Option(item.Name, Number(item.Name)));
+                });
+
+                $('#ddl_Seq').val('1');
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+    
+    function onShiftChange() {
+        var sequences = [];
+        if (sequenceData.length) {
+            $.each(sequenceData, function(key, value) {
+                if (value.Shift.toString() === $('#ddl_Shift').val()) {
+                    sequences.push(Number(value.Sequence));
+                }
+            });
+            
+            $.each(generalTable.rows().data(), function(key, value) {
+                if (value.DetailGeneral.Shift === $('#ddl_Shift').val()) {
+                    sequences.push(Number(value.DetailGeneral.Sequence));
+                }
+            });
+        } else {
+            $.each(generalTable.rows().data(), function(key, value) {
+                if (value.DetailGeneral.Shift === $('#ddl_Shift').val()) {
+                    sequences.push(Number(value.DetailGeneral.Sequence));
+                }
+            });
+        }
+        
+        if (sequences.length) {
+            var maxSeq = Math.max(...sequences);
+            $('#ddl_Seq').val(`${(maxSeq + 1)}`);
+            return
+        }
+
+        $('#ddl_Seq').val('1');
+    }
+    
+    function addDataToTable() {
+        if (!validateTableData()) return;
+
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+        var bargeNameValue = $('#ddl_Barge_Name').val() ? JSON.parse($('#ddl_Barge_Name').val()).Name : null;
+        var bargeTripNumber = $('#ddl_Barge_Name').val() ? JSON.parse($('#ddl_Barge_Name').val()).TripNumber : null;
+        var geoPrefixValue = $('#ddl_Geo_Prefix').val();
+        var sampleIdValue = $('#ddl_Sample_Id').val();
+        var dateSampleStartValue = moment($('#txtDateSampleStart').val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+        var dateSampleEndValue = moment($('#txtDateSampleEnd').val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+        var receiveDateValue = moment($('#txtDateReceived').val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+        var tonnageValue = $('#ddl_Tonnage').val();
+        var shiftValue = $('#ddl_Shift').val();
+        var sequenceValue = $('#ddl_Seq').val();
+        var destinationValue = $('#ddl_Destination').val();
+        var thicknessToValue = $('#ddl_Thickness_To').val();
+        var thicknessFromValue = $('#ddl_Thickness_From').val();
+        var tunnelValue = $('#ddl_Tunnel').val();
+        var locationValue = $('#ddl_Location').val();
+        var remarkValue = $('#ddl_Remark').val();
+        var sampleTypeValue = $('#ddl_sample_type').val();
+        var labIdValue = $('#ddl_Lab_Id').val();
+        var massSampleValue = Number($('#ddl_mass_sample').val());
+        var ancValue = Math.round(Number($('#ddl_anc').val()) * 10000) / 10000;
+        var nagValue = Math.round(Number($('#ddl_nag').val()) * 100) / 100;
+        var tsValue = Math.round(Number($('#ddl_ts').val()) * 100) / 100;
+        var nagPh4Value = $('#ddl_nag_ph_4').val();
+        var nagPh7Value = $('#ddl_nag_ph_7').val();
+        var nagTypeValue = $('#ddl_nag_type').val();
+
+        switch (prevFormData.typeProject.toLowerCase()) {
+            case 'amd':
+                amdTable.row.add({
+                    CompanyCode: prevFormData ? prevFormData.company : null,
+                    SiteId: prevFormData ? prevFormData.site.id : null,
+                    SiteName: prevFormData ? prevFormData.site.name : null,
+                    DateOfJob: prevFormData ? moment(prevFormData.date, 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD') : null,
+                    ClientId: prevFormData ? prevFormData.client.id : null,
+                    ClientName: prevFormData ? prevFormData.client.name : null,
+                    ProjectId: prevFormData ? prevFormData.project.id : null,
+                    ProjectName: prevFormData ? prevFormData.project.name : null,
+                    RefTypeId: prevFormData ? prevFormData.refType : null,
+                    ReceivedBy: prevFormData ? prevFormData.received : null,
+                    ThicknessTo: thicknessToValue,
+                    ThicknessFrom: thicknessFromValue,
+                    TunnelId: tunnelValue,
+                    Location: locationValue,
+                    Remark: remarkValue,
+                    DetailLoading: null,
+                    DetailGeneral: null,
+                    DetailAMD: {
+                        GeoPrefix: geoPrefixValue,
+                        SampleId: sampleIdValue,
+                        Shift: shiftValue,
+                        Sequence: sequenceValue,
+                        LaboratoryId: labIdValue,
+                        SampleType: sampleTypeValue,
+                        DateSampleStart: dateSampleStartValue,
+                        DateSampleEnd: dateSampleEndValue,
+                        Receive: receiveDateValue,
+                        MassSampleReceived: massSampleValue,
+                        TS: tsValue,
+                        MPA: Math.round((tsValue * PYRITE_OXIDATION) * 10000) / 10000,
+                        ANC: ancValue,
+                        NAPP: Math.round((tsValue * PYRITE_OXIDATION - ancValue) * 10000) / 10000,
+                        NAG: nagValue,
+                        NAGPH45: nagPh4Value,
+                        NAGPH70: nagPh7Value,
+                        NAGType: nagTypeValue,
+                        Location: locationValue,
+                        Remark: remarkValue
+                    },
+                    Schemes: prevFormData ? prevFormData.schemes.map(v => ({ SchemeId: v })) : null
+                }).draw(false);
+                break;
+            default:
+                generalTable.row.add({
+                    CompanyCode: prevFormData ? prevFormData.company : null,
+                    SiteId: prevFormData ? prevFormData.site.id : null,
+                    SiteName: prevFormData ? prevFormData.site.name : null,
+                    DateOfJob: prevFormData ? moment(prevFormData.date, 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD') : null,
+                    ClientId: prevFormData ? prevFormData.client.id : null,
+                    ClientName: prevFormData ? prevFormData.client.name : null,
+                    ProjectId: prevFormData ? prevFormData.project.id : null,
+                    ProjectName: prevFormData ? prevFormData.project.name : null,
+                    RefTypeId: prevFormData ? prevFormData.refType : null,
+                    ReceivedBy: prevFormData ? prevFormData.received : null,
+                    ThicknessTo: thicknessToValue,
+                    ThicknessFrom: thicknessFromValue,
+                    TunnelId: tunnelValue,
+                    Location: locationValue,
+                    Remark: remarkValue,
+                    DetailLoading: null,
+                    DetailGeneral: {
+                        GeoPrefix: geoPrefixValue,
+                        ExternalId: null,
+                        SampleId: sampleIdValue,
+                        Shift: shiftValue,
+                        Sequence: sequenceValue,
+                        DateSampleStart: dateSampleStartValue,
+                        DateSampleEnd: dateSampleEndValue,
+                        Receive: receiveDateValue,
+                        Tonnage: tonnageValue,
+                        Destination: destinationValue,
+                        BargeName: bargeNameValue,
+                        TripNumber: bargeTripNumber
+                    },
+                    Schemes: prevFormData ? prevFormData.schemes.map(v => ({ SchemeId: v })) : null
+                }).draw(false);
+                break;
+        }
+
+
+        $('#btnRegister').prop('disabled', !(generalTable.rows().data().length || amdTable.rows().data().length));
+        
+        resetForm();
+
+        if (!$('#previewGeneralChartContainer').hasClass('d-none')) {
+            drawChart();
+        }
+    }
+
+    function isImmCrushing() {
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+
+        return prevFormData.company.toLowerCase() === 'imm'
+            && prevFormData.typeProject.toLowerCase() === 'crushing';
+    }
+    
+    function resetForm() {
+        $('#ddl_Shift').trigger('change');
+        $('#ddl_Geo_Prefix').val(null);
+        $('#ddl_Tonnage').val(null);
+        $('#ddl_Destination').val(null);
+
+        if (!isImmCrushing()) {
+            $('#ddl_Location').val(null);
+        }
+        
+        $('#ddl_Sample_Id').val(null);
+        $('#txtDateSampleStart').val(null);
+        $('#txtDateSampleEnd').val(null);
+        $('#txtDateReceived').val(null);
+        $('#ddl_Seq').trigger('change');
+        $('#ddl_Location').val(null);
+        $('#ddl_Remark').val(null);
+        $('#ddl_sample_type').val(null);
+        $('#ddl_Lab_Id').val(null);
+        $('#ddl_mass_sample').val(null);
+        $('#ddl_anc').val(null);
+        $('#ddl_nag').val(null);
+        $('#ddl_ts').val(null);
+        $('#ddl_nag_ph_4').val(null);
+        $('#ddl_nag_ph_7').val(null);
+        $('#ddl_nag_type').val(null);
+    }
+    
+    function showGeneralSubmitModal() {
+        if (detailId) {
+            editGeneralForm();
+            return;
+        }
+
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+
+        switch (prevFormData.typeProject.toLowerCase()) {
+            case 'amd':
+                $.each(amdTable.rows().data(), function (key, value) {
+                    amdSubmitTable.row.add(value).draw(false);
+                });
+                break;
+            default:
+                $.each(generalTable.rows().data(), function (key, value) {
+                    generalSubmitTable.row.add(value).draw(false);
+                });
+                break;
+        }
+
+        $('#modalGeneralTable').appendTo('body').modal('show');
+    }
+    
+    function dismissGeneralSubmitModal() {
+        $('#modalGeneralTable').modal('hide');
+        
+        generalSubmitTable.clear().draw();
+        amdSubmitTable.clear().draw();
+    }
+    
+    function postGeneralData() {
+        $('#spinnerRegister').removeClass('d-none');
+        $('#btnRegister').prop('disabled', true);
+        $('#btnSubmit').prop('disabled', true);
+        $('#btnDismiss').prop('disabled', true);
+
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+        var tableData;
+        switch (prevFormData.typeProject.toLowerCase()) {
+            case 'amd':
+                tableData = amdTable.rows().data();
+                break;
+            default:
+                tableData = generalTable.rows().data();
+                break;
+        }
+
+        var formData = [];
+        $.each(tableData, function (key, value) {
+            delete value['SiteName']
+            delete value['ClientName']
+            delete value['ProjectName']
+
+            formData.push(value)
+        });
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Create'
+            , type: 'POST'
+            , data: JSON.stringify(formData)
+            , dataType: "json"
+            , processData: false
+            , contentType: 'application/json'
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    $('#spinnerRegister').addClass('d-none');
+                    $('#btnRegister').prop('disabled', false);
+                    $('#btnSubmit').prop('disabled', false);
+                    $('#btnDismiss').prop('disabled', false);
+                    return;
+                }
+
+                if (!data.Success) {
+                    $('#spinnerRegister').addClass('d-none');
+                    $('#btnRegister').prop('disabled', false);
+                    $('#btnSubmit').prop('disabled', false);
+                    $('#btnDismiss').prop('disabled', false);
+                }
+
+                alert(data.Message);
+
+                if (data.Success) {
+                    // close session
+                    Close_Session(data.Data);
+                }
+                return;
+            }
+            , error: function (error) {
+                $('#spinnerRegister').addClass('d-none');
+                $('#btnRegister').prop('disabled', false);
+                $('#btnSubmit').prop('disabled', false);
+                $('#btnDismiss').prop('disabled', false);
+
+                $(this).remove();
+            }
+        });
+    }
+    
+    function cancelGeneralForm() {
+        localStorage.removeItem('SampleRegistrationData');
+        localStorage.removeItem('SecuritySession');
+        localStorage.removeItem('SampleCompanyCode');
+        window.location.replace(mercyUrl('/SampleRegistrationv'));
+    }
+    
+    function printLabel(responses) {
+        var printArea = $('#printArea');
+        var data = responses.map(v => ({ ...v, Statics: ["TM", "GA", "GA", "STORE", "RAPID"] }));
+        
+        for (var i = 0; i < data.length; i++) {
+            for (var index = 0; index < data[i].Statics.length; index++) {
+                var title = '<span class="font-weight-bold mb-2 title-print">' + data[i].SampleId + " - " + data[i].Statics[index] + " - " + '</span>';
+                var project = '<div class="row"><div class="col"><span>Client / Project :</span></div><div class="col"><span>' + data[i].ClientName + " / " + data[i].ProjectName + '</span></div></div>';
+                var sampleDate = '<div class="row">' +
+                '<div class="col"><div class="row"><div class="col"><span>Sampling Date :</span></div><div class="col"><span>' + moment(data[i].DateSampleStart).format('DD-MMM-YYYY') + '</span></div></div></div>' +
+                '<div class="col"><div class="row"><div class="col"><span>Shift :</span></div><div class="col"><span>' + data[i].Shift + '</span></div></div></div>' +
+                '</div>';
+                var preparationDate = '<div class="row">' +
+                    '<div class="col"><div class="row"><div class="col"><span>Preparation Date :</span></div><div class="col"><span>' + (data[i].Receive !== " " ? moment(data[i].Receive).format('DD-MMM-YYYY') : "-") + '</span></div></div></div>' +
+                '<div class="col"><div class="row"><div class="col"><span>Shift :</span></div><div class="col"><span>' + (data[i].Shift === 3 ? 1 : (data[i].Shift + 1))+ '</span></div></div></div>' +
+                '</div>';
+                var contentContainer = '<div class="col">' + title + project + sampleDate + preparationDate + '</div>';
+                var container = '<div class="col pageBreaker border-print-card my-2 px-0 d-flex align-items-center">' + contentContainer + '</div>';
+                printArea.append(container);
+            }
+        }
+        
+        window.print();
+    }
+
+    function Close_Session(dataPrint) {
+        let SecuritySession = JSON.parse(localStorage.getItem('SecuritySession'));
+
+        $.ajax({
+            url: api_Request + '/Api/Session/CloseSession',
+            type: 'GET',
+            data: { menus: SecuritySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                $('#spinnerRegister').addClass('d-none');
+                $('#btnRegister').prop('disabled', false);
+                $('#btnSubmit').prop('disabled', false);
+                $('#btnDismiss').prop('disabled', false);
+                dismissGeneralSubmitModal();
+
+                if ($('#generalPrint').is(':checked')) {
+                    printLabel(dataPrint);
+                    return;
+                }
+
+                cancelGeneralForm();
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function Close_Session_Cancel() {
+        let SecuritySession = JSON.parse(localStorage.getItem('SecuritySession'));
+
+        $.ajax({
+            url: api_Request + '/Api/Session/CloseSession',
+            type: 'GET',
+            data: { menus: SecuritySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                cancelGeneralForm();
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    
+    function validateTableData() {
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+        var bargeNameValue = $('#ddl_Barge_Name').val() ? JSON.parse($('#ddl_Barge_Name').val()).Name : null;
+        var bargeTripNumber = $('#ddl_Barge_Name').val() ? JSON.parse($('#ddl_Barge_Name').val()).TripNumber : null;
+        var sampleIdValue = $('#ddl_Sample_Id').val();
+        var receiveDateValue = moment($('#txtDateReceived').val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+        var tonnageValue = $('#ddl_Tonnage').val();
+        var shiftValue = $('#ddl_Shift').val();
+        var sequenceValue = $('#ddl_Seq').val();
+        var dateStartSampleValue = $('#txtDateSampleStart').val();
+        var dateEndSampleValue = $('#txtDateSampleEnd').val();
+        var sampleTypeValue = $('#ddl_sample_type').val();
+        var labIdValue = $('#ddl_Lab_Id').val();
+        var massSampleValue = $('#ddl_mass_sample').val();
+        var ancValue = $('#ddl_anc').val();
+        var nagValue = $('#ddl_nag').val();
+        var tsValue = $('#ddl_ts').val();
+        var nagPh4Value = $('#ddl_nag_ph_4').val();
+        var nagPh7Value = $('#ddl_nag_ph_7').val();
+        var locationValue = $('#ddl_Location').val();
+        var nagTypeValue = $('#ddl_nag_type').val();
+        
+        /* Rules ::
+            General: Barge & Destination disabled
+            Barge: Just Barge enabled
+            Crushing: Just Destination enabled
+        */
+        
+        switch (prevFormData.typeProject.toLowerCase()) {
+            case "general":
+                if (!sampleIdValue || !dateStartSampleValue ||
+                    !dateEndSampleValue || !receiveDateValue || !tonnageValue || !shiftValue) {
+                    alert('Form cannot be empty');
+                    return false;
+                }
+                return true;
+            case "barge":
+                if (!bargeNameValue || !bargeTripNumber || !sampleIdValue ||
+                    !dateStartSampleValue || !dateEndSampleValue || !receiveDateValue || !tonnageValue || !shiftValue) {
+                    alert('Form cannot be empty');
+                    return false;
+                }
+                return true;
+            case "crushing":
+                if (!sampleIdValue || !dateStartSampleValue || !dateEndSampleValue || !receiveDateValue || !tonnageValue || !shiftValue) {
+                    alert('Form cannot be empty');
+                    return false;
+                }
+                return true;
+            case "amd":
+                if (!sampleIdValue || !shiftValue || !sequenceValue || !labIdValue || !sampleTypeValue ||
+                    !dateStartSampleValue || !dateEndSampleValue || !receiveDateValue || !massSampleValue || !ancValue || !nagValue ||
+                    !tsValue || !nagPh4Value || !nagPh7Value || !locationValue || !nagTypeValue) {
+                    alert('Form cannot be empty');
+                    return false;
+                }
+                return true;
+            default:
+                if (!bargeNameValue || !bargeTripNumber || !sampleIdValue ||
+                !dateStartSampleValue || !dateEndSampleValue || !receiveDateValue || !tonnageValue ||
+                !shiftValue) {
+                    alert('Form cannot be empty');
+                    return false;
+                }
+                return true;
+        }
+    }
+    
+    function fillEditField(data) {
+        var bargeValue = null;
+        for (var i = 0; i < barges.length; i++) {
+            if (barges[i].Name === data.Item.DetailGeneral.BargeName) {
+                bargeValue = JSON.stringify(barges[i]);
+            }
+        }
+
+        $('#ddl_Geo_Prefix').val(data.Item.DetailGeneral.GeoPrefix);
+        $('#ddl_Sample_Id').val(data.Item.DetailGeneral.SampleId);
+        $('#txtDateSampleStart').val(moment(data.Item.DetailGeneral.DateSampleStart).format('DD-MMM-YYYY hh:mm'));
+        $('#txtDateSampleEnd').val(moment(data.Item.DetailGeneral.DateSampleEnd).format('DD-MMM-YYYY hh:mm'));
+        $('#ddl_Tonnage').val(data.Item.DetailGeneral.Tonnage);
+        $('#ddl_Destination').val(data.Item.DetailGeneral.Destination);
+        $('#ddl_Remark').val(data.Item.Remark);
+        $('#ddl_Thickness_From').val(data.Item.ThicknessFrom);
+        $('#ddl_Thickness_To').val(data.Item.ThicknessTo);
+        $('#ddl_Tunnel').val(data.Item.TunnelId);
+        $('#txtDateReceived').val(moment(data.Item.DetailGeneral.Receive).format('DD-MMM-YYYY hh:mm'));
+        $('#ddl_Barge_Name').val(bargeValue);
+        $('#ddl_Location').val(data.Item.Location);
+        $('#ddl_Shift').val(data.Item.DetailGeneral.Shift);
+        $('#ddl_Seq').val(data.Item.DetailGeneral.Sequence);
+        
+        $('#btnAddToTable').addClass('d-none');
+        $('#btnRegister').html('Save');
+        $('#previewGeneralTableContainer').addClass('d-none');
+        $('#thicknessContainer').addClass('d-none');
+        
+        if (data.Item.ClientName.toLowerCase() === 'geology') {
+            $('#thicknessContainer').removeClass('d-none');
+        }
+        
+        if (data.Item.IsActive) {
+            $('#ddl_IsActive').prop('checked', true);
+            $('#ddl_IsActive_Label').html('Active');
+            $('#btnRegister').prop('disabled', false);
+            return;
+        }
+        
+        $('#ddl_IsActive').prop('checked', false);
+        $('#ddl_IsActive_Label').html('Inactive');
+        $('#btnRegister').prop('disabled', false);
+    }
+    
+    function toggleActiveStatus() {
+        $('#activeStatusLoading').removeClass('d-none');
+        
+        if ($('#ddl_IsActive').is(':checked')) {
+            updateStatus(detailId, true, () => {
+              $('#ddl_IsActive_Label').html('Active');
+              
+              $('#activeStatusLoading').addClass('d-none');
+            }, () => {
+                $('#ddl_IsActive').prop('checked', false);
+                $('#ddl_IsActive_Label').html('Inactive');
+                
+                $('#activeStatusLoading').addClass('d-none');
+            })
+            return;
+        }
+
+        updateStatus(detailId, false, () => {
+            $('#ddl_IsActive_Label').html('Inactive');
+            $('#activeStatusLoading').addClass('d-none');
+        }, () => {
+            $('#ddl_IsActive').prop('checked', true);
+            $('#ddl_IsActive_Label').html('Active');
+            
+            $('#activeStatusLoading').addClass('d-none');
+        });
+    }
+    
+    function showSessionModal() {
+        var timeoutData = JSON.parse(localStorage.getItem('SessionTime'));
+        var now = moment(new Date(), 'YYYY-MM-DD HH:mm:ss');
+        var extendTime = moment(timeoutData.ExtendSessionTime, 'YYYY-MM-DD HH:mm:ssZ');
+        var timeout = moment.duration(extendTime.diff(now)).asMilliseconds();
+        setTimeout(() => {
+            $('#modalSession').appendTo('body').modal('show');
+        }, timeout);
+    }
+    
+    function closeSessionModal() {
+        $('#modalSession').modal('hide');
+    }
+    
+    function extendSession() {
+        var securitySession = JSON.parse(localStorage.getItem('SecuritySession'));
+        
+        $('#spinnerSessionContainer').removeClass('d-none');
+        $('#btnExtend').prop('disabled', true);
+        $('#btnCloseSession').prop('disabled', true);
+        $.ajax({
+            url: api_Request + '/Api/Session/ClaimSession',
+            type: 'GET',
+            data: { menus: securitySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+                
+                localStorage.setItem('SessionTime', JSON.stringify(data.Items));
+                $('#spinnerSessionContainer').addClass('d-none');
+                $('#btnExtend').prop('disabled', false);
+                $('#btnCloseSession').prop('disabled', false);
+                
+                closeSessionModal();
+                showSessionModal();
+            },
+            error: function (error) {
+                alert(error);
+                return null;
+            }
+        });
+    }
+    
+    function getLastSequence(callback = () => {}) {
+        var prevFormData = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/GetLastSequence',
+            type: 'GET',
+            data: {
+                CompanyCode: prevFormData ? prevFormData.company : null,
+                ClientId: prevFormData ? prevFormData.client.id : null,
+                ProjectId: prevFormData ? prevFormData.project.id : null,
+                DateOfJob: prevFormData ? moment(prevFormData.date, 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss') : null
+            },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    callback();
+                    return;
+                }
+
+                sequenceData = data.Data;
+                onShiftChange();
+                callback();
+            },
+            error: function (error) {
+                alert(error);
+                return null;
+            }
+        });
+    }
+
+    function onBtnTabClick() {
+        var id = $(this).attr('id');
+        var viewId = id.slice(0, -3) + 'Container';
+        $('.btn-tab').addClass('btn-tab-inactive')
+        $(this).removeClass('btn-tab-inactive')
+        $('.tab-view').addClass('d-none');
+        $('#' + viewId).removeClass('d-none')
+
+        if (!$('#previewGeneralChartContainer').hasClass('d-none')) {
+            drawChart();
+        }
+    }
+
+    function drawChart() {
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(draw);
+
+        var rows = amdTable.rows().data().toArray();
+
+        function draw() {
+            var data = google.visualization.arrayToDataTable(
+                rows.length > 0
+                    ? [
+                        ['', '', 'label placement', {type: 'string', role: 'annotation'}],
+                        [130, null, 8, 'UNCERTAIN'],
+                        [-40, null, 8, 'NAF'],
+                        [-40, null, 0.5, 'UNCERTAIN'],
+                        [130, null, 0.5, 'PAF'],
+                        ...rows.map(function (row) {
+                            return [row.DetailAMD.NAPP, row.DetailAMD.NAG, null, null];
+                        })
+                    ]
+                    : [
+                        [{
+                            f: 'Line',
+                            type: 'number'
+                        }, {
+                            f: 'Line',
+                            type: 'number'
+                        }, {
+                            f: 'Line',
+                            type: 'number'
+                        }, {
+                            f: 'Line',
+                            type: 'number'
+                        }]
+                    ]);
+
+            var options = {
+                title: 'Amd Classification Plot',
+                vAxis: {
+                    title: 'NAG Ph',
+                    baseline: 4.5,
+                    maxValue: 9,
+                },
+                hAxis: {
+                    title: 'NAPP (KgH2SO4/ton)',
+                    minValue: -50,
+                    maxValue: 150,
+                },
+                legend: 'none',
+                seriesType: 'scatter',
+                series: {
+                    1: {
+                        annotations: {
+                            stem: {
+                                length: 0
+                            },
+                            textStyle: {
+                                color: 'black'
+                            }
+                        },
+                        color: 'transparent',
+                        enableInteractivity: false
+                    }
+                }
+            };
+
+            var chart = new google.visualization.ComboChart(document.getElementById('chart'));
+            chart.draw(data, options);
+        }
+
+    }
+</script>

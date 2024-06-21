@@ -1,0 +1,2256 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+    #id_menu_analysis {
+        background-color: #000000;
+        border-radius: 4px;
+        /*opacity: 0.2;*/
+        background: rgba(0,0,0,0.2);
+        height: 52px;
+        margin: 5px 8px;
+    }
+
+    #mercyTable_info, #mercyTable_length, #mercyTable_paginate {
+        display: none;
+    }
+
+    .mercy_history_oval_vertical {
+        height: 80px !important;
+    }
+
+    .ts_file_button {
+        height: 25px;
+        width: 100px;
+        background: blue;
+        color: white;
+        border: 0;
+        -webkit-appearance: none;
+        color: #FFFFFF;
+        /*font-family: 'Poppins-SemiBold';*/
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 12px;
+        text-align: left;
+        background-color: #00B4A5;
+        border: 1px solid #AFAFB9;
+        border-radius: 4px;
+        width: 79px;
+        height: 17px;
+    }
+
+
+    .select2-selection--single {
+        height: 34px !important;
+    }
+
+    .select2-selection__choice {
+        /*height: 34px !important;*/
+    }
+
+    .select2-selection__arrow {
+        height: 32px !important;
+    }
+
+    .select2-selection__choice {
+        background-color: #00B4A5;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+        height: 23px;
+        font-family: 'Poppins-Regular';
+    }
+
+    .select2-selection__choice {
+        padding-top: 3px !important;
+    }
+
+    .select2-selection select2-selection--single {
+        height: 32px !important;
+    }
+
+    .mercy_discussion_author {
+        color: #FF7301;
+        font-family: 'NotoSans-Regular';
+        font-size: 12px;
+        line-height: 14px;
+        text-align: left;
+    }
+
+    .sample-detail {
+        color: #232323;
+        font-family: 'Poppins-SemiBold';
+        font-size: 14px;
+        line-height: 17px;
+        text-align: left;
+    }
+
+    .upload-sample-detail {
+        color: #232323;
+        font-family: 'Poppins-SemiBold';
+        font-size: 12px;
+        line-height: 14px;
+        text-align: left;
+    }
+
+    .file-format-is-inval {
+        color: #DE0D0D;
+        font-family: 'Poppins-Regular';
+        font-size: 12px;
+        line-height: 14px;
+        text-align: left;
+    }
+
+    .mercy_input_text_readonly {
+        cursor: not-allowed !important;
+    }
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+<script src="@ui_Folder_Client_Side/js/arrow-table.js"></script>
+<script src="@ui_Folder_Client_Side/js/move-input-table.js"></script>
+<script src="@ui_Folder_Client_Side/js/jquery.tabbable.min.js"></script>
+
+<div id="take_UploadFile" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px; padding-left: 22px;">
+                <div class="row margin_padding_0">
+                    <div class="upload-sample-detail">Upload Sample Detail</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text" id="txtImportFile" placeholder="no file selected" />
+                    </div>
+                    <div style="width:100%;padding:10px 20px 10px 0px;margin-top:-50px;text-align:right;">
+                        <input id="fileSampleDetail" style="display: none !important;" type="file" />
+                        <input type="submit" class="ts_file_button" value="Choose file" id="btnChooseFile_Import" style="padding: 0px 0px 2px 14px !important;" />
+                    </div>
+                </div>
+                <div class="row margin_padding_0 file-format-is-inval" style="min-height:30px !important;margin-bottom:5px !important;" id="div_Message_Import">
+
+                </div>
+                <div class="row margin_padding_0" style="margin: 0px 5px 0px 0px !important;">
+                    <div class="col-12 col-md-auto margin_padding_0"><div class="mercy_button mercy_button_disabled" style="width:100px;" id="btnImport"><div class="mercy_text_center">Import</div></div></div>
+                    <div class="col-12 col-md-auto margin_padding_0" style="margin-left: 20px !important;"><div class="mercy_button_2" style="width:100px;" id="btnCancel_Import"><div class="mercy_text_center">Cancel</div></div></div>
+                    <div class="col-12 col-md-auto margin_padding_0">
+                        <div style="width:10px;"><img src="/images/spinner.gif" style="padding: 0px 0px 0px 20px;display:none;" id="imgLoading_Importing" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Analysis Request Form
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Analysis Request > Analysis Request List > Analysis Request Form
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0">
+            <div class="row margin_padding_0" style="margin:40px 10px 0 !important;">
+                <div class="col">
+                    <div class="margin_padding_0">
+                        <div class="row margin_padding_0 mercy_form_Label" style="padding-top:0px !important;">Company Name</div>
+                        <div class="row margin_padding_0">
+                            <select id="ddl_Company" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;display:none;"></select>
+                        </div>
+                        <div class="row margin_padding_0 mercy_form_Label">Analysis Type</div>
+                        <div class="row margin_padding_0">
+                            <select class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" id="ddl_AnalysisType" style="width:200px;">
+                                <option value="">Select analysis type</option>
+                                <option>Geo Exploration</option>
+                                <option>Geo Pitmon</option>
+                                <option>Acid Mine Drainage</option>
+                            </select>
+                        </div>
+                        <div id="date_picker_section" class="d-flex">
+                            <div class="d-block mr-4">
+                                <div class="row margin_padding_0 mercy_form_Label">Delivery Date</div>
+                                <div class="row margin_padding_0">
+                                    <div class="input-group date">
+                                        <input id="txtDate" class="mercy_select mercy_input_text mercy_date" style="width:120px;" data-date-format="mm/dd/yyyy" placeholder="mm/dd/yyyy" />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text mercy_date_icon"> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="margin_padding_0">
+                        <div class="row margin_padding_0 mercy_form_Label" style="padding-top:0px !important;">Requestor</div>
+                        <div class="row margin_padding_0">
+                            <input type="text" class="form-control shadow-none mercy_input_text" id="txtSender" placeholder="Enter sender" disabled="false" />
+                        </div>
+                        <div class="row margin_padding_0 mercy_form_Label">Letter No.</div>
+                        <div class="row margin_padding_0">
+                            <input type="text" class="form-control shadow-none mercy_input_text" id="txtLetterNo" placeholder="Enter letter no." />
+                        </div>
+                        <div class="row margin_padding_0 mercy_form_Label">Cover Letter</div>
+                        <div class="row margin_padding_0">
+                            <div style="width:100%;padding:0px 10px 10px 0px;">
+                                <input type="text" class="form-control shadow-none mercy_input_text" id="txtCoverLetter" placeholder="no file selected" />
+                            </div>
+                            <div style="width:100%;padding:10px 20px 10px 0px;margin-top:-50px;text-align:right;">
+                                <input id="fileInput" style="display: none !important;" type="file" />
+                                <input type="submit" class="ts_file_button" value="Choose file" id="btnChooseFile" style="padding: 0px 0px 2px 14px !important;" />
+                            </div>
+                            <div style="width:100%;padding:10px 20px 10px 0px;margin-top:-50px;margin-right:90px;text-align:right;display:none;" id="btnDownloadFile_div">
+                                <input type="submit" class="ts_file_button" value="Download file" id="btnDownloadFile" style="padding: 0px 0px 2px 14px !important;width:90px !important;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0 mercy_box_inner_content_2" id="partSampleDetail">
+                <div class="col margin_padding_0" style="margin-left: 20px !important; margin-top: 20px !important;">
+                    <div class="row margin_padding_0" style="margin:0px 30px 10px 5px !important;">
+                        <div class="col-12 col-md-auto margin_padding_0">
+                            <div style="width:100px;" class="sample-detail">Sample Detail</div>
+                        </div>
+                        <div class="col-12 col-md margin_padding_0" style="padding: 0px 10px 0px 15px !important;">
+                        </div>
+                        <div class="col col-md-auto margin_padding_0" style="padding-top:5px !important;display:none;" id="div_ProcessingRetest">
+                            <div style="width: 150px;">
+                                <i>Processing... Retest</i>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-auto margin_padding_0">
+                            <div style="width:10px;"><img src="/images/spinner.gif" style="padding: 0 60px 0 0;display:none;" id="imgLoading_Processing" /></div>
+                        </div>
+                        <div class="col-12 col-md-auto margin_padding_0" style="padding: 0px 0px 0px 15px !important;">
+                            <div style="width:150px;display:none;" class="mercy_button mercy_button_disabled" id="btnRetestSample_Outer"><div class="mercy_text_center" id="btnRetestSample">Retest Sample</div></div>
+                        </div>
+                        <div class="col-12 col-md-auto margin_padding_0" style="padding: 0px 0px 0px 15px !important; display: none;">
+                            <div style="width:170px;display:none;" class="mercy_button" id="btnUploadSampleDetail_Outer"><div class="mercy_text_center" id="btnUploadSampleDetail">Upload Sample Detail</div></div>
+                        </div>
+                        <div class="col-12 col-md-auto margin_padding_0" style="padding: 0px 0px 0px 15px !important">
+                            <div style="width:150px;display:none;" class="mercy_button_2" id="btnAddSampleID_Outer"><div class="mercy_text_center" id="btnAddSampleID">Add Sample ID</div></div>
+                        </div>
+                    </div>
+                    <div class="row margin_padding_0">
+                        <table id="mercyTable" class="table table-striped mercy_table mercy_table_header display nowrap" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>RecordId</th>
+                                    <th>No_Line</th>
+                                    <th><div style="text-align: center !important;">No.</div></th>
+                                    <th>Verification</th>
+                                    <th>Comment</th>
+                                    <th>Retest</th>
+                                    <th><div style="text-align: center !important;">Sample ID</div></th>
+                                    <th><div style="text-align: center !important;">Rock Type</div></th>
+                                    <th><div style="text-align: center !important;">From (meter)</div></th>
+                                    <th><div style="text-align: center !important;">To (meter)</div></th>
+                                    <th><div style="text-align: center !important;">Length (meter)</div></th>
+                                    <th><div style="text-align: center !important;">Thick (meter)</div></th>
+                                    <th><div style="text-align: center !important;">Sample Type</div></th>
+                                    <th><div style="text-align: center !important;">Seam</div></th>
+                                    <th><div style="text-align: center !important;">Lab ID</div></th>
+                                    <th><div style="text-align: center !important;">Time</div></th>
+                                    <th><div style="text-align: center !important;">MPA</div></th>
+                                    <th><div style="text-align: center !important;">TS</div></th>
+                                    <th><div style="text-align: center !important;">pH</div></th>
+                                    <th><div style="text-align: center !important;">NAPP</div></th>
+                                    <th><div style="text-align: center !important;">ANC</div></th>
+                                    <th><div style="text-align: center !important;">NAG Kg H2SO4/t</div></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0" style="margin:20px 10px !important;">
+                <div class="row margin_padding_0 mercy_request-detail" style="margin: 20px 20px !important;width:100%;">Parameter Analysis Request</div>
+                <div id="geo_checklist_options" class="row margin_padding_0 mercy_checkbox" style="margin: 0px 20px !important;width:100%;">
+                    <input type="checkbox" id="chkTM" /><span>TM</span>
+                    <input type="checkbox" id="chkProx" /><span>Prox</span>
+                    <input type="checkbox" id="chkTS" /><span>TS</span>
+                    <input type="checkbox" id="chkCV" /><span>CV</span>
+                    <input type="checkbox" id="chkRD" /><span>RD</span>
+                    <input type="checkbox" id="chkCSN" /><span>CSN</span>
+                    <input type="checkbox" id="chkAA" /><span>AA</span>
+                    <input type="checkbox" id="chkHGI" /><span>HGI</span>
+                    <input type="checkbox" id="chkUltimate" /><span>Ultimate</span>
+                    <input type="checkbox" id="chkChlorine" /><span>Chlorine</span>
+                    <input type="checkbox" id="chkPhosporus" /><span>Phosporus</span>
+                    <input type="checkbox" id="chkFluorine" /><span>Fluorine</span>
+                </div>
+                <div id="geo_checklist_additional_options" class="row margin_padding_0 mercy_checkbox" style="margin: 20px 20px 0px !important;width:100%;">
+                    <input type="checkbox" id="chkLead" /><span>Lead</span>
+                    <input type="checkbox" id="chkZink" /><span>Zink</span>
+                    <input type="checkbox" id="chkAFT" /><span>AFT</span>
+                    <input type="checkbox" id="chkTraceElement" /><span>Trace Element</span>
+                </div>
+                <div id="geo_technical_checklist_options" class="row margin_padding_0 mercy_checkbox" style="margin: 0 20px !important; width: 100%; display: none; ">
+                    <input type="checkbox" id="chkMoisture" /><span>Moisture</span>
+                    <input type="checkbox" id="chkDensityDry" /><span>Density Dry</span>
+                    <input type="checkbox" id="chkDensityWet" /><span>Density Wet</span>
+                    <input type="checkbox" id="chkUCS" /><span>UCS</span>
+                    <input type="checkbox" id="chkDST" /><span>DST</span>
+                    <input type="checkbox" id="chkGPa" /><span>GPa</span>
+                    <input type="checkbox" id="chkPoissionRation" /><span>Poission Ratio</span>
+                    <input type="checkbox" id="chkKPa" /><span>KPa</span>
+                    <input type="checkbox" id="chkCUD" /><span>CUD</span>
+                </div>
+                <div id="acid_mine_drainage_checklist_options" class="row margin_padding_0 mercy_checkbox" style="margin: 0 20px !important; width: 100%; display: none; ">
+                    <input type="checkbox" id="chkANC" /><span>ANC (Acid Neutralising Capacity)</span>
+                    <input type="checkbox" id="chkNAG" /><span>NAG (Net Acid Generation)</span>
+                    <input type="checkbox" id="chkAMDTS" /><span>TS (Total Sulfur)</span>
+                </div>
+                <div class="row margin_padding_0 mercy_checkbox" style="margin: 20px 20px 0px !important;width:100%;">
+                    <input type="checkbox" id="chkOther" /><span>Other</span>
+                </div>
+                <div class="row margin_padding_0" style="margin: 20px 20px 0px !important;width:100%;">
+                    <input type="text" class="form-control shadow-none mercy_input_text" id="txtOther" style="width:200px;" placeholder="Enter parameter analysis" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content_2" id="divDiscussion" style="display:none;">
+        <div class="col margin_padding_0" style="margin:16px 24px !important;">
+            <div class="row margin_padding_0 mercy_history">Discussion</div>
+            <div class="row margin_padding_0 mercy_history_line" style="margin-bottom: 10px !important;"></div>
+            <div id="divDiscussion_Detail"></div>
+            <div class="row margin_padding_0" style="margin:0px 15px 0px 65px !important;">
+                <div class="col-12 col-md-auto margin_padding_0">
+                    <div style="width:30px;" id="imgAttachment_div"><img src="/images/btnattachment.png" style="height:32px"></div>
+                </div>
+                <div class="col-12 col-md margin_padding_0" style="padding: 0px 10px 0px 15px !important;">
+                    <input id="fileDiscussion" style="display: none !important;" type="file" />
+                    <input type="text" class="form-control shadow-none mercy_input_text" id="txtDiscussion" style="width:100%;" placeholder="Enter your remark" />
+                </div>
+                <div class="col-12 col-md-auto margin_padding_0">
+                    <div style="width:10px;"><img src="/images/spinner.gif" style="padding: 0 60px 0 0;display:none;" id="imgLoading_Discussion" /></div>
+                </div>
+                <div class="col-12 col-md-auto margin_padding_0" style="padding: 0px 0px 0px 15px !important">
+                    <div style="width:80px;" class="mercy_button" id="btnSendDiscussion_Outer"><div class="mercy_text_center" id="btnSendDiscussion">Send</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content_2" id="divHistory" style="display:none;">
+        <div class="col margin_padding_0" style="margin:16px 24px !important;">
+            <div class="row margin_padding_0 mercy_history">History</div>
+            <div class="row margin_padding_0 mercy_history_line" style="margin-bottom: 10px !important;"></div>
+            <div id="divHistory_Detail"></div>
+        </div>
+    </div>
+    <div id="partButtons" class="row margin_padding_0 text-right" style="padding: 40px 0 20px 0px !important;display:none;">
+        <div class="col"></div>
+        <div class="col col-md-auto margin_padding_0" style="padding-top:5px !important;display:none;" id="div_Sending_Email">
+            <div style="width: 200px;">
+                <i>Sending E-mail...</i>
+            </div>
+        </div>
+        <div class="col col-md-auto" style="padding-top:2px !important;">
+            <div style="width: 10px;">
+                <img src="/images/spinner.gif" style="padding: 0 60px 0 0;display:none;" id="imgLoading" />
+            </div>
+        </div>
+        <div class="col col-md-auto margin_padding_0">
+            <div style="width: 100px;">
+                <div class="mercy_button_3" style="width:78px;"><div class="mercy_text_center" id="btnCancel">Cancel</div></div>
+            </div>
+        </div>
+        <div class="col col-md-auto margin_padding_0" style="margin-right:20px !important;">
+            <div style="width: 100px;padding-bottom:20px;display:none;" id="btnSave_outer">
+                <div class="mercy_button" style="width:100px;"><div class="mercy_text_center" id="btnSave">Save</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var ignore_trigger_change_ddl_Company = false;
+    var ignore_trigger_change_ddl_AnalysisType = false;
+
+    var currentData_Company = 'TCM';
+    var data_AnalysisType_current = 'Geo Exploration';
+
+    var coverLetter2 = '';
+
+    var file_CoverLetter_Changed = false;
+    var file_Discussion_Changed = false;
+    var fileSampleDetail_Changed = false;
+
+    // DataGrid
+    var obj_html_Table;
+
+    // row
+    var isNew = false;
+    var is_Mode_Editor = false;
+    var lineNumber_Data = 0;
+    var object_Created_Count = 0;
+    var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+    var object_id_Created = [];
+    var object_id_Deleted = [];
+
+    var file_import_valid = false;
+    var data_Import = null;
+
+    $(document).ready(function () {
+
+        $(document).attr('title', 'Analysis Request - Form : Mercy');
+
+        $(window).resize(function () {
+            // Resize Table: because the Window is Resized
+            resize_Table();
+        });
+
+        $("#txtDate").datepicker({
+            todayBtn: 1
+            , autoclose: true
+        });
+        $('#txtDate').datepicker('update', new Date());
+
+
+        $('#btnCancel').click(function (e) {
+            window.location = mercyUrl('/AnalysisRequestv');
+        });
+
+        $('#btnSave').click(function (e) {
+            Save();
+        });
+
+        $('#btnAddSampleID').click(function (e) {
+            addSampleId();
+        });
+
+        $('#chkOther').click(function (e) {
+            applyOther();
+        });
+
+        $('#btnChooseFile').on('click', function () {
+            $('#fileInput').click();
+        });
+
+        $('#fileInput').on('change', function () {
+            file_CoverLetter_Changed = true;
+
+            $("#txtCoverLetter").val($('#fileInput')[0].files[0].name);
+        });
+
+        $('#btnDownloadFile').on('click', function (e) {
+            e.preventDefault();  //stop the browser from following
+            var url = '/Api/File/Download?.id=' + coverLetter2;
+            window.location.href = url;
+            //btnDownloadFile_Click();
+        });
+
+        $('#btnSendDiscussion').on('click', function (e) {
+            Add_Discussion('Remark');
+        });
+
+        $('#imgAttachment_div').on('click', function (e) {
+            $('#fileDiscussion').click();
+        });
+
+        $('#fileDiscussion').on('change', function () {
+            file_Discussion_Changed = true;
+
+            //$("#txtDiscussion").val($('#fileDiscussion')[0].files[0].name);
+
+            Add_Discussion('File');
+        });
+
+        $('#btnChooseFile_Import').on('click', function () {
+            $('#fileSampleDetail').click();
+        });
+
+        $('#btnUploadSampleDetail').on('click', function () {
+            file_import_valid = false;
+            $('#txtImportFile').val('');
+            $('#div_Message_Import').html('');
+
+            $('#btnImport').addClass('mercy_button_disabled');
+
+            $("#take_UploadFile").modal().appendTo("body");
+        });
+
+        $('#fileSampleDetail').on('change', function () {
+            file_import_valid = false;
+            $('#txtImportFile').val('');
+            $('#div_Message_Import').html('');
+
+            $('#btnImport').addClass('mercy_button_disabled');
+
+            fileSampleDetail_Changed = false;
+            // Message: jika upload file Format lama
+            if ($('#fileSampleDetail')[0].files[0].name.endsWith(".xls")) {
+                $("#fileSampleDetail").val('');
+                //alert('Tidak boleh file .xls\nGunakan file Format Baru .xlsx');
+                $('#div_Message_Import').html('Tidak boleh file .xls<br/>Gunakan file Format Baru .xlsx');
+                return;
+            }
+
+            // Message: jika berusaha Upload file selain .xlsx
+            if (!$('#fileSampleDetail')[0].files[0].name.endsWith(".xlsx")) {
+                $("#fileSampleDetail").val('');
+                //alert('Gunakan file Excel .xlsx');
+                $('#div_Message_Import').html('Gunakan file Excel .xlsx');
+                return;
+            }
+
+            $("#txtImportFile").val($('#fileSampleDetail')[0].files[0].name);
+
+            fileSampleDetail_Changed = true;
+
+            Process_File_SampleDetail();
+        });
+
+        $('#btnRetestSample').on('click', function () {
+            btnRetestSample_Click();
+        });
+
+        $('#btnImport').on('click', function () {
+            if (!file_import_valid) return;
+
+            Show_Data_Import();
+
+            file_import_valid = false;
+            $("#take_UploadFile").modal('hide');
+        });
+
+        $('#btnCancel_Import').on('click', function () {
+            file_import_valid = false;
+            $("#take_UploadFile").modal('hide');
+        });
+
+        Create_ddl_Company();
+        Create_AnalysisType();
+
+        applyOther();
+
+        Load_Page_Form();
+    });
+
+    var processing_Save = false;
+
+    function Save() {
+        if (!validate_All()) return;
+
+        if (processing_Save) return;
+
+        processing_Save = true;
+        $('#imgLoading').show();
+
+        var analysisType = $('#ddl_AnalysisType').val();
+        var isGeoTechnical = analysisType === 'Geo Technical';
+        var isAcidMineDrainage = analysisType === 'Acid Mine Drainage';
+        var action = 'Create';
+        if (Mode_View()) action = 'Edit?.id=' + paramid;
+
+        var formData = new FormData();
+
+        formData.append('company', $("#ddl_Company").val());
+        formData.append('analysisType', $("#ddl_AnalysisType").val());
+        formData.append('deliveryDate', $("#txtDate").val());
+        if (isGeoTechnical) {
+            formData.append('EstimatedEndDate', $("#txtEstimatedDate").val());
+        }
+        formData.append('sender', $("#txtSender").val());
+        formData.append('letterNo', $("#txtLetterNo").val());
+
+        if (isGeoTechnical) {
+            formData.append('Moisture', ValueBit('chkMoisture'));
+            formData.append('DensityDry', ValueBit('chkDensityDry'));
+            formData.append('DensityWet', ValueBit('chkDensityWet'));
+            formData.append('UCS', ValueBit('chkUCS'));
+            formData.append('DST', ValueBit('chkDST'));
+            formData.append('GPa', ValueBit('chkGPa'));
+            formData.append('PoissionRatio', ValueBit('chkPoissionRation'));
+            formData.append('KPa', ValueBit('chkKPa'));
+            formData.append('CUD', ValueBit('chkCUD'));
+        } else if (isAcidMineDrainage) {
+            formData.append('ANC', ValueBit('chkANC'));
+            formData.append('NAG', ValueBit('chkNAG'));
+            formData.append('TS', ValueBit('chkAMDTS'));
+        } else {
+            formData.append('TM', ValueBit('chkTM'));
+            formData.append('PROX', ValueBit('chkProx'));
+            formData.append('TS', ValueBit('chkTS'));
+            formData.append('CV', ValueBit('chkCV'));
+            formData.append('RD', ValueBit('chkRD'));
+            formData.append('CSN', ValueBit('chkCSN'));
+            formData.append('AA', ValueBit('chkAA'));
+            formData.append('HGI', ValueBit('chkHGI'));
+            formData.append('Ultimate', ValueBit('chkUltimate'));
+            formData.append('Chlorine', ValueBit('chkChlorine'));
+            formData.append('Phosporus', ValueBit('chkPhosporus'));
+            formData.append('Fluorine', ValueBit('chkFluorine'));
+            formData.append('Lead', ValueBit('chkLead'));
+            formData.append('Zink', ValueBit('chkZink'));
+            formData.append('AFT', ValueBit('chkAFT'));
+            formData.append('TraceElement', ValueBit('chkTraceElement'));
+        }
+        formData.append('Others', ValueBit('chkOther'));
+        formData.append('Others_T', $("#txtOther").val());
+
+        var i = 1;
+        $.each(object_id_Created, function (j, val) {
+
+            formData.append('sample' + i.toString(), $('#sampleId' + val).val());
+            formData.append('sampleIdx_' + i.toString(), $('#sampleIdx' + val).val());
+            formData.append('from' + i.toString(), $('#from' + val).val());
+            formData.append('to' + i.toString(), $('#to' + val).val());
+            if (isGeoTechnical) {
+                formData.append('rockType' + i.toString(), $('#rockType' + val).val());
+                formData.append('thick' + i.toString(), $('#thick_length' + val).val());
+            } else if (isAcidMineDrainage) {
+                formData.append('MPA' + i.toString(), $('#mpa' + val).val());
+                formData.append('TS' + i.toString(), $('#ts' + val).val());
+                formData.append('PH' + i.toString(), $('#ph' + val).val());
+                formData.append('NAPP' + i.toString(), $('#napp' + val).val());
+                formData.append('ANC' + i.toString(), $('#anc' + val).val());
+                formData.append('NAG' + i.toString(), $('#nag' + val).val());
+            } else {
+                formData.append('thick' + i.toString(), $('#thick' + val).val());
+                formData.append('sampleType' + i.toString(), $('#sampleType' + val).val());
+                formData.append('seam' + i.toString(), $('#seam' + val).val());
+            }
+            formData.append('labId' + i.toString(), $('#labId' + val).val());
+
+            formData.append('verification' + i.toString(), $("input[name='verification" + val + "']:checked").val());
+            formData.append('comment' + i.toString(), $('#comment' + val).val());
+
+            i++;
+        });
+
+        formData.append('recordNumber', i);
+
+        if (file_CoverLetter_Changed) {
+            try {
+                formData.append('file', $('#fileInput')[0].files[0]);
+            } catch (err) { }
+        }
+
+        $.ajax({
+            url: api_Request + '/Api/AnalysisRequest/' + action,
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                $('#imgLoading').hide();
+
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    alert(data.Message);
+
+                    processing_Save = false;
+                    return;
+                }
+
+                $('#imgLoading').show();
+                $('#div_Sending_Email').show();
+
+                alert('Success Save');
+
+                // Sending Email
+                var link_sending = '/Api/Notification/AnalysisRequest?.id=' + data.Data;
+                if (Mode_View()) link_sending = '/Api/Notification/AnalysisRequest_Verification?.id=' + data.Data;
+
+                $.ajax({
+                    url: api_Request + link_sending
+                    , type: 'GET'
+                    , dataType: "json"
+                    , beforeSend: function (request) {
+                        request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+                    }
+                    , cache: false
+                    , success: function (data) {
+                        window.location = mercyUrl('/AnalysisRequestv');
+                    }
+                });
+            },
+            error: function (error) {
+                //$(this).remove();
+            }
+        });
+    }
+
+    function ValueBit(p_id) {
+        var result = 0;
+
+        if ($('#' + p_id).is(':checked')) result = 1;
+
+        return result;
+    }
+
+    function validate_All() {
+        var result = false;
+
+        if ($("#ddl_Company").val() == '') {
+            alert('Company must not be empty!');
+            return result;
+        }
+        if ($("#ddl_AnalysisType").val() == '') {
+            alert('Analysis Type must not be empty!');
+            return result;
+        }
+        if ($("#txtDate").val() == '') {
+            alert('Delivery Date must not be empty!');
+            return result;
+        }
+        if ($("#txtSender").val() == '') {
+            alert('Sender must not be empty!');
+            return result;
+        }
+        if ($("#txtLetterNo").val() == '') {
+            alert('Letter No must not be empty!');
+            return result;
+        }
+        if ($("#txtCoverLetter").val() == '') {
+            alert('Cover Letter must not be empty!');
+            return result;
+        }
+
+        if (ValueBit('chkOther') == 1) {
+            if ($("#txtOther").val() == '') {
+                alert('Other must not be empty!');
+                return result;
+            }
+        }
+
+        var sample_id_all_Valid = true;
+        var verification_no_Valid = true;
+
+        $.each(object_id_Created, function (x, val) {
+            if ($('#sampleId' + val).val() == '') {
+                sample_id_all_Valid = false;
+            }
+
+            if ($("input[name='verification" + val + "']:checked").val() != 1) {
+                if ($('#comment' + val).val() == '') {
+                    verification_no_Valid = false;
+                }
+            }
+        });
+
+        if (!sample_id_all_Valid) {
+            alert('SampleID must not be empty!');
+            return result;
+        }
+
+        if (!verification_no_Valid) {
+            alert('Comment must be filled in when a sample is not verified');
+            return result;
+        }
+
+        result = true;
+
+        return result;
+    }
+
+    var x;
+
+    function DisplayData() {
+        $('#imgLoading').show();
+
+        $.ajax({
+            url: api_Request + '/Api/AnalysisRequest/Get',
+            type: 'GET',
+            data: { u_menu: get_user_menu, u_relation: get_user_relation, '.id': paramid },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                $('#imgLoading').hide();
+
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    // special case: Id not found
+                    if (data.Message.indexOf('not found') !== -1) {
+                        after_GetUserInfo(data.User);
+                        uInfo = data.User;
+                    }
+
+                    alert(data.Message);
+
+                    window.location = '/NoAccess';
+                    return;
+                }
+
+                // Special Purpose, getting information of CurrentUser
+                if (get_user_menu == '1') {
+                    after_GetUserInfo(data.User);
+                    uInfo = data.User;
+
+                    $('#txtSender').val(uInfo.Name);
+                    $('#txtDepartment').val(uInfo.Department);
+                    $('#txtEmail').val(uInfo.Email);
+
+                    Create_Table();
+                }
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+
+                // make it "Intuitive"
+                Display_Buttons_Form_AnalysisRequest();
+
+                $('#partMain').show();
+                //$('#partSampleDetail').show();
+                $('#partHistory').show();
+                $('#partButtons').show();
+                $('#partMain_Loading').hide();
+
+                // Resize Table: todo
+                resize_Table();
+
+                if (Mode_Create()) {
+                    // Stop here
+                    // data.Item is null
+
+                    // special case: for Sample Detail
+                    //addSampleId();
+
+                    return;
+                }
+
+                try {
+                    x = data;
+
+                    var item = data.data[0];
+                    $("#ddl_Company").attr("disabled", true);
+                    $("#ddl_AnalysisType").attr("disabled", true);
+                    $("#txtLetterNo").attr("disabled", true);
+
+                    ignore_trigger_change_ddl_Company = true;
+                    $('#ddl_Company').val(item.Company).trigger('change');
+                    ignore_trigger_change_ddl_Company = false;
+
+                    data_AnalysisType_current = item.AnalysisType;
+                    ignore_trigger_change_ddl_AnalysisType = true;
+                    $('#ddl_AnalysisType').val(data_AnalysisType_current).trigger('change');
+                    ignore_trigger_change_ddl_AnalysisType = false;
+                    $("#txtDate").val(item.DeliveryDate_Str2);
+                    $("#txtEstimatedDate").val(item.EstimatedEndDate_Str2);
+                    $("#txtSender").val(item.Sender);
+                    $("#txtLetterNo").val(item.LetterNo);
+
+                    $("#txtCoverLetter").val(item.CoverLetter);
+                    coverLetter2 = item.CoverLetter2;
+                    if (item.CoverLetter2 != '') {
+                        $("#btnDownloadFile_div").show();
+                    }
+
+                    var i = 1;
+                    // assign Data to Table
+                    /*try {
+                        obj_html_Table.rows.add(data.Items); // add to DataTable instance
+                        obj_html_Table.draw(); // always redraw
+                    }catch(err){}*/
+
+                    $('#btnRetestSample_Outer').hide();
+                    var is_LabId_Exists = false;
+
+                    data.SamplesId.forEach(
+                        function (item) {
+                            isNew = false;
+                            object_Created_Count++;
+                            lineNumber_Data++;
+                            object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+
+                            // save to Array
+                            object_id_Created.push(object_id_additional);
+
+                            // add to Table
+                            obj_html_Table.row.add(item).draw(false);
+
+                            if (item.LabId != '') {
+                                is_LabId_Exists = true;
+                            }
+                        }
+                    );
+
+                    if (is_LabId_Exists && permission.Is_Add) {
+                        // hanya "Requester" yang punya button [ ReTest ]
+                        $('#btnRetestSample_Outer').show();
+
+                        ReTest_Button_Calculation();
+                    }
+
+                    // Resize Table: because this DataTable is filled with new Data
+                    resize_Table();
+
+                    // "Print History"
+                    i = 0;
+                    var hist = '';
+                    data.Histories.forEach(
+                        function (item_History) {
+                            i++;
+                            hist +=
+                                '<div class="row margin_padding_0">' +
+                                '    <div class="col" style="flex: 0 0 50px;">' +
+                                (i <= 1 ? '  <div class="mercy_history_oval"></div>' : '') +
+                                '        <div class="mercy_history_oval_vertical"></div>' +
+                                '        <div class="mercy_history_oval"></div>' +
+                                '    </div>' +
+                                '    <div class="col">' +
+                                '        <div>' +
+                                '            <div class="mercy_history_date">' + item_History.CreatedOn_Str + '</div>' +
+                                '            <div class="mercy_history_text_box">' +
+                                '                <div class="mercy_history_text">' + item_History.Description + ' by ' + item_History.FullName + '</div>' +
+                                '            </div>' +
+                                '        </div>' +
+                                '    </div>' +
+                                '</div>';
+                        }
+                    );
+
+                    $("#divHistory_Detail").html(hist);
+                    $("#divHistory").show();
+
+                    if (item.TM) {
+                        $('#chkTM').prop("checked", true);
+                    }
+                    if (item.PROX) {
+                        $('#chkProx').prop("checked", true);
+                    }
+                    if (item.TS) {
+                        $('#chkTS').prop("checked", true);
+                    }
+                    if (item.CV) {
+                        $('#chkCV').prop("checked", true);
+                    }
+                    if (item.RD) {
+                        $('#chkRD').prop("checked", true);
+                    }
+                    if (item.CSN) {
+                        $('#chkCSN').prop("checked", true);
+                    }
+                    if (item.AA) {
+                        $('#chkAA').prop("checked", true);
+                    }
+                    if (item.HGI) {
+                        $('#chkHGI').prop("checked", true);
+                    }
+                    if (item.Ultimate) {
+                        $('#chkUltimate').prop("checked", true);
+                    }
+                    if (item.Chlorine) {
+                        $('#chkChlorine').prop("checked", true);
+                    }
+                    if (item.Phosporus) {
+                        $('#chkPhosporus').prop("checked", true);
+                    }
+                    if (item.Fluorine) {
+                        $('#chkFluorine').prop("checked", true);
+                    }
+                    if (item.Lead) {
+                        $('#chkLead').prop("checked", true);
+                    }
+                    if (item.Zink) {
+                        $('#chkZink').prop("checked", true);
+                    }
+                    if (item.AFT) {
+                        $('#chkAFT').prop("checked", true);
+                    }
+                    if (item.TraceElement) {
+                        $('#chkTraceElement').prop("checked", true);
+                    }
+                    if (item.Moisture) {
+                        $('#chkMoisture').prop("checked", true);
+                    }
+                    if (item.DensityDry) {
+                        $('#chkDensityDry').prop("checked", true);
+                    }
+                    if (item.DensityWet) {
+                        $('#chkDensityWet').prop("checked", true);
+                    }
+                    if (item.UCS) {
+                        $('#chkUCS').prop("checked", true);
+                    }
+                    if (item.DST) {
+                        $('#chkDST').prop("checked", true);
+                    }
+                    if (item.GPa) {
+                        $('#chkGPa').prop("checked", true);
+                    }
+                    if (item.PoissionRatio) {
+                        $('#chkPoissionRation').prop("checked", true);
+                    }
+                    if (item.KPa) {
+                        $('#chkKPa').prop("checked", true);
+                    }
+                    if (item.CUD) {
+                        $('#chkCUD').prop("checked", true);
+                    }
+                    if (item.Others) {
+                        $('#chkOther').prop("checked", true);
+                    }
+                    $("#txtOther").val(item.Others_Text);
+
+                    $("#divDiscussion").show();
+                    Print_Discussion(data.Discussions);
+
+                    applyOther();
+                }
+                catch (err) { }
+            },
+            error: function (error) {
+                alert(error);
+                //$(this).remove();
+            }
+        });
+    }
+
+    function addSampleId() {
+        // create "Record_Item"
+        var item = {
+            CreatedOn_Str: '',
+            CreatedOn_Str2: '',
+            RecordId: -1,
+            AnalysisRequest: '',
+            SampleID: '',
+            RockType: '',
+            From: '',
+            To: '',
+            From2: 0,
+            To2: 0,
+            Thick: '0',
+            Length: 0,
+            SampleType: '',
+            SEAM: '',
+            LabId: '',
+            AnalysisRequest1: '',
+            CreatedBy: 0,
+            CreatedOn: null,
+            NAPP: 0,
+            NAG: 0,
+            ANC: 0,
+            MPA: 0,
+            PH: 0,
+            TS: 0,
+            LastModifiedBy: 0,
+            LastModifiedOn: null,
+            Verification: 1,
+            Verification_Comment: '',
+            ReTest: 0
+        };
+
+        // flag for "New Record"
+        isNew = true;
+
+        // do "Counting"
+        object_Created_Count++;
+        lineNumber_Data++;
+        object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+
+        // save to Array
+        object_id_Created.push(object_id_additional);
+
+        // add to Table
+        obj_html_Table.row.add(item).draw(false);
+    }
+
+    function readRequest(p_id) {
+        $.ajax({
+            url: api_Request + '/Api/Notification/ReadRequest?type=Analysis&request=' + p_id
+            , type: 'GET'
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    //alert(data.Message);
+                    return;
+                }
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+    function resize_Table() {
+        if ($.cookie(MERCY_C_HIDE) == '1') {
+            $("div.dataTables_wrapper").width('100%');
+            return;
+        }
+
+        var width_outer = $('.mercy-box-outer').width();
+        var width_sidebar = $('.mercy-sidebar').width();
+
+        var width_additional = 40 + 50;
+        var width_table = width_outer - width_sidebar - width_additional;
+        if (width_table <= 0) {
+            width_table = '100%';
+        }
+
+        $("div.dataTables_wrapper").width(width_table);
+    }
+
+    function applyOther() {
+        if ($('#chkOther').is(":checked")) {
+            $("#txtOther").attr("disabled", false);
+        } else {
+            $("#txtOther").attr("disabled", true);
+        }
+    }
+
+    function btnDownloadFile_Click() {
+        var url = '/Api/File/Download?.id=' + coverLetter2;
+        window.open(url, '_blank');
+    }
+
+    function Create_ddl_Company() {
+        obj_html_Company = $('#ddl_Company').select2({
+            placeholder: 'Select Company'
+            , tags: false
+            , multiple: false
+            //, tokenSeparators: [',', ' ']
+            //, minimumInputLength: 3
+            , minimumResultsForSearch: -1
+        });
+
+        $('#ddl_Company').change(function (e) {
+            //OnChange_ddl_Company();
+        });
+    }
+
+    function Populate_Data_ddl_Company() {
+        try {
+            var option = null;
+            var firstCompany = '';
+
+            uInfo.Relations.Companies.forEach(
+                function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.CompanyCode, item.CompanyCode, true, true);
+                    obj_html_Company.append(option);//.trigger('change');
+
+                    if (firstCompany == '') {
+                        firstCompany = item.CompanyCode;
+                    }
+                }
+            );
+
+            currentData_Company = firstCompany;
+
+            // Inisial value for "Company"
+            ignore_trigger_change_ddl_Company = false;
+            $('#ddl_Company').val(currentData_Company).trigger('change');
+            ignore_trigger_change_ddl_Company = false;
+        } catch (err) { }
+    }
+
+
+    function Create_AnalysisType() {
+        $('#ddl_AnalysisType').select2({
+            placeholder: 'Select Analysis Type'
+            , tags: false
+            , multiple: false
+            //, tokenSeparators: [',', ' ']
+            //, minimumInputLength: 3
+            , minimumResultsForSearch: -1
+        });
+
+        $('#ddl_AnalysisType').change(function (e) {
+            ddl_AnalysisType_Change();
+        });
+
+        // Inisial value for "Analysis Type"
+        ignore_trigger_change_ddl_AnalysisType = true;
+        $('#ddl_AnalysisType').val(data_AnalysisType_current).trigger('change');
+        ignore_trigger_change_ddl_AnalysisType = false;
+    }
+
+    function ddl_AnalysisType_Change() {
+        let currentValue = $('#ddl_AnalysisType').val();
+        if (currentValue === 'Geo Technical') {
+            // Add Estimated Date Picker
+            $('#date_picker_section').append(`
+            <div class="d-block" id="estimated_needed_date">
+                <div class="row margin_padding_0 mercy_form_Label">Estimated Needed Date</div>
+                <div class="row margin_padding_0">
+                    <div class="input-group date">
+                        <input id="txtEstimatedDate" class="mercy_select mercy_input_text mercy_date" style="width:120px;" data-date-format="mm/dd/yyyy" placeholder="mm/dd/yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `)
+            $("#txtEstimatedDate").datepicker({
+                todayBtn: 1
+                , autoclose: true
+            });
+            $('#txtEstimatedDate').datepicker('update', new Date());
+
+            // Configure column and row table
+            const table = $('#mercyTable').DataTable()
+            // show rock type, length
+            table.column(7).visible(true)
+            table.column(10).visible(true)
+
+            // hide thick, sample, seam
+            table.column(11).visible(false)
+            table.column(12).visible(false)
+            table.column(13).visible(false)
+            
+            // show time
+            table.column(15).visible(true)
+            
+            // hide AMD (MPA, etc)
+            table.column(16).visible(false)
+            table.column(17).visible(false)
+            table.column(18).visible(false)
+            table.column(19).visible(false)
+            table.column(20).visible(false)
+            table.column(21).visible(false)
+
+            // hide geo checklist options
+            $('#geo_checklist_options').css('display', 'none')
+            $('#geo_checklist_additional_options').css('display', 'none')
+
+            // show geo technical options
+            $('#geo_technical_checklist_options').css('display', 'block')
+            
+            // hide AMD
+            $('#acid_mine_drainage_checklist_options').css('display', 'none')
+        } else if (currentValue === 'Acid Mine Drainage') {
+            $('#estimated_needed_date').remove();
+            
+            // Configure column and row table
+            const table = $('#mercyTable').DataTable()
+            // hide rock type, length
+            table.column(7).visible(true)
+            table.column(10).visible(true)
+            
+            // hide thick, sample, seam
+            table.column(11).visible(false)
+            table.column(12).visible(false)
+            table.column(13).visible(false)
+            
+            // hide time
+            table.column(15).visible(false)
+            
+            // show AMD (MPA, etc)
+            table.column(16).visible(true)
+            table.column(17).visible(true)
+            table.column(18).visible(true)
+            table.column(19).visible(true)
+            table.column(20).visible(true)
+            table.column(21).visible(true)
+            
+            // hide geo checklist options
+            $('#geo_checklist_options').css('display', 'none')
+            $('#geo_checklist_additional_options').css('display', 'none')
+            
+            // hide geo technical options
+            $('#geo_technical_checklist_options').css('display', 'none')
+            
+            // show AMD
+            $('#acid_mine_drainage_checklist_options').css('display', 'block')
+        } else {
+            $('#estimated_needed_date').remove();
+
+            // Configure column and row table
+            const table = $('#mercyTable').DataTable()
+            // hide rock type, length
+            table.column(7).visible(false)
+            table.column(10).visible(false)
+
+            // show thick, sample, seam
+            table.column(11).visible(true)
+            table.column(12).visible(true)
+            table.column(13).visible(true)
+            
+            // show time
+            table.column(15).visible(true)
+            
+            // hide AMD (MPA, etc)
+            table.column(16).visible(false)
+            table.column(17).visible(false)
+            table.column(18).visible(false)
+            table.column(19).visible(false)
+            table.column(20).visible(false)
+            table.column(21).visible(false)
+
+            // show geo checklist options
+            $('#geo_checklist_options').css('display', 'block')
+            $('#geo_checklist_additional_options').css('display', 'block')
+
+            // hide geo technical options
+            $('#geo_technical_checklist_options').css('display', 'none')
+            
+            // hide AMD
+            $('#acid_mine_drainage_checklist_options').css('display', 'none')
+        }
+    }
+
+    function Display_Buttons_Form_AnalysisRequest() {
+
+        $('#btnCancel').html('Back');
+
+        Populate_Data_ddl_Company();
+
+        // Reset
+        $('#btnUploadSampleDetail_Outer').hide();
+        $('#btnRetestSample_Outer').show();
+
+        if (Mode_Create()) {
+            // check based on Permission
+            if (permission.Is_Add) {
+                $('#btnAddSampleID_Outer').show();
+
+                // hanya "Requester" yang punya button [ Upload Sample Detail ]
+                $('#btnUploadSampleDetail_Outer').show();
+
+                $('#btnSave_outer').show();
+
+                $('#btnSave').html('Submit');
+                $('#btnCancel').html('Cancel');
+
+                //return;
+            }
+        }
+
+        if (Mode_View()) {
+            $('#partLabsId').show();
+
+            // check based on Permission
+            if (permission.Is_Edit) {
+                $('#btnAddSampleID_Outer').show();
+
+                $('#btnSave_outer').show();
+
+                $('#btnSave').html('Save');
+                $('#btnCancel').html('Cancel');
+
+                $('#btnAddLabID_Outer').show();
+
+                //return;
+            }
+
+            // hanya "Requester" yang punya button [ ReTest ]
+            if (permission.Is_Add) {
+                $('#btnRetestSample_Outer').show();
+            }
+        }
+    }
+
+    function Add_Discussion(p_type) {
+        $('#imgLoading_Discussion').show();
+
+        var formData = new FormData();
+
+        formData.append('page', 'AnalysisRequest');
+        formData.append('r', paramid);
+        formData.append('typeof', p_type);
+        formData.append('remark', $('#txtDiscussion').val());
+
+        if (p_type == 'Remark') {
+            if (($('#txtDiscussion').val()) == '') {
+                alert('Please enter your remark on the textbox..');
+                $('#imgLoading_Discussion').hide();
+                return;
+            }
+        }
+
+        if (p_type == 'File') {
+            if (file_Discussion_Changed) {
+                try {
+                    //alert($('#fileDiscussion')[0].files[0].size);
+                    var filesize = Math.round(($('#fileDiscussion')[0].files[0].size / (1024 * 1000)));
+                    if (filesize > 30) {
+                        alert('Maximum file size allowed is 30MB, your file "' + $('#fileDiscussion')[0].files[0].name + '" is ' + filesize + 'MB !');
+                        $('#imgLoading_Discussion').hide();
+                        return;
+                    } else {
+                        formData.append('file', $('#fileDiscussion')[0].files[0]);
+                    }
+                } catch (err) { }
+            }
+        }
+
+        $.ajax({
+            url: api_Request + '/Api/Discussion/Create'
+            , data: formData
+            , processData: false  // tell jQuery not to process the data
+            , contentType: false  // tell jQuery not to set contentType
+            , type: 'POST'
+            , dataType: "json"
+            , cache: false
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+                $('#fileDiscussion').attr('disabled', true);
+            }
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                $('#imgLoading_Discussion').hide();
+
+                if (!data.Success) {
+                    //alert(data.Message);
+
+                    return;
+                }
+
+                Print_Discussion(data.Discussions);
+
+                remark: $('#txtDiscussion').val('');
+                file_Discussion_Changed = false;
+
+                $.ajax({
+                    url: api_Request + '/Api/Notification/Discussion?.id=' + paramid + '&di=' + data.Data
+                    , type: 'GET'
+                    , dataType: "json"
+                    , beforeSend: function (request) {
+                        request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+                    }
+                    , cache: false
+                    , success: function (data) {
+                    }
+                });
+
+                $('#fileDiscussion').attr('disabled', false);
+            },
+            error: function (error) {
+                $(this).remove();
+                $('#fileDiscussion').attr('disabled', false);
+            }
+        });
+    }
+
+    function Print_Discussion(p_Discussions) {
+        // "Print Discussion"
+        var i = 0;
+        var discussions = '';
+        var discussion_Text = '';
+
+        p_Discussions.forEach(
+            function (item_Discussion) {
+                i++;
+
+                if (item_Discussion.Typeof.toLowerCase() == 'remark') {
+                    discussion_Text = item_Discussion.Remark;
+                } else {
+                    discussion_Text = '<a href="#" onClick=\'donwload_FileDiscussion("' + item_Discussion.Attached2 + '");return false;\'>' + item_Discussion.Attached + '</a>';
+                }
+                discussions +=
+                    '<div class="row margin_padding_0" style="margin-bottom:10px !important;">' +
+                    '    <div class="col" style="flex: 0 0 50px;">' +
+                    (i <= 1 ? '  <div class="mercy_history_oval"></div>' : '') +
+                    '        <div class="mercy_history_oval_vertical"></div>' +
+                    '        <div class="mercy_history_oval"></div>' +
+                    '    </div>' +
+                    '    <div class="col">' +
+                    '        <div>' +
+                    '            <div class="mercy_history_date">' + item_Discussion.CreatedOn_Str + '</div>' +
+                    '            <div class="mercy_history_text_box" style="padding: 8px 20px !important; min-height:80px !important;">' +
+                    '                <div class="row margin_padding_0">' +
+                    '                    <div class="col-12 col-md-auto margin_padding_0">' +
+                    '                        <div style="width:30px;">' +
+                    '                            <img src="/images/comment.png"/>' +
+                    '                        </div>' +
+                    '                    </div>' +
+                    '                    <div class="col-12 col-md margin_padding_0">' +
+                    '                            <div class="mercy_discussion_author">' + item_Discussion.FullName + ' added a ' + item_Discussion.Typeof.toLowerCase() + '</div>' +
+                    '                            <div class="mercy_discussion_text">' + discussion_Text + '</div>' +
+                    '                    </div>' +
+                    '                </div>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '    </div>' +
+                    '</div>';
+            }
+        );
+
+        $("#divDiscussion_Detail").html(discussions);
+    }
+
+    function donwload_FileDiscussion(p_file) {
+        //e.preventDefault();  //stop the browser from following
+        var url = '/Api/File/Download?.id=' + p_file;
+        window.location.href = url;
+    }
+
+    function Process_File_SampleDetail() {
+        $('#imgLoading_Importing').show();
+
+        var formData = new FormData();
+
+        if (fileSampleDetail_Changed) {
+            try {
+                formData.append('file', $('#fileSampleDetail')[0].files[0]);
+            } catch (err) { }
+        }
+
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/Upload_SampleDetail/ChooseFile'
+            , data: formData
+            , processData: false  // tell jQuery not to process the data
+            , contentType: false  // tell jQuery not to set contentType
+            , type: 'POST'
+            , dataType: "json"
+            , beforeSend: function (request) {
+                // Set "Token" in HTTP_Header
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    //alert(data.Message);
+                    $('#div_Message_Import').html(data.Message);
+
+                    $('#imgLoading_Importing').hide();
+
+                    //window.location = '/NoAccess';
+                    return;
+                }
+
+                ParsingContent(data.Data);
+            },
+            error: function (error) {
+
+                $(this).remove();
+            }
+        });
+    }
+
+    function ParsingContent(p_id) {
+        $.ajax({
+            url: api_Request + '/Api/Upload_SampleDetail/ParsingContent'
+            , type: 'GET'
+            , data: { '.id': p_id }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    //alert(data.Message);
+                    $('#div_Message_Import').html(data.Message);
+
+                    $('#imgLoading_Importing').hide();
+
+                    //window.location = '/NoAccess';
+                    return;
+                }
+
+                DisplayContent(p_id);
+            },
+            error: function (error) {
+                is_still_AJAX_dataList = false;
+
+                $(this).remove();
+            }
+        });
+    }
+
+    function DisplayContent(p_id) {
+        $.ajax({
+            url: api_Request + '/Api/Upload_SampleDetail/DisplayContent'
+            , type: 'GET'
+            , data: { '.id': p_id }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    //alert(data.Message);
+                    $('#div_Message_Import').html(data.Message);
+
+                    $('#imgLoading_Importing').hide();
+
+                    //window.location = '/NoAccess';
+                    return;
+                }
+
+                data_Import = data;
+                file_import_valid = true;
+                $('#btnImport').removeClass('mercy_button_disabled');
+
+                $('#imgLoading_Importing').hide();
+
+                return;
+
+                Show_Data_Import();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+    var processing_Retest = false;
+
+    function btnRetestSample_Click() {
+        if (processing_Retest) return;
+        if (!one_Retest_is_Checked) return;
+
+        processing_Retest = true;
+
+        var formData = new FormData();
+        formData.append('.id', paramid);
+
+        var i = 0;
+        $.each(object_id_Created, function (x, val) {
+            i++;
+            formData.append('sampleIdx_' + i.toString(), $('#sampleIdx' + val).val());
+            formData.append('labId' + i.toString(), $("#labId_H" + val).val());
+
+            // hanya proses yang ter Checked
+            if ($('#chkRetest' + val).is(":checked")) {
+                formData.append('labId_retest' + i.toString(), 1);
+            } else {
+                formData.append('labId_retest' + i.toString(), 0);
+            }
+        });
+        formData.append('recordNumber', i);
+
+        $('#div_ProcessingRetest').show();
+        $('#imgLoading_Processing').show();
+
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/AnalysisRequest/ReTest'
+            , data: formData
+            , processData: false  // tell jQuery not to process the data
+            , contentType: false  // tell jQuery not to set contentType
+            , type: 'POST'
+            , dataType: "json"
+            , beforeSend: function (request) {
+                // Set "Token" in HTTP_Header
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    processing_Retest = false;
+                    $('#div_ProcessingRetest').hide();
+                    $('#imgLoading_Processing').hide();
+
+                    alert(data.Message);
+
+                    //window.location = '/NoAccess';
+                    return;
+                }
+
+                $.ajax({
+                    url: api_Request + '/Api/Notification/AnalysisRequest_ReTest?.id=' + paramid
+                    , type: 'GET'
+                    , dataType: "json"
+                    , beforeSend: function (request) {
+                        request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+                    }
+                    , cache: false
+                    , success: function (data) {
+                        window.location = '/AnalysisRequestv';
+                    }
+                });
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+    function Verification_Click(p_this) { }
+
+    var one_Retest_is_Checked = false;
+
+    function Retest_Click(p_this) {
+        ReTest_Button_Calculation();
+    }
+
+    function ReTest_Button_Calculation() {
+        // reset
+        $('#btnRetestSample_Outer').addClass('mercy_button_disabled');
+
+        one_Retest_is_Checked = false;
+
+        $.each(object_id_Created, function (x, val) {
+            if ($('#chkRetest' + val).is(":checked")) {
+                one_Retest_is_Checked = true;
+            }
+        });
+
+        if (one_Retest_is_Checked) {
+            $('#btnRetestSample_Outer').removeClass('mercy_button_disabled');
+        }
+    }
+
+    function Verification_Html() {
+        var result = 'disabled="disabled"';
+
+        if (Mode_View()) {
+            // check based on Permission
+            if (permission.Is_Edit) {
+                result = '';
+            }
+        }
+
+        return result;
+    }
+
+    function ReTest_Html(p_labId) {
+        var result = 'disabled="disabled"';
+
+        if (Mode_View()) {
+            // check based on Permission
+            if (permission.Is_Add) {
+
+                // kalau LabID ada, maka ReTest bisa diubah
+                if (p_labId != '') {
+                    result = '';
+                }
+            }
+        }
+
+        return result;
+    }
+
+    function ReTest_Html_Visibility(p_labId) {
+        var result = '';
+
+        if (Mode_View()) {
+            // check based on Permission
+            if (permission.Is_Add) {
+
+                // kalau LabID ada, maka ReTest bisa diubah
+                if (p_labId == '') {
+                    result = 'display:none;';
+                }
+            }
+        }
+
+        return result;
+    }
+
+    function OnKeyUp_LabId(p_this) {
+
+        return;
+
+        // tidak jadi digunakan
+        var id = p_this.id;
+        var object_id_additional_ = id.replace('labId', '');
+
+        if ($('#' + id).val() == '') {
+            $("#chkRetest" + object_id_additional_).attr("disabled", true);
+
+            $("#chkRetest" + object_id_additional_).prop("checked", false);
+            ReTest_Button_Calculation();
+        }
+        else {
+            $("#chkRetest" + object_id_additional_).attr("disabled", false);
+        }
+    }
+
+    function Show_Data_Import() {
+
+        if (!file_import_valid) return;
+
+        // Reset
+        object_id_Created = [];
+        Create_Table();
+
+        lineNumber_Data = 0;
+
+        // proses Data
+        data_Import.Items.forEach(
+            function (item) {
+                isNew = false;
+                object_Created_Count++;
+                lineNumber_Data++;
+                object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+
+                // save to Array
+                object_id_Created.push(object_id_additional);
+
+                // add to Table
+                obj_html_Table.row.add(item).draw(false);
+            }
+        );
+
+        // reset
+        $('#chkTM').prop("checked", false);
+        $('#chkProx').prop("checked", false);
+        $('#chkTS').prop("checked", false);
+        $('#chkCV').prop("checked", false);
+        $('#chkRD').prop("checked", false);
+        $('#chkCSN').prop("checked", false);
+        $('#chkAA').prop("checked", false);
+        $('#chkHGI').prop("checked", false);
+        $('#chkUltimate').prop("checked", false);
+        $('#chkChlorine').prop("checked", false);
+        $('#chkPhosporus').prop("checked", false);
+        $('#chkFluorine').prop("checked", false);
+        $('#chkLead').prop("checked", false);
+        $('#chkZink').prop("checked", false);
+        $('#chkAFT').prop("checked", false);
+        $('#chkTraceElement').prop("checked", false);
+
+        var Parameters = data_Import.Parameters;
+
+        // set based on Value
+        if (Parameters.TM) {
+            $('#chkTM').prop("checked", true);
+        }
+        if (Parameters.Prox) {
+            $('#chkProx').prop("checked", true);
+        }
+        if (Parameters.TS) {
+            $('#chkTS').prop("checked", true);
+        }
+        if (Parameters.CV) {
+            $('#chkCV').prop("checked", true);
+        }
+        if (Parameters.RD) {
+            $('#chkRD').prop("checked", true);
+        }
+        if (Parameters.CSN) {
+            $('#chkCSN').prop("checked", true);
+        }
+        if (Parameters.AA) {
+            $('#chkAA').prop("checked", true);
+        }
+        if (Parameters.HGI) {
+            $('#chkHGI').prop("checked", true);
+        }
+        if (Parameters.Ultimate) {
+            $('#chkUltimate').prop("checked", true);
+        }
+        if (Parameters.Chlorine) {
+            $('#chkChlorine').prop("checked", true);
+        }
+        if (Parameters.Phosporus) {
+            $('#chkPhosporus').prop("checked", true);
+        }
+        if (Parameters.Fluorine) {
+            $('#chkFluorine').prop("checked", true);
+        }
+        if (Parameters.Lead) {
+            $('#chkLead').prop("checked", true);
+        }
+        if (Parameters.Zinc) {
+            $('#chkZink').prop("checked", true);
+        }
+        if (Parameters.AFT) {
+            $('#chkAFT').prop("checked", true);
+        }
+        if (Parameters.TraceElement) {
+            $('#chkTraceElement').prop("checked", true);
+        }
+        /*if (Parameters.Others) {
+            $('#chkOther').prop("checked", true);
+        }*/
+
+        // Resize Table: because this DataTable is filled with new Data
+        resize_Table();
+
+        $('#imgLoading_Processing').hide();
+
+        //$('#btnSave_outer').show();
+    }
+
+    function Clear_DataGrid_(p_id) {
+        try {
+            $('#' + p_id).DataTable().clear().destroy();
+            //$('#'+p_id).DataTable().destroy();
+        } catch (err) { }
+
+        try {
+            $('#' + p_id + ' tbody').empty();
+        } catch (err) { }
+    }
+
+    function Clear_DataGrid() {
+        Create_Table();
+    }
+    
+    function Calculate_MPA(id) {
+        var tsValue = $('#ts' + id).val();
+        // 30.625 is a fixed formula number
+        var mpaCalculation = (30.625 * Number(tsValue));
+        $('#mpa' + id).val(mpaCalculation);
+    }
+    
+    function Calculate_NAPP(id) {
+        var mpaValue = $('#mpa' + id).val();
+        var ancValue = $('#anc' + id).val();
+        
+        if (mpaValue && ancValue) {
+            // formula : (NAPP = MPA - ANC)
+            var calculationResult = Number(mpaValue) - Number(ancValue);
+            $('#napp' + id).val(calculationResult);
+            
+            return;
+        }
+        
+        $('#napp' + id).val(0);
+    }
+
+    function Create_Table() {
+        Clear_DataGrid_('mercyTable');
+
+        try {
+            obj_html_Table = $('#mercyTable').DataTable({
+                "bAutoWidth": false
+                , "bFilter": false
+                , "dom": '<"top">rt<"bottom"iflp><"clear">'
+                , "scrollX": true
+                , "scrollY": false //"200px"
+                //, "scrollCollapse": true
+                , "paging": false
+                //, "ordering": false
+                , "columns": [
+                    { "data": "RecordId", "name": "RecordId", visible: false, width: "20px" }
+                    , {
+                        render: function (data, type, full, meta) {
+                            return lineNumber_Data;
+                        }
+                        , visible: false
+                        , width: "20px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return lineNumber_Data + '.<input type="hidden" id="sampleIdx' + object_id_additional + '" value="' + full.RecordId + '"/>';
+                        }
+                        , className: "mercy_text_right"
+                        , orderable: false
+                        , width: "20px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<div style="width:100%;padding-top:5px;text-align:center;">' +
+                                '<input type="radio" value="1" name="verification' + object_id_additional + '" onclick="Verification_Click(this)" ' + (full.Verification == 1 ? 'checked' : '') + ' ' + Verification_Html() + '/><span style="margin:0px 15px 0px 5px !important;">Yes</span>' +
+                                '<input type="radio" value="0" name="verification' + object_id_additional + '" onclick="Verification_Click(this)" ' + (full.Verification != 1 ? 'checked' : '') + ' ' + Verification_Html() + '/><span style="margin:0px 0px 0px 5px !important;">No</span>' +
+                                '</div>'
+                                ;
+                        }
+                        , orderable: false
+                        , width: "30px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text" id="comment' + object_id_additional + '" value="' + full.Verification_Comment + '" style="width:160px;" ' + Verification_Html() + '/>';
+                        }
+                        , orderable: false
+                        , width: "160px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<div style="width:100%;padding-top:7px;text-align:center;">' +
+                                '<input type="checkbox" id="chkRetest' + object_id_additional + '" onclick="Retest_Click(this)" ' + (full.ReTest == 1 ? 'checked' : '') + ' ' + ReTest_Html(full.LabId) + ' style="' + ReTest_Html_Visibility(full.LabId) + '"/>'
+                            '</div>'
+                                ;
+                        }
+                        , orderable: false
+                        , width: "20px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text" id="sampleId' + object_id_additional + '" value="' + full.SampleID + '" style="width:160px;"/>';
+                        }
+                        , orderable: false
+                        , width: "160px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text" id="rockType' + object_id_additional + '" value="' + full.RockType + '" style="width:160px;"/>';
+                        }
+                        , orderable: false
+                        , width: "160px"
+                        , visible: false
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text mercy_text_right" id="from' + object_id_additional + '" value="' + full.From2 + '" style="width:60px;" onkeyup="OnKeyUp_From(this)"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text mercy_text_right" id="to' + object_id_additional + '" value="' + full.To2 + '" style="width:60px;" onkeyup="OnKeyUp_To(this)"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text mercy_text_right mercy_input_text_readonly" id="thick_length' + object_id_additional + '" value="' + full.Thick + '" style="width:80px;" readonly="readonly"/>';
+                        }
+                        , orderable: false
+                        , width: "80px"
+                        , visible: false
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text mercy_text_right mercy_input_text_readonly" id="thick' + object_id_additional + '" value="' + full.Thick + '" style="width:80px;" readonly="readonly"/>';
+                        }
+                        , orderable: false
+                        , width: "80px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text" id="sampleType' + object_id_additional + '" value="' + full.SampleType + '" style="width:80px;"/>';
+                        }
+                        , orderable: false
+                        , width: "80px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="text" class="form-control shadow-none mercy_input_text" id="seam' + object_id_additional + '" value="' + full.SEAM + '" style="width:60px;"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            if (permission.Is_Edit && Mode_View())
+                                return '<input type="text" class="form-control shadow-none mercy_input_text" id="labId' + object_id_additional + '" value="' + full.LabId + '" style="width:80px;" onkeyup="OnKeyUp_LabId(this)"/>';
+                            else
+                                return full.LabId +
+                                    '<input type="hidden" id="labId_H' + object_id_additional + '" value="' + full.LabId + '"/>'
+                                    ;
+                        }
+                        , orderable: false
+                        , width: "80px"
+                    }
+                    , { "data": "CreatedOn_Str", "name": "CreatedOn_Str", width: "60px", orderable: false }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="number" class="form-control shadow-none mercy_input_text" onchange="Calculate_NAPP(object_id_additional)" id="mpa' + object_id_additional + '" value="' + full.MPA + '" style="width:120px;"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                        , visible: false
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="number" class="form-control shadow-none mercy_input_text" onchange="Calculate_MPA(object_id_additional)" id="ts' + object_id_additional + '" value="' + full.TS + '" style="width:120px;"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                        , visible: false
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="number" class="form-control shadow-none mercy_input_text" id="ph' + object_id_additional + '" value="' + full.PH + '" style="width:120px;"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                        , visible: false
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input disabled="disabled" type="number" class="form-control shadow-none mercy_input_text" id="napp' + object_id_additional + '" value="' + full.NAPP + '" style="width:120px;"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                        , visible: false
+                    }, {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="number" class="form-control shadow-none mercy_input_text" onchange="Calculate_NAPP(object_id_additional)" id="anc' + object_id_additional + '" value="' + full.ANC + '" style="width:120px;"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                        , visible: false
+                    }
+                    , {
+                        "render": function (data, type, full, meta) {
+                            return '<input type="number" class="form-control shadow-none mercy_input_text" id="nag' + object_id_additional + '" value="' + full.NAG + '" style="width:120px;"/>';
+                        }
+                        , orderable: false
+                        , width: "60px"
+                        , visible: false
+                    }                      
+                ]
+                , "order": [[1, 'asc']]
+            });
+
+            obj_html_Table.on('draw', function () { });
+
+            obj_html_Table.on('paste', "input[type='text']", function (e) {
+                e.preventDefault();
+                var pasteData = e.originalEvent.clipboardData.getData('text')
+                var rows = pasteData.split("\n");
+                // We need to -1 after slice, because input's id start from 1
+                var rowCurr = parseInt($(this).attr("id").slice(-1) - 1);
+                var colCurr = parseInt($(this).parent().parent().children().index($(this).parent()));
+
+                if (rows.length === 1) {
+                    $(this)
+                        .val(isNaN(rows[0].replace(/,/g, ''))
+                            ? rows[0].replace(/,/g, '')
+                            : parseFloat(rows[0].replace(/,/g, ''))
+                        ).trigger('change');
+                    return
+                }
+
+                for (var y = 0; y < (rows.length - 1); y++) {
+                    y = parseInt(y);
+                    var cells = rows[y].split("\t");
+                    for (var x in cells) {
+                        x = parseInt(x)
+                        var tdData = $('#mercyTable tbody tr').eq(y + rowCurr).find('td').eq(x + colCurr);
+
+                        if (tdData.children().length) {
+                            var childId = tdData.children().attr('id');
+                            var valData = cells[x].replace(/,/g, '');
+                            $(`#${childId}`)
+                                .val(isNaN(valData)
+                                    ? valData
+                                    : parseFloat(valData)
+                                ).trigger('change');
+                        }
+                    }
+                }
+            });
+
+            $('#mercyTable').arrowTable({
+                enabledKeys: ['up', 'down'],
+                focusTarget: 'input',
+                namespace: 'arrowtable',
+                afterMove: function (input, targetFinder, direction) {
+                    let exist = $(targetFinder).find(':input[type="text"]');
+                    if (exist.length) {
+                        $(exist)[0].select();
+                    }
+                }
+            });
+
+            // move to next input when press enter key
+            $('#mercyTable').moveInput({
+                afterMove: function (input, targetFinder, direction) {
+                    let exist = $(targetFinder).find(':input[type="text"]');
+                    if (exist.length) {
+                        $(exist)[0].select();
+                    }
+                }
+            });
+
+            // Resize Table: because this DataTable is newly created
+            resize_Table();
+        } catch (err) { }
+    }
+
+    function OnKeyUp_From(p_this) {
+        var id = p_this.id;
+
+        var object_id_additional_ = id.replace('from', '');
+
+        try {
+            if (!$.isNumeric($('#from' + object_id_additional_).val())
+                || !$.isNumeric($('#to' + object_id_additional_).val())) {
+                $('#thick' + object_id_additional_).val('0.00');
+                $('#thick_length' + object_id_additional_).val('0.00');
+                return;
+            }
+
+            var from_ = parseFloat($('#from' + object_id_additional_).val());
+            var to_ = parseFloat($('#to' + object_id_additional_).val());
+
+            var thick_ = (from_ - to_).toFixed(2);
+
+            $('#thick' + object_id_additional_).val(thick_);
+            $('#thick_length' + object_id_additional_).val(thick_);
+
+        } catch (err) {
+            $('#thick' + object_id_additional_).val('0.00');
+            $('#thick_length' + object_id_additional_).val('0.00');
+        }
+    }
+
+    function OnKeyUp_To(p_this) {
+        var id = p_this.id;
+
+        var object_id_additional_ = id.replace('to', '');
+
+        try {
+            if (!$.isNumeric($('#from' + object_id_additional_).val())
+                || !$.isNumeric($('#to' + object_id_additional_).val())) {
+                $('#thick' + object_id_additional_).val('0.00');
+                $('#thick_length' + object_id_additional_).val('0.00');
+                return;
+            }
+
+            var from_ = parseFloat($('#from' + object_id_additional_).val());
+            var to_ = parseFloat($('#to' + object_id_additional_).val());
+
+            var thick_ = (from_ - to_).toFixed(2);
+
+            $('#thick' + object_id_additional_).val(thick_);
+            $('#thick_length' + object_id_additional_).val(thick_);
+
+        } catch (err) {
+            $('#thick' + object_id_additional_).val('0.00');
+            $('#thick_length' + object_id_additional_).val('0.00');
+        }
+    }
+
+</script>

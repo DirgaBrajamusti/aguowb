@@ -1,0 +1,224 @@
+﻿@using MERCY.Web.FrontEnd.Helpers;
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    // API Processor: by default is Current URL
+    //    End User request API to Server FrontEnd
+    string api_Request = string.Empty;
+
+    // -- Check in Config
+    if (Configuration.AppSettings("MERCY_Mode") == "2")
+    {
+        // API Processor: to Server BackEnd
+        //    - End User request API to Server BackEnd
+        //    - note: End User must be able to connect to Server BackEnd
+        api_Request = Configuration.Server_BackEnd;
+    }
+
+    string report_Server = Configuration.Server_Reporting;
+
+    string google_Analytic = Configuration.Google_Analytic;
+
+    // get Current Url
+    string current_Page_URL = Request.Url.AbsolutePath;
+}
+
+<style scoped>
+    .wrapper {
+        background-color: #f5efff;
+        bottom: 0;
+        left: 0;
+        overflow-y: auto;
+        position: fixed;
+        right: 0;
+        top: 0;
+    }
+
+    aside {
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 290px;
+        padding: 0px !important;
+        overflow: auto;
+    }
+
+    .main-minimized {
+        padding-left: 290px;
+    }
+    
+    .cursor-pointer {
+        cursor: pointer;
+    }
+    
+    .icon-sidebar-container {
+        background-color: #463191;
+        border-radius: 4px;
+    }
+
+    aside::-webkit-scrollbar {
+        width: 0px;
+        background: transparent; /* make scrollbar transparent */
+    }
+</style>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="icon" href="/images/favicon.png">
+    <title>MERCY, Monitoring Enhancement Reliability of Coal Quality</title>
+    <link href="@ui_Folder_Client_Side/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+    <link href='/css/mercy.css?@Configuration.VERSION' rel='stylesheet' type='text/css'>
+
+    <script src="@ui_Folder_Client_Side/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="@ui_Folder_Client_Side/js/bootstrap.min.js"></script>
+
+    <link href="@ui_Folder_Client_Side/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+    <script src="@ui_Folder_Client_Side/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+
+    <link href="@ui_Folder_Client_Side/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <script src="@ui_Folder_Client_Side/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+
+    <link href="@ui_Folder_Client_Side/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="@ui_Folder_Client_Side/css/scroller.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <script src="@ui_Folder_Client_Side/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="@ui_Folder_Client_Side/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="@ui_Folder_Client_Side/js/dataTables.scroller.min.js" type="text/javascript"></script>
+
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="/js/mercy.js?@Configuration.VERSION"></script>
+    <script src="/js/moment.min.js"></script>
+    <link href="/css/loading.style.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+mercy_init();
+api_Request = '@api_Request';
+var report_Server = '@report_Server'.replace('%26', '&');
+var current_Page_URL = '@current_Page_URL';
+
+$(document).ready(function () {
+    $('#mercysidebarButton').click(function (e) {
+        rememberSidebar();
+    });
+
+    if (MERCY_C_HIDE == '1') {
+        rememberSidebar();
+    } else {
+        $('#mainContent').addClass("main-minimized");
+    }
+});
+
+function rememberSidebar(){
+    if ($('#mercysidebar').is(":hidden")) {
+        $.cookie(MERCY_C_HIDE, '0', { path: '/' });
+        $('#mercysidebar').show();
+        $('#mainContent').addClass("main-minimized");
+        $('#mercy_side_bar_icon').removeClass('fa-chevron-right').addClass('fa-chevron-left');
+    }
+    else {
+        $.cookie(MERCY_C_HIDE, '1', { path: '/' });
+        $('#mercysidebar').hide();
+        $('#mainContent').removeClass("main-minimized");
+        $('#mercy_side_bar_icon').removeClass('fa-chevron-left').addClass('fa-chevron-right');
+    }
+
+    try
+    {
+        resize_Table();
+    }
+    catch (err){}
+}
+
+setInterval(getNotification_All, 300000);
+
+    </script>
+</head>
+
+<body>
+    <div id="loading">
+        <div id="loading-container" class="fullwidth">
+            <div class="spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <p id='loading-text'>Loading...</p>
+        </div>
+    </div>
+
+    <div id="alertbox" style="display:none;">
+        <div class="alerts">
+            <div id="alerticolor" class="alert alert-success">
+                <div style="width: 100%;">
+                    <div class="row" style="margin-left: 5px;">
+                        <div id="alerticon" class="alerti"></div>
+                        <span id="alertcontent">&nbsp;</span>
+                    </div>
+                    <div class="row" style="margin-right: 5px;">
+                        <div style="margin-top: 10px; text-align: center;">
+                            <button onclick="closealert()" class="close btn-closealert" type="button">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mercy-box-outer padding_0" style="display:none;" id="mercy_main_canvas">
+        <div class="wrapper">
+            <aside>
+                <div class="col-md-auto margin_padding_0 mercy-sidebar padding_0" id="mercysidebar">
+                    @Html.Partial(ui_Folder_ServerSide + "Menu_Left.cshtml")
+                </div>
+            </aside>
+            <main id="mainContent">
+                <div>
+                    <div id="mercytopbar" class="row mercy-top margin_padding_0" style="margin-right:15px !important;">
+                        <div class="col-9 d-flex">
+                            <div id="mercysidebarButton" class="m-2 my-3 px-1 d-flex justify-content-center icon-sidebar-container cursor-pointer">
+                                <a id="mercy_side_bar_icon" class="p-2 fa fa-chevron-left align-self-center" style="color: #fff;"></a>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row margin_padding_0" style="margin-top: 18px !important;">
+                                <div style="width:50px;">
+                                    <div class="mercy_user_picture" id="uPicture"></div>
+                                </div>
+                                <div class="col padding_0" style="margin-top: 4px;margin-left:5px;">
+                                    <div class="mercy_user_name" id="uName">User name</div>
+                                    <div class="mercy_user_title" id="uTitle">Title</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin_padding_0" style="margin-right:15px !important;padding-left:20px !important;margin-bottom: 40px !important;">
+                        @RenderBody()
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(google_Analytic))
+    {
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@google_Analytic"></script>
+        <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '@google_Analytic');
+        </script>
+    }
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_inventory {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+</style>
+
+<div class="container margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Inventory List
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Inventory > Inventory List
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="container margin_padding_0">
+            <div class="row margin_padding_0" style="margin:40px 25px !important;">
+                <div class="col col-md-auto">
+                    <select class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" id="cbCompany" style="width:200px;">
+                        <option value="">Select company name</option>
+                    </select>
+                </div>
+                <div class="col col-md-auto">
+                    <select class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" id="cbCompany">
+                        <option value="">Select sampling type</option>
+                    </select>
+                </div>
+                <div class="col col-md-auto">
+                    <div class="input-group date">
+                        <input id="txtDate" class="mercy_select mercy_input_text mercy_date" style="width:120px;" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-auto"><div class="mercy_button" style="width:78px;"><div class="mercy_text_center">Filter</div></div></div>
+            </div>
+            <div class="row margin_padding_0" style="margin:40px 25px !important;">
+                <div class="mercy_box_blank"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+    $(document).attr('title', 'Inventory - List : Mercy');
+
+    userInfo();
+
+    $('#txtDate').datepicker({
+    });
+});
+</script>

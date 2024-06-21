@@ -1,0 +1,994 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+#mercyTable_info, #mercyTable_length, #mercyTable_paginate, #table_ROM_Quality_info, #table_ROM_Quality_length, #table_ROM_Quality_paginate {
+    display: none;
+}
+
+.mercy_align_right {
+    text-align: right !important;
+}
+
+.mercy_cell_textbox {
+    padding-top: 8px !important;
+    padding-bottom: 0px !important;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+.mercy_text_rom{
+    font-size:16px;
+    padding: 0px 0px 0px 5px !important;
+}
+
+.mercy_Rom_Transfer_Label{
+    font-size:18px;
+    margin: 0px 0px 0px 10px !important;
+    padding: 0px !important;
+}
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Add ROM Transfer
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        ROM Transfer Request > Add ROM Transfer
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:150px !important;min-width:400px !important;">
+        <div class="col-12 col-md">
+            <div class="row margin_padding_0">
+                <div class="col-12 col-md margin_padding_0">
+                    <div class="row margin_padding_0" style="min-height: 100px;">
+                        <div class="col margin_padding_0" style="padding-top: 15px !important;">
+                            <div style="width:100%" class="filter_title">Site</div>
+                            <div style="width:100%;padding:10px 10px 10px 0px;">
+                                <select id="ddl_Site" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;display:none;"></select>
+                            </div>
+                        </div>
+                        <div class="col margin_padding_0" style="padding-top: 15px !important;">
+                            <div style="width:100%" class="filter_title">Company</div>
+                            <div style="width:100%;padding:10px 10px 10px 0px;">
+                                <select id="ddl_Company" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;display:none;"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin_padding_0">
+                        <div class="col-12 col-md margin_padding_0">
+                            <div style="width:100%;height: 25px;" class="filter_title">Source</div>
+                            <div style="width:100%;" class="filter_titlex">ROM Location</div>
+                            <div style="width:100%;padding:10px 10px 10px 0px;">
+                                <div id="ddl_Source_ROM_Location_div"><select id="ddl_Source_ROM_Location" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select></div>
+                                <input type="text" class="form-control shadow-none mercy_input_text mercy_text_rom" id="txt_Source_ROM_Location" placeholder="ROM Location" style="display:none;" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md margin_padding_0">
+                            <div style="width:100%;height: 25px;" class="filter_title">&nbsp;</div>
+                            <div style="width:100%;height: 25px;" class="filter_titlex">ROM Number</div>
+                            <div style="width:100%;padding:10px 10px 10px 0px;">
+                                <div id="ddl_Source_ROM_Number_div"><select id="ddl_Source_ROM_Number" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select></div>
+                                <input type="text" class="form-control shadow-none mercy_input_text mercy_text_rom" id="txt_Source_ROM_Number" placeholder="ROM Number" style="display:none;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md margin_padding_0">
+                    <div class="row margin_padding_0" style="min-height: 100px;">
+                        <div class="col-12 col-md margin_padding_0" style="padding-top: 15px !important;">
+                            <div style="width:100%" class="filter_title">Transfer Date</div>
+                            <div style="width:100%;padding:10px 10px 10px 0px;height:45px;">
+                                <div class="input-group date">
+                                    <input id="txtDate" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="mm/dd/yyyy" placeholder="mm/dd/yyyy" />
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text mercy_date_icon"> </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md margin_padding_0" style="padding-top: 15px !important;padding-bottom: 15px !important;">
+                            <div style="width:100%" class="filter_title">Shift</div>
+                            <div style="width:100%;padding:10px 10px 10px 0px;height:45px;">
+                                <select id="ddl_Shift" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;">
+                                    <option value="">Select shift</option>
+                                    <option value="1">Shift 1</option>
+                                    <option value="2">Shift 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin_padding_0">
+                        <div class="col-12 col-md margin_padding_0">
+                            <div style="width:100%;height: 25px;" class="filter_title">Destination</div>
+                            <div style="width:100%;" class="filter_titlex">ROM Location</div>
+                            <div style="width:100%;padding:10px 10px 10px 0px;">
+                                <div id="ddl_Destination_ROM_Location_div"><select id="ddl_Destination_ROM_Location" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select></div>
+                                <input type="text" class="form-control shadow-none mercy_input_text mercy_text_rom" id="txt_Destination_ROM_Location" placeholder="ROM Location" style="display:none;"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md margin_padding_0">
+                            <div style="width:100%;height: 25px;" class="filter_title">&nbsp;</div>
+                            <div style="width:100%;" class="filter_titlex">ROM Number</div>
+                            <div style="width:100%;padding:10px 10px 10px 0px;">
+                                <div id="ddl_Destination_ROM_Number_div"><select id="ddl_Destination_ROM_Number" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select></div>
+                                <input type="text" class="form-control shadow-none mercy_input_text mercy_text_rom" id="txt_Destination_ROM_Number" placeholder="ROM Number" style="display:none;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0">
+                <div class="col-12 col-md margin_padding_0" style="padding: 15px 0px !important;">
+                    <div style="width:100%" class="filter_title">Remark</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <textarea class="form-control shadow-none mercy_input_text" id="txtRemark" rows="5" placeholder="remark" style="font-size:16px;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding-top:45px !important;">
+            <div style="width: 140px;margin:auto;padding-bottom:20px;display:none;" id="btnSave_outer">
+                <div class="mercy_button" style="width:100px;"><div class="mercy_text_center" id="btnSave">Save</div></div>
+            </div>
+            <div style="width: 140px;margin:auto;padding-bottom:20px;display:none;" id="btnEdit_outer">
+                <div class="mercy_button" style="width:100px;"><div class="mercy_text_center" id="btnEdit">Edit Data</div></div>
+            </div>
+            <div style="width: 140px;margin:auto;">
+                <div class="mercy_button_2" style="width:100px;"><div class="mercy_text_center" id="btnCancel">Cancel</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+// Flag
+var ignore_trigger_change_ddl_Site = false;
+var ignore_trigger_change_ddl_Company = false;
+var ignore_trigger_change_ddl_Shift = false;
+var ignore_trigger_change_ddl_Source_ROM_Location = false;
+var ignore_trigger_change_ddl_Source_ROM_Number = false;
+var ignore_trigger_change_ddl_Destination_ROM_Location = false;
+var ignore_trigger_change_ddl_Destination_ROM_Number = false;
+
+// DataGrid
+var obj_html_ROM_Quality;
+// DropdownList
+var obj_html_Site = null;
+var obj_html_Company = null;
+var obj_html_Source_ROM_Location = null;
+var obj_html_Source_ROM_Number = null;
+var obj_html_Destination_ROM_Location = null;
+var obj_html_Destination_ROM_Number = null;
+
+// row
+var lineNumber_ROM_Quality = 0;
+
+// for Tracking
+var currentData_Company = 'TCM';
+var currentData_Product = 'VLS';
+var currentData_Shift = '1';
+var currentData_Source_ROM_Location = '';
+var currentData_Source_ROM_Number = '';
+var currentData_Source_ROM_Number_Name = '';
+var currentData_Destination_ROM_Location = '';
+var currentData_Destination_ROM_Number = '';
+var currentData_Destination_ROM_Number_Name = '';
+
+var dataDisplay_ROM_Quality = null;
+
+$(document).ready(function () {
+
+    $(document).attr('title', 'ROM Transfer Request - Add');
+
+    $('#btnSave').click(function (e) {
+        SaveData();
+    });
+    
+    $('#btnEdit').click(function (e) {
+        Prepare_EditData();
+    });
+
+    $('#btnCancel').click(function (e) {
+        window.location = mercyUrl('/RomTransferv');
+    });
+
+    $("#txtDate").datepicker({
+        todayBtn: 1
+        , autoclose: true
+    }).on('changeDate', function (selected) {
+        //var minDate = new Date(selected.date.valueOf());
+        //$('#dateTo').datepicker('setStartDate', minDate);
+    });
+    $('#txtDate').datepicker('update', new Date());
+
+    Create_ddl_Site();
+    Create_ddl_Company();
+    Create_ddl_Shift();
+    Create_ddl_Source_ROM_Location();
+    Create_ddl_Source_ROM_Number();
+    Create_ddl_Destination_ROM_Location();
+    Create_ddl_Destination_ROM_Number();
+
+    Load_Page_Form();
+});
+
+var recordNumber = 0;
+
+    function Create_ddl_Site() {
+        if (obj_html_Site != null) return;
+
+        obj_html_Site = $('#ddl_Site').select2({
+            placeholder: 'Select Site'
+            , tags: false
+            , multiple: false
+            //, tokenSeparators: [',', ' ']
+            //, minimumInputLength: 3
+            , minimumResultsForSearch: -1
+        });
+
+        $('#ddl_Site').change(function (e) {
+            OnChange_ddl_Site();
+        });
+    }
+
+    function OnChange_ddl_Site() {
+        if (ignore_trigger_change_ddl_Site) return;
+
+        Populate_Data_ddl_Company();
+    }
+
+    function Populate_Data_ddl_Site() {
+        try {
+            obj_html_Site.empty();
+
+            uInfo.Relations.Sites.forEach(
+                function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.SiteName, item.SiteId, true, true);
+                    obj_html_Site.append(option);//.trigger('change');
+                }
+            );
+
+            // Initial value for "Site"
+            obj_html_Site.select(0);
+            $('#ddl_Site').trigger('change');
+        } catch (err) { }
+    }
+
+function Create_ddl_Company() {
+    if (obj_html_Company != null) return;
+
+    obj_html_Company = $('#ddl_Company').select2({
+        placeholder: 'Select Company'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Company').change(function (e) {
+        OnChange_ddl_Company();
+    });
+}
+
+function OnChange_ddl_Company() {
+    if (ignore_trigger_change_ddl_Company) return;
+    
+    if ($('#ddl_Company').val() == 'BEK')
+    {
+        $('#ddl_Source_ROM_Location_div').hide();
+        $('#txt_Source_ROM_Location').show();
+        $('#ddl_Source_ROM_Number_div').hide();
+        $('#txt_Source_ROM_Number').show();
+        $('#ddl_Destination_ROM_Location_div').hide();
+        $('#txt_Destination_ROM_Location').show();
+        $('#ddl_Destination_ROM_Number_div').hide();
+        $('#txt_Destination_ROM_Number').show();
+    }
+    else
+    {
+        $('#ddl_Source_ROM_Location_div').show();
+        $('#txt_Source_ROM_Location').hide();
+        $('#ddl_Source_ROM_Number_div').show();
+        $('#txt_Source_ROM_Number').hide();
+        $('#ddl_Destination_ROM_Location_div').show();
+        $('#txt_Destination_ROM_Location').hide();
+        $('#ddl_Destination_ROM_Number_div').show();
+        $('#txt_Destination_ROM_Number').hide();
+        
+        Populate_Data_ddl_ROM_Location();
+    }
+}
+
+function Create_ddl_Shift() {
+    $('#ddl_Shift').select2();
+
+    $('#ddl_Shift').change(function (e) {
+        OnChange_ddl_Shift();
+    });
+
+    // Inisial value
+    $('#ddl_Shift').val(currentData_Shift).trigger('change');
+}
+
+function OnChange_ddl_Shift() {
+    if (ignore_trigger_change_ddl_Shift) return;
+}
+
+function Clear_ddl_Company() {
+    Clear_ddl_Source_ROM_Location();
+    Clear_ddl_Destination_ROM_Location();
+
+    // Clear DropdownList
+    $('#ddl_Company').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Company();
+}
+
+function Populate_Data_ddl_Company() {
+    try {
+        var option = null;
+
+        obj_html_Company.empty();
+
+        var siteId = $('#ddl_Site').val();
+        uInfo.Relations.Companies
+            .filter((item) => Number(item.SiteId) === Number(siteId))
+            .forEach(function (item) {
+                // create the option and append to Select2
+                option = new Option(item.CompanyCode, item.CompanyCode, true, true);
+                obj_html_Company.append(option);//.trigger('change');
+            }
+        );
+
+        // Initial value for "Company"
+        obj_html_Company.select(0);
+        $('#ddl_Company').trigger('change');
+    }catch(err){}
+}
+
+function SaveData() {
+    if (!validate_All()) return;
+
+    $('#imgLoading').show();
+
+    var action = 'Create';
+    if (paramid == null || paramid == '') { }
+    else action = 'Edit?.id=' + paramid;
+    
+    $.ajax({
+        url: api_Request + '/Api/RomTransfer/' + action,
+        data: {
+            Company: $('#ddl_Company').val()
+            , TransferDate: $("#txtDate").val()
+            , Shift: $("#ddl_Shift").val()
+            , Remark: $("#txtRemark").val()
+            , Source_ROM_Number: $("#ddl_Source_ROM_Number").val()
+            , Destination_ROM_Number: $("#ddl_Destination_ROM_Number").val()
+            , Remark: $("#txtRemark").val()
+            , Source_ROM_Location: $("#txt_Source_ROM_Location").val()
+            , Source_ROM_Number2: $("#txt_Source_ROM_Number").val()
+            , Destination_ROM_Location: $("#txt_Destination_ROM_Location").val()
+            , Destination_ROM_Number2: $("#txt_Destination_ROM_Number").val()
+        },
+        type: 'POST',
+        dataType: "json",
+        cache: false,
+        beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        },
+        success: function (data) {
+            $('#imgLoading').hide();
+
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            alert('Success Save');
+            window.location = mercyUrl('/RomTransferv');
+        },
+        error: function (error) {
+            //$(this).remove();
+        }
+    });
+}
+
+function validate_All() {
+    if ($('#ddl_Company').val() == 'BEK')
+    {
+        if ($("#txt_Source_ROM_Location").val() == null
+            || $("#txt_Source_ROM_Location").val() == '') {
+            alert('Source tidak boleh kosong!');
+            return false;
+        }
+        
+        if ($("#txt_Source_ROM_Number").val() == null
+            || $("#txt_Source_ROM_Number").val() == '') {
+            alert('Source Number tidak boleh kosong!');
+            return false;
+        }
+        
+        if ($("#txt_Destination_ROM_Location").val() == null
+            || $("#txt_Destination_ROM_Location").val() == '') {
+            alert('Destination tidak boleh kosong!');
+            return false;
+        }
+        
+        if ($("#txt_Destination_ROM_Number").val() == null
+            || $("#txt_Destination_ROM_Number").val() == '') {
+            alert('Destination Number tidak boleh kosong!');
+            return false;
+        }
+        
+        if (($("#txt_Source_ROM_Location").val() 
+                + '-' + $("#txt_Source_ROM_Number").val())
+                ==
+            ($("#txt_Destination_ROM_Location").val()
+                + '-' + $("#txt_Destination_ROM_Number").val())){
+            alert('Source tidak boleh sama dengan Destination!');
+            return false;
+        }
+    }
+    else
+    {
+        if ($("#ddl_Source_ROM_Number").val() == null
+            || $("#ddl_Source_ROM_Number").val() == '') {
+            alert('Source tidak boleh kosong!');
+            return false;
+        }
+
+        if ($("#ddl_Destination_ROM_Number").val() == null
+            || $("#ddl_Destination_ROM_Number").val() == '') {
+            alert('Destination tidak boleh kosong!');
+            return false;
+        }
+
+        if ($("#ddl_Source_ROM_Number").val() == $("#ddl_Destination_ROM_Number").val()) {
+            alert('Source tidak boleh sama dengan Destination!');
+            return false;
+        }
+    }
+    return true;
+}
+
+function DisplayData() {
+    $.ajax({
+        url: api_Request + '/Api/RomTransfer/Get',
+        type: 'GET',
+        data: {u_menu:get_user_menu, u_relation:get_user_relation, '.id':paramid},
+        dataType: "json",
+        cache: false,
+        beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        },
+        success: function (data) {
+            $('#imgLoading').hide();
+
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                // special case: Id not found
+                if (data.Message.indexOf('not found') !== -1){
+                    after_GetUserInfo(data.User);
+                    uInfo = data.User;
+                }
+            
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // Special Purpose, getting information of CurrentUser
+            if (get_user_menu == '1'){
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+            }
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // we need "Permission" information
+            permission = data.Permission;
+
+            Populate_Data_ddl_Site();
+            
+            // make it "Intuitive"
+            Display_Buttons_Form();
+            Display_Buttons_Form_RomTransfer();
+            
+            if (Mode_Create()){
+                // Stop here
+                // data.Item is null
+                return;
+            }
+            
+            var item = data.Item;
+            
+            $("#txtDate").attr("disabled", true);
+            $("#ddl_Shift").attr("disabled", true);
+            $('#txtDate').addClass('mercy_text_disable');
+            
+            currentData_Company = item.Company;
+            currentData_Source_ROM_Location = item.Source_Block;
+            currentData_Source_ROM_Number = item.Source_ROM_ID;
+            currentData_Source_ROM_Number_Name = item.Source_ROM_Name;
+            currentData_Destination_ROM_Location = item.Destination_Block;
+            currentData_Destination_ROM_Number = item.Destination_ROM_ID;
+            currentData_Destination_ROM_Number_Name = item.Destination_ROM_Name;
+            
+            ViewOnly_ddl_Company();
+            ViewOnly_ddl_Source_ROM_Location();
+            ViewOnly_ddl_Source_ROM_Number();
+            ViewOnly_ddl_Destination_ROM_Location();
+            ViewOnly_ddl_Destination_ROM_Number();
+            
+            $('#txtDate').val(item.TransferDate_Str);
+            $('#ddl_Shift').val(item.Shift).trigger('change');
+            
+            $('#txtRemark').val(item.Remark);
+            $("#txtRemark").attr("disabled", true);
+            $('#txtRemark').addClass('mercy_text_disable');
+        },
+        error: function (error) {
+            //$(this).remove();
+        }
+    });
+}
+
+function Create_ddl_Source_ROM_Location() {
+    if (obj_html_Source_ROM_Location != null) return;
+
+    obj_html_Source_ROM_Location = $('#ddl_Source_ROM_Location').select2({
+        placeholder: 'Select location'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        //, minimumResultsForSearch: 10
+    });
+
+    $('#ddl_Source_ROM_Location').change(function (e) {
+        OnChange_ddl_Source_ROM_Location();
+    });
+}
+
+function OnChange_ddl_Source_ROM_Location() {
+    if (ignore_trigger_change_ddl_Source_ROM_Location) return;
+    
+    Populate_Data_ddl_Source_ROM_Number();
+}
+
+function Create_ddl_Source_ROM_Number() {
+    if (obj_html_Source_ROM_Number != null) return;
+
+    obj_html_Source_ROM_Number = $('#ddl_Source_ROM_Number').select2({
+        placeholder: 'Select ROM'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Source_ROM_Number').change(function (e) {
+        //
+    });
+}
+
+function Create_ddl_Destination_ROM_Location() {
+    if (obj_html_Destination_ROM_Location != null) return;
+
+    obj_html_Destination_ROM_Location = $('#ddl_Destination_ROM_Location').select2({
+        placeholder: 'Select location'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        //, minimumResultsForSearch: 10
+    });
+
+    $('#ddl_Destination_ROM_Location').change(function (e) {
+        OnChange_ddl_Destination_ROM_Location();
+    });
+}
+
+function OnChange_ddl_Destination_ROM_Location() {
+    if (ignore_trigger_change_ddl_Destination_ROM_Location) return;
+    
+    Populate_Data_ddl_Destination_ROM_Number();
+}
+
+function Create_ddl_Destination_ROM_Number() {
+    if (obj_html_Destination_ROM_Number != null) return;
+
+    obj_html_Destination_ROM_Number = $('#ddl_Destination_ROM_Number').select2({
+        placeholder: 'Select ROM'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Destination_ROM_Number').change(function (e) {
+        //
+    });
+}
+
+function Clear_ddl_Source_ROM_Location() {
+    Clear_ddl_Source_ROM_Number();
+
+    // Clear DropdownList
+    $('#ddl_Source_ROM_Location').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Source_ROM_Location();
+}
+
+function Clear_ddl_Destination_ROM_Location() {
+    Clear_ddl_Destination_ROM_Number();
+
+    // Clear DropdownList
+    $('#ddl_Destination_ROM_Location').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Destination_ROM_Location();
+}
+
+function Populate_Data_ddl_ROM_Location() {
+    // source: https://stackoverflow.com/questions/13240047/clear-dropdown-using-jquery-select2/30149761#30149761
+    //$('#ddl__id').html('').select2({data: {id:null, text: null}});
+    //$('#ddl__id').val(null);//.trigger('change');
+    //$('#ddl__id').select2('destroy');
+
+    Clear_ddl_Source_ROM_Location();
+    Clear_ddl_Destination_ROM_Location();
+
+    // tidak usah AJAX, jika belum "Siap"
+    var company = $('#ddl_Company').val();
+    if (company == null || company == '') return;
+
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/ROM/GetBlocksByCompany?company=' + company
+        , type: 'GET'
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            var option = null;
+            var option2 = null;
+            
+            var i = 0;
+            var valueSelected_Source = '';
+            var valueSelected_Destination = '';
+            var valueSelected_Destination_second = '';
+
+            data.Items.forEach(
+                function (item) {
+                    i++;
+                    if (i == 1){
+                        valueSelected_Source = item.Block;
+                        valueSelected_Destination = item.Block;
+                    }
+                    if (i == 2){
+                        valueSelected_Destination_second = item.Block;
+                    }
+                    
+                    // create the option and append to Select2
+                    option = new Option(item.Block, item.Block, true, true);
+                    obj_html_Source_ROM_Location.append(option);//.trigger('change');
+
+                    option2 = new Option(item.Block, item.Block, true, true);
+                    obj_html_Destination_ROM_Location.append(option2);//.trigger('change');
+                }
+            );
+            
+            if (valueSelected_Destination_second != '') valueSelected_Destination = valueSelected_Destination_second;
+
+            // Inisial value
+            if (currentData_Source_ROM_Location != '') valueSelected_Source = currentData_Source_ROM_Location;
+            $('#ddl_Source_ROM_Location').val(valueSelected_Source).trigger('change');
+
+            if (currentData_Destination_ROM_Location != '') valueSelected_Destination = currentData_Destination_ROM_Location;
+            $('#ddl_Destination_ROM_Location').val(valueSelected_Destination).trigger('change');
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Clear_ddl_Source_ROM_Number() {
+    // Clear DropdownList
+    $('#ddl_Source_ROM_Number').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Source_ROM_Number();
+}
+
+function Populate_Data_ddl_Source_ROM_Number() {
+    Clear_ddl_Source_ROM_Number();
+
+    var romLocation = $('#ddl_Source_ROM_Location').val();
+    if (romLocation == null || romLocation == '') return;
+
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/ROM/GetROMsByCompanyBlock?company=' + $('#ddl_Company').val() + '&block=' + romLocation
+        , type: 'GET'
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            var option = null;
+
+            var valueSelected = '';
+
+            data.Items.forEach(
+                function (item) {
+                    if (valueSelected == '') valueSelected = item.ROM_id;
+
+                    // create the option and append to Select2
+                    option = new Option(item.ROM_Name, item.ROM_id, true, true);
+                    obj_html_Source_ROM_Number.append(option);//.trigger('change');
+                }
+            );
+
+            // Inisial value
+            if (currentData_Source_ROM_Number != '') valueSelected = currentData_Source_ROM_Number;
+            $('#ddl_Source_ROM_Number').val(valueSelected).trigger('change');
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Clear_ddl_Destination_ROM_Number() {
+    // Clear DropdownList
+    $('#ddl_Destination_ROM_Number').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Destination_ROM_Number();
+}
+
+function Populate_Data_ddl_Destination_ROM_Number() {
+    Clear_ddl_Destination_ROM_Number();
+
+    var romLocation = $('#ddl_Destination_ROM_Location').val();
+    if (romLocation == null || romLocation == '') return;
+
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/ROM/GetROMsByCompanyBlock?company=' + $('#ddl_Company').val() + '&block=' + romLocation
+        , type: 'GET'
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            var option = null;
+
+            var valueSelected = '';
+
+            data.Items.forEach(
+                function (item) {
+                    if (valueSelected == '') valueSelected = item.ROM_id;
+
+                    // create the option and append to Select2
+                    option = new Option(item.ROM_Name, item.ROM_id, true, true);
+                    obj_html_Destination_ROM_Number.append(option);//.trigger('change');
+                }
+            );
+
+            // Inisial value
+            if (currentData_Destination_ROM_Number != '') valueSelected = currentData_Destination_ROM_Number;
+            $('#ddl_Destination_ROM_Number').val(valueSelected).trigger('change');
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Prepare_EditData(){
+    is_mode_edit = true;
+    
+    Display_Buttons_Form();
+    Display_Buttons_Form_RomTransfer();
+}
+
+function Display_Buttons_Form_RomTransfer(){
+    try {
+        if (Mode_Create()){
+            // check based on Permission
+            if (permission.Is_Add){
+                Populate_Data_ddl_Company();
+                return;
+            }
+        }
+        
+        if (Mode_View()){}
+        
+        if (Mode_Edit()){
+            // check based on Permission
+            if (permission.Is_Edit){
+                $("#ddl_Source_ROM_Location").attr("disabled", false);
+                $("#ddl_Source_ROM_Number").attr("disabled", false);
+                $("#ddl_Destination_ROM_Location").attr("disabled", false);
+                $("#ddl_Destination_ROM_Number").attr("disabled", false);
+                $("#txtRemark").attr("disabled", false);
+                $('#txtRemark').removeClass('mercy_text_disable');
+                
+                $('#ddl_Company').val(currentData_Company).trigger('change');
+                return;
+            }
+        }
+    }catch(err){}
+}
+
+function ViewOnly_ddl_Company() {
+    try {
+        $("#ddl_Company").attr("disabled", true);
+        
+        var option = null;
+
+        option = new Option(currentData_Company, currentData_Company, true, true);
+        obj_html_Company.append(option);//.trigger('change');
+
+        // Inisial value
+        ignore_trigger_change_ddl_Company = true;
+        $('#ddl_Company').val(currentData_Company).trigger('change');
+        ignore_trigger_change_ddl_Company = false;
+    }catch(err){}
+}
+
+function ViewOnly_ddl_Source_ROM_Location() {
+    try {
+        $("#ddl_Source_ROM_Location").attr("disabled", true);
+        
+        var option = null;
+
+        option = new Option(currentData_Source_ROM_Location, currentData_Source_ROM_Location, true, true);
+        obj_html_Source_ROM_Location.append(option);//.trigger('change');
+
+        // Inisial value
+        ignore_trigger_change_ddl_Source_ROM_Location = true;
+        $('#ddl_Source_ROM_Location').val(currentData_Source_ROM_Location).trigger('change');
+        ignore_trigger_change_ddl_Source_ROM_Location = false;
+    }catch(err){}
+}
+
+function ViewOnly_ddl_Source_ROM_Number() {
+    try {
+        $("#ddl_Source_ROM_Number").attr("disabled", true);
+        
+        var option = null;
+
+        option = new Option(currentData_Source_ROM_Number_Name, currentData_Source_ROM_Number, true, true);
+        obj_html_Source_ROM_Number.append(option);//.trigger('change');
+
+        // Inisial value
+        ignore_trigger_change_ddl_Source_ROM_Number = true;
+        $('#ddl_Source_ROM_Number').val(currentData_Source_ROM_Number).trigger('change');
+        ignore_trigger_change_ddl_Source_ROM_Number = false;
+    }catch(err){}
+}
+
+function ViewOnly_ddl_Destination_ROM_Location() {
+    try {
+        $("#ddl_Destination_ROM_Location").attr("disabled", true);
+        
+        var option = null;
+
+        option = new Option(currentData_Destination_ROM_Location, currentData_Destination_ROM_Location, true, true);
+        obj_html_Destination_ROM_Location.append(option);//.trigger('change');
+
+        // Inisial value
+        ignore_trigger_change_ddl_Destination_ROM_Location = true;
+        $('#ddl_Destination_ROM_Location').val(currentData_Destination_ROM_Location).trigger('change');
+        ignore_trigger_change_ddl_Destination_ROM_Location = false;
+    }catch(err){}
+}
+
+function ViewOnly_ddl_Destination_ROM_Number() {
+    try {
+        $("#ddl_Destination_ROM_Number").attr("disabled", true);
+        
+        var option = null;
+
+        option = new Option(currentData_Destination_ROM_Number_Name, currentData_Destination_ROM_Number, true, true);
+        obj_html_Destination_ROM_Number.append(option);//.trigger('change');
+
+        // Inisial value
+        ignore_trigger_change_ddl_Destination_ROM_Number = true;
+        $('#ddl_Destination_ROM_Number').val(currentData_Destination_ROM_Number).trigger('change');
+        ignore_trigger_change_ddl_Destination_ROM_Number = false;
+    }catch(err){}
+}
+</script>

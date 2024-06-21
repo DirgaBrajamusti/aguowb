@@ -1,0 +1,54 @@
+﻿@using Newtonsoft.Json;
+
+@{
+    // no need for "Layout"
+    Layout = null;
+    
+    // Change "Http Header": ContentType
+    Response.ContentType = "application/json; charset=utf-8";
+
+    // flush
+    Response.Flush();
+
+    // give response
+    Response.Write(Function_ReturnJSON());
+    
+    // that's all
+    Response.End();
+
+    string Function_ReturnJSON()
+    {        
+        var id_str = Request[".id"];
+        bool isAll = string.IsNullOrEmpty(id_str);
+        var id = 0;
+        if ( ! isAll)
+        {
+            id = Convert.ToInt32(id_str);
+        }
+        
+        var text = new[] {new {Id = 1, Name = "Operating System", Cost = 123.45}
+                                , new {Id = 2, Name = "Database Server", Cost = 789.034}
+                                , new {Id = 3, Name = "IDE, Integrated Development Tools", Cost = 818.32}
+                            };
+        var dataQuery =
+                (
+                    from d in text
+                    where (isAll || (d.Id == id))
+                    orderby d.Id
+                    select d
+                );
+
+        var items = dataQuery.Distinct().ToList();
+                    
+        var total = 0; //items.Count;
+        foreach (var item in items)
+        {
+            total++;
+        }
+
+        var result_Object = new { Status = "Ok", Message = string.Empty, MessageDetail = string.Empty, Version = "VERSION abc.xyz", Time = DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss.ffff"), Items = items, Total = total };
+        string result = JsonConvert.SerializeObject(result_Object);
+
+        return result;
+    }
+}

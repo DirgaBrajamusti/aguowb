@@ -1,0 +1,80 @@
+﻿@using MERCY.Web.FrontEnd.Helpers;
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    // API Processor: by default is Current URL
+    //    End User request API to Server FrontEnd
+    string api_Request = string.Empty;
+    
+    // -- Check in Config
+    if (Configuration.AppSettings("MERCY_Mode") == "2")
+    {
+        // API Processor: to Server BackEnd
+        //    - End User request API to Server BackEnd
+        //    - note: End User must be able to connect to Server BackEnd
+        api_Request = Configuration.Server_BackEnd;
+    }
+    
+    string report_Server = Configuration.Server_Reporting;
+    
+    string google_Analytic = Configuration.Google_Analytic;
+    
+    // get Current Url
+	string current_Page_URL = Request.Url.AbsolutePath;
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="icon" href="/images/favicon.png">
+<title>MERCY, Monitoring Enhancement Reliability of Coal Quality</title>
+<link href="@ui_Folder_Client_Side/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+<link href='/css/mercy.css?@Configuration.VERSION' rel='stylesheet' type='text/css'>
+
+<script src="@ui_Folder_Client_Side/js/jquery-3.4.1.min.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script src="@ui_Folder_Client_Side/js/bootstrap.min.js"></script>
+
+<link href="@ui_Folder_Client_Side/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+<script src="@ui_Folder_Client_Side/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+
+<link href="@ui_Folder_Client_Side/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<script src="@ui_Folder_Client_Side/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="@ui_Folder_Client_Side/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+
+<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<script src="/js/mercy.js?@Configuration.VERSION"></script>
+
+<script type="text/javascript">
+mercy_init();
+api_Request = '@api_Request';
+var report_Server = '@report_Server'.replace('%26', '&');
+var current_Page_URL = '@current_Page_URL';
+
+</script>
+</head>
+
+<body>
+
+<div class="container mercy-box-outer-x padding_0">
+    @RenderBody()
+</div>
+
+@if( ! string.IsNullOrEmpty(google_Analytic))
+{
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@google_Analytic"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '@google_Analytic');
+    </script>
+}
+
+</body>
+</html>

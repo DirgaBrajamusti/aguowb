@@ -1,0 +1,250 @@
+@using MERCY.Web.FrontEnd.Helpers;
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Barge Trip Report
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Barge Trip Report
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:100px !important;">
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 100px;">                
+                <div style="width:100%" class="filter_title">Site</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Site" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 160px;">
+                <div style="width:100%" class="filter_title">Period (Month & Year)</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div class="input-group date">
+                        <input id="txtPeriod" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy" placeholder="dd-M-yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md margin_padding_0">
+            <div class="row margin_padding_0">
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">        
+        <div class="mercy_box_blank" style="height:700px !important;">
+            <iframe id="frmReport" src="" class="mercy_box_blank" style="display:none;height:700px !important;"></iframe>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+// Flag
+var ignore_trigger_change_ddl_Site = false;
+
+// Url for Report
+var url_Report  = report_Server + 'RPT_BARGE_TRIP';
+
+// DropdownList
+var obj_html_Site = null;
+
+$(document).ready(function () {
+
+    $(document).attr('title', 'Barge Trip Report : Mercy');
+
+    $(window).resize(function () {
+        resize_Table();
+    });
+
+    $("#txtPeriod").datepicker({
+        format: 'mm-yyyy',
+        autoclose: true,
+        startView: "months",
+        minViewMode: "months"
+    }).on('changeDate', function (selected) {
+        Show_Report();
+    });
+    $('#txtPeriod').datepicker('update', new Date());
+
+        
+    $('#btnFeedback').click(function (e) {
+        Feedback_Form_Show();
+    });
+    
+    Create_ddl_Site();
+    
+    get_user_menu = '1';
+    get_user_relation = '1';
+    
+    Show_UserInformation();
+  
+});
+
+function Show_Report(){
+    var site = $("#ddl_Site").val();
+    
+    // -- Date
+    var datePeriod = $("#txtPeriod").data('datepicker').getFormattedDate('yyyy-mm-dd');
+    
+    $('#frmReport').prop('src', url_Report + '&p_site=' + site + '&p_dateTime=' + datePeriod );
+    $('#frmReport').show();  
+}
+
+function Show_UserInformation() {
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/User/Info'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation, 'check_page': current_Page_URL}
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // make it "Intuitive"
+            if ( ! permission.Is_View){
+                alert('Permission is not enough. Read access is needed.');
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            after_GetUserInfo(data.User);
+            uInfo = data.User;
+            
+            Populate_Data_ddl_Site();
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Create_ddl_Site() {
+    if (obj_html_Site != null) return;
+
+    obj_html_Site = $('#ddl_Site').select2({
+        placeholder: 'Select Site'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Site').change(function (e) {
+        OnChange_ddl_Site();
+    });
+}
+
+function OnChange_ddl_Site() {
+    //if (ignore_trigger_change_ddl_Site) return;
+
+    Show_Report();
+}
+
+function Clear_ddl_Site() {
+    
+    // Clear DropdownList
+    //$('#ddl_Site').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Site();
+}
+
+function Populate_Data_ddl_Site() {
+    try {
+        
+        var option;
+        var first = '';
+        
+        uInfo.Relations.Sites.forEach(
+            function (item) {
+                // create the option and append to Select2
+                option = new Option(item.SiteName, item.SiteId, true, true);
+                obj_html_Site.append(option);//.trigger('change');
+                
+                if (first == '') first = item.SiteId;
+            }
+        );
+
+        // Inisial value for "Site"
+        ignore_trigger_change_ddl_Site = true;
+        $('#ddl_Site').val(first).trigger('change');
+        ignore_trigger_change_ddl_Site = false;
+    }catch(err){}
+}
+
+
+
+
+</script>
+

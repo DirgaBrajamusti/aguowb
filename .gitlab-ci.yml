@@ -1,19 +1,156 @@
-stages:
-  - build
-  - push
-
 variables:
-  DOCKER_DRIVER: windowsfilter
+ NUGET_PATH: 'C:\Tools\Nuget\nuget.exe'
+ MSBUILD_PATH: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe'
+# XUNIT_PATH: packages\xunit.runner.console.2.3.1\tools\net452
+# UNITTEST_FOLDER: '.\tests\CiCdExample.Tests\bin\Release\'
+ MSBUILD_PATH_PROD: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe'
 
-build_image:
-  stage: build
-  tags:
-    - saas-windows-medium-amd64
-  before_script:
-    - Start-Service -Name "docker"
-  script:
-    - docker build -t ${CI_REGISTRY_IMAGE}:321 .
-    - docker login -u ${CI_REGISTRY_USER} -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker push ${CI_REGISTRY_IMAGE}:321
+stages:
+ - build
+ # - test
+ - deploy
+ - build-uat
+ - deploy-uat
+ - build-Production
+ - deploy-Production
+
+build_job:
+ stage: build
+ tags :
+   - dev-deploy-frontend
+ only:
+   - develop
+ except :
+   - master
+   - UAT
+ script:
+   - '& mkdir Publish'
+   - '& "$env:NUGET_PATH" restore'
+   - '& "$env:MSBUILD_PATH" $PROJECT_FOLDER /p:PublishUrl=$PublishUrl /p:DeployOnBuild=true /p:Configuration=Release /P:PublishProfile=FolderProfile.pubxml'
+ artifacts:
+   expire_in: 2 days
+   paths:
+     - '.\Publish\'
+     - '$env:UNITTEST_FOLDER'
+     - '.\$env:XUNIT_PATH\*.*'
+
+# test_job:
+#   stage: test
+#   only:
+#     - branches
+#   script:
+#     - '& "$env:XUNIT_PATH\xunit.console.exe" "$env:UNITTEST_FOLDER\CiCdExample.Tests.dll"'
+#   dependencies:
+#     - build_job
+
+deploy_job:
+ stage: deploy
+ tags :
+   - dev-deploy-frontend
+ only:
+   - develop
+ except :
+   - master
+   - UAT
+ script:
+   # - 'cd .\Publish\'
+   - 'dir'
+   - 'xcopy /y /s "C:\_OurTeamWorks_Development\itm-mercy-frontend-publish\*.*" "C:\inetpub\wwwroot\"'
+ dependencies:
+   - build_job
+   #- test_job\CiCdExample\CiCdExample.csproj /p:DeployOnBuild=true /p:Configuration=Release /P:PublishProfile=FolderProfile.pubxml'
+ artifacts:
+   expire_in: 2 days
+   paths:
+     - '.\Publish\'
+    #  - '$env:UNITTEST_FOLDER'
+    #  - '.\$env:XUNIT_PATH\*.*'
+
+
+build_job_uat:
+  stage: build-uat
+  tags :
+    - uat-frontend-mercy
   only:
-    - main
+    - UAT
+  except :
+    - master
+    - develop
+  script:
+    - '& "$env:NUGET_PATH" restore'
+    - '& "$env:MSBUILD_PATH" $PROJECT_FOLDER /p:PublishUrl=$PublishUrl /p:DeployOnBuild=true /p:Configuration=Release /P:PublishProfile=FolderProfile.pubxml'
+    - if(![System.IO.File]::Exists("$PUBLISH_FOLDER\exclude.txt")){ New-Item $PUBLISH_FOLDER\exclude.txt; Set-Content $PUBLISH_FOLDER\exclude.txt 'web.config'  } 
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - '.\Publish\'
+      - '$env:UNITTEST_FOLDER'
+      - '.\$env:XUNIT_PATH\*.*'
+
+deploy_job_uat:
+  stage: deploy-uat
+  tags :
+    - uat-frontend-mercy
+  only:
+    - UAT
+  except :
+    - master
+    - develop
+  script:
+    # - 'cd .\Publish\'
+    - 'dir'
+    - 'xcopy /y /s "$PUBLISH_FOLDER\*.*" "C:\inetpub\wwwroot\" /EXCLUDE:$PUBLISH_FOLDER\exclude.txt'
+  dependencies:
+    - build_job_uat
+    #- test_job\CiCdExample\CiCdExample.csproj /p:DeployOnBuild=true /p:Configuration=Release /P:PublishProfile=FolderProfile.pubxml'
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - '.\Publish\'
+      #  - '$env:UNITTEST_FOLDER'
+      #  - '.\$env:XUNIT_PATH\*.*' 
+
+build_job_production:
+  stage: build-Production
+  tags :
+    - production-mercy-fe
+  only:
+    - master
+  except :
+    - develop
+    - uat
+  script:
+    - '& "$env:NUGET_PATH" restore'
+    - '& "$env:MSBUILD_PATH_PROD" $PROJECT_FOLDER /p:PublishUrl=$PublishUrl /p:DeployOnBuild=true /p:Configuration=Release /P:PublishProfile=FolderProfile.pubxml'
+    - if(![System.IO.File]::Exists("$PUBLISH_FOLDER\exclude.txt")){ New-Item $PUBLISH_FOLDER\exclude.txt; Set-Content $PUBLISH_FOLDER\exclude.txt 'web.config'  } 
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - '.\Publish\'
+      - '$env:UNITTEST_FOLDER'
+      - '.\$env:XUNIT_PATH\*.*'
+
+deploy_job_production:
+  stage: deploy-Production 
+  tags :
+    - production-mercy-fe
+  only:
+    - master
+  except :
+    - develop
+    - uat
+  script:
+    # - 'cd .\Publish\'
+    - 'dir'
+    - 'xcopy /y /s "$PUBLISH_FOLDER\*.*" "C:\inetpub\wwwroot\" /EXCLUDE:$PUBLISH_FOLDER\exclude.txt'
+  dependencies:
+    - build_job
+    #- test_job\CiCdExample\CiCdExample.csproj /p:DeployOnBuild=true /p:Configuration=Release /P:PublishProfile=FolderProfile.pubxml'
+  artifacts:
+    expire_in: 2 days
+    paths:   
+      - '.\Publish\' 
+      #  - '$env:UNITTEST_FOLDER'
+      #  - '.\$env:XUNIT_PATH\*.*'
+  #  when: 
+    #   - manual

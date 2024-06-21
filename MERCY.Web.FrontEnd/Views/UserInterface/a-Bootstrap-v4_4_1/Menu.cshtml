@@ -1,0 +1,633 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.text_search {
+  background-color: #FFFFFF !important;
+  border: 1px solid #CBCBCB !important;
+  border-radius: 4px !important;
+  height: 34px !important;
+  padding-left:27px !important;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+.icon_action {
+    background-color: #463191;
+    text-align: center !important;
+    border-top:0px !important;
+}
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Menu
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Menu
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0" style="padding: 0px 20px !important;">
+            <div class="row margin_padding_0" style="margin-bottom:20px !important;">
+                <div class="col col-md margin_padding_0" style="margin:20px 10px 0px 0px !important;">
+                    <div>
+                        <div class="mercy_button" style="width:100px;display:none" id="btnAdd"><div class="mercy_text_center">Add New</div></div>
+                    </div>
+                </div>
+                <div class="col col-md-auto margin_padding_0" style="margin-top:20px !important;">
+                    <div style="width:250px;">
+                        <div>
+                            <input type="text" id="txtSearch_Name" value="" class="shadow-none text_search" style="width: 250px !important;" placeholder="Search" onkeyup="OnKeyUp_Text(this)"/>
+                        </div>
+                        <div style="height:20px;width:100%;padding:0px 0px 0px 5px !important;margin:-32px 0px 0px 0px !important;">
+                            <img src="/images/ic-search.png"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0">
+                <table id="mercyTable" class="display nowrap table table-striped mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>No_Line</th>
+                            <th><div style="color:white;text-align: center !important;">Action</div></th>
+                            <th>No</th>
+                            <th><div style="color:white;text-align: center !important;">API</div></th>
+                            <th>#ID</th>
+                            <th>Level</th>
+                            <th>Parent</th>
+                            <th>Menu</th>
+                            <th>Url</th>
+                            <th>Icon</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+// Flag
+var is_still_AJAX_dataList = false;
+
+// DataGrid
+var obj_html_Table;
+
+// row
+var isNew = false;
+var is_Mode_Editor = false;
+var lineNumber_Data = 0;
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+var object_id_Deleted = [];
+
+$(document).ready(function (){
+    $(document).attr('title', 'Menus - List : Mercy');
+
+    $(window).resize(function (){
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+
+    $('#btnAdd').click(function (e){
+        processLink_Add();
+    });
+    
+    $('#btnSave').click(function (e){
+        SaveData();
+    });
+    
+    $('#btnViewData').click(function (e){
+        Populate_DataGrid();
+    });
+    
+    Load_Page_List();
+});
+
+function Clear_DataGrid_(p_id){
+    try {
+        $('#' + p_id).DataTable().clear().destroy();
+        //$('#'+p_id).DataTable().destroy();
+    }catch(err){}
+    
+    try {
+        $('#'+p_id+' tbody').empty();
+    }catch(err){}
+}
+
+function Clear_DataGrid(){
+    Create_Table();
+}
+
+function Create_Table(){
+    Clear_DataGrid_('mercyTable');
+
+    try {
+        obj_html_Table = $('#mercyTable').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                {
+                    "render": function (data, type, full, meta){
+                        return lineNumber_Data;
+                    }
+                }
+                , {
+                    render: function (data, type, full, meta) {
+                        return '<div style="width:50px !important;">'+
+                                '<input type="hidden" id="data_RecordId' + object_id_additional + '" value="' + full.MenuId + '"/>' +
+                                '<input type="hidden" id="data_ParentId' + object_id_additional + '" value="' + full.ParentId + '"/>' +
+                                '<input type="hidden" id="data_MenuName' + object_id_additional + '" value="' + full.MenuName + '"/>' +
+                                '<i id="data_link_Edit' + object_id_additional + '" onclick="javascript:processLink_Edit(this)" class="fa fa-edit" style="cursor: pointer;font-size: 20px;color:white;' + (isNew?'display:none;':(permission.Is_Edit?'':'display:none;')) + '" title="Edit"></i>' +
+                                '<i id="data_link_Delete' + object_id_additional + '" onclick="javascript:processLink_Delete(this)" class="fa fa-trash" style="cursor: pointer;font-size: 20px;color:white;margin-left:10px;' + (isNew?'display:none;':(permission.Is_Delete?'':'display:none;')) + '" title="Delete"></i>' +
+                                '<i id="data_link_Save' + object_id_additional + '" onclick="javascript:processLink_Save(this)" class="fa fa-save" style="cursor: pointer;font-size: 20px;color:white;' + (isNew?'':'display:none;') + '" title="Save"></i>' +
+                                '<i id="data_link_Cancel' + object_id_additional + '" onclick="javascript:processLink_Cancel(this)" class="fa fa-times" style="cursor: pointer;font-size: 20px;color:white;margin-left:10px;' + (isNew?'':'display:none;') + '" title="Cancel"></i>'
+                                '</div>'
+                                ;
+                    }
+                    , className: "mercy_action_icon"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return (isNew?'':lineNumber_Data.toString() + '.');
+                    }
+                }
+                , {
+                    className: "icon_action", "render": function (data, type, full, meta) {
+                        return '<a href="/Menuv/Form?.id='+full.MenuId+'"><i class="fa fa-edit" style="cursor: pointer;font-size: 20px;color:white" title="Detail API"></i></a>';
+                    }
+                }
+                , { "data": "MenuId", "name": "MenuId", "autoWidth": true }
+                , { "data": "Level", "name": "Level", "autoWidth": true }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Parent_label' + object_id_additional + '">' + full.ParentName + '</span>' +
+                               '<input type="text" id="data_Parent_txt' + object_id_additional + '" class="shadow-none" value="' + full.ParentId + '" ' + ' style="' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_MenuName_label' + object_id_additional + '">' + full.Name2 + '</span>' +
+                               '<input type="text" id="data_MenuName_txt' + object_id_additional + '" class="shadow-none" value="" ' + ' style="' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Url_label' + object_id_additional + '">' + full.Url + '</span>' +
+                               '<input type="text" id="data_Url_txt' + object_id_additional + '" class="shadow-none" value="" ' + ' style="' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Logo_label' + object_id_additional + '">' + full.Logo + '</span>' +
+                               '<input type="text" id="data_Logo_txt' + object_id_additional + '" class="shadow-none" value="" ' + ' style="' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Ordering_label' + object_id_additional + '">' + (isNew?'':full.Ordering) + '</span>' +
+                               '<input type="text" id="data_Ordering_txt' + object_id_additional + '" class="shadow-none" value="' + full.Ordering + '" ' + ' style="' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Status_label' + object_id_additional + '" style="' + (isNew?'display:none;':'') + '">' + (full.IsActive.toString().toUpperCase()=="TRUE"?'Active':'In-Active') + '</span>' +
+                               '<input type="checkbox" id="data_Status_chk' + object_id_additional + '" class="shadow-none" ' + ' style="' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                }
+            ]
+            , "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+                ,{
+                    targets: [1]
+                    , "orderable": false
+                    , width: "120px"
+                }
+                ,{
+                    "targets": [2],
+                    "orderable": false
+                }
+                ,{
+                    targets: [3,4,5]
+                    , width: "20px"
+                }
+                ,{
+                    targets: [6]
+                    , width: "140px"
+                }
+                ,{
+                    targets: [9]
+                    , width: "100px"
+                }
+                ,{
+                    targets: [10]
+                    , width: "70px"
+                }
+                ,{
+                    targets: [11]
+                    , width: "70px"
+                }
+            ]
+            //, "order": [[3, 'desc'], [4, 'asc']]
+            , "order": [[0, 'asc']]
+        });
+
+        obj_html_Table.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }catch(err){}
+}
+
+function Populate_DataGrid(){
+    if (is_still_AJAX_dataList) return;
+    
+    is_still_AJAX_dataList = true;
+    
+    Clear_DataGrid();
+    
+    // reset
+    lineNumber_Data = 0;
+    object_id_Created = [];
+    object_id_Deleted = [];
+    
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/Menu'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation, txt:$('#txtSearch_Name').val()}
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            is_still_AJAX_dataList = false;
+            
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // Special Purpose, getting information of CurrentUser
+            if (get_user_menu == '1'){
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+                
+                Create_Table();
+            }
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // make it "Intuitive"
+            Display_Buttons();
+            Display_Buttons_InLine_Editing();
+            
+            // assign Data to Table
+            /*try {
+                obj_html_Table.rows.add(data.Items); // add to DataTable instance
+                obj_html_Table.draw(); // always redraw
+            }catch(err){}*/
+            
+            data.Items.forEach(
+                function (item){
+                    isNew = false;
+                    object_Created_Count++;
+                    lineNumber_Data++;
+                    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                    
+                    // save to Array
+                    object_id_Created.push(object_id_additional);
+                    
+                    // add to Table
+                    obj_html_Table.row.add(item).draw(false);
+                }
+            );
+            
+            // Resize Table: because this DataTable is filled with new Data
+            resize_Table();
+        },
+        error: function (error){
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+function processLink_Add(){
+    // -- Global Flag
+    if (is_Mode_Editor) return;
+    
+    // create "Record_Item"
+    var item = {CreatedOn_Str:'', CreatedOn_Str2:'', FullName:'', MenuId:-1, MenuName:'', IsActive:false
+                    , Url:'', Logo:'', Ordering:1, ParentId:0, ParentName:'', Name2:'', Level:0
+                    , CreatedBy: 0, CreatedOn : null, LastModifiedBy : 0, LastModifiedOn : null}
+    
+    // flag for "New Record"
+    isNew = true;
+    
+    // do "Counting"
+    object_Created_Count++;
+    lineNumber_Data++;
+    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+    
+    // save to Array
+    object_id_Created.push(object_id_additional);
+    
+    // add to Table
+    obj_html_Table.row.add(item).draw(false);
+    
+    is_Mode_Editor = true;
+}
+
+function processLink_Edit(p_this){
+    // -- Global Flag
+    if (is_Mode_Editor) return;
+    
+    // just reminder about Pattern
+    // pattern is: {LABEL}'_' + object_Created_Count + '_' + lineNumber_Data;
+    
+    try {
+        var target_id = p_this.id;
+        var target_id_additional = target_id.replace('data_link_Edit', '');
+        
+        $('#data_link_Edit' + target_id_additional).hide();
+        $('#data_link_Delete' + target_id_additional).hide();
+        $('#data_link_Save' + target_id_additional).show();
+        $('#data_link_Cancel' + target_id_additional).show();
+        
+        // Firstly, copy data
+        var isChecked = ($('#data_Status_label' + target_id_additional).text() == 'Active');
+        $('#data_Status_chk' + target_id_additional).prop("checked", isChecked);
+        $('#data_MenuName_txt' + target_id_additional).val($('#data_MenuName' + target_id_additional).val());
+        $('#data_Parent_txt' + target_id_additional).val($('#data_ParentId' + target_id_additional).val());
+        $('#data_Url_txt' + target_id_additional).val($('#data_Url_label' + target_id_additional).text());
+        $('#data_Logo_txt' + target_id_additional).val($('#data_Logo_label' + target_id_additional).text());
+        $('#data_Ordering_txt' + target_id_additional).val($('#data_Ordering_label' + target_id_additional).text());
+        
+        // Secondly, set Show/Hide
+        $('#data_Status_label' + target_id_additional).hide();
+        $('#data_Status_chk' + target_id_additional).show();
+        $('#data_MenuName_label' + target_id_additional).hide();
+        $('#data_MenuName_txt' + target_id_additional).show();
+        $('#data_Parent_label' + target_id_additional).hide();
+        $('#data_Parent_txt' + target_id_additional).show();
+        $('#data_Url_label' + target_id_additional).hide();
+        $('#data_Url_txt' + target_id_additional).show();
+        $('#data_Logo_label' + target_id_additional).hide();
+        $('#data_Logo_txt' + target_id_additional).show();
+        $('#data_Ordering_label' + target_id_additional).hide();
+        $('#data_Ordering_txt' + target_id_additional).show();
+    }catch(err){}
+    
+    is_Mode_Editor = true;
+}
+
+function processLink_Cancel(p_this){
+    // just reminder about Pattern
+    // pattern is: {LABEL}'_' + object_Created_Count + '_' + lineNumber_Data;
+    
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Cancel', '');
+        
+    try {
+        $('#data_link_Edit' + target_id_additional).show();
+        $('#data_link_Delete' + target_id_additional).show();
+        $('#data_link_Save' + target_id_additional).hide();
+        $('#data_link_Cancel' + target_id_additional).hide();
+        
+        $('#data_Status_label' + target_id_additional).show();
+        $('#data_Status_chk' + target_id_additional).hide();
+        $('#data_MenuName_label' + target_id_additional).show();
+        $('#data_MenuName_txt' + target_id_additional).hide();
+        $('#data_Parent_label' + target_id_additional).show();
+        $('#data_Parent_txt' + target_id_additional).hide();
+        $('#data_Url_label' + target_id_additional).show();
+        $('#data_Url_txt' + target_id_additional).hide();
+        $('#data_Logo_label' + target_id_additional).show();
+        $('#data_Logo_txt' + target_id_additional).hide();
+        $('#data_Ordering_label' + target_id_additional).show();
+        $('#data_Ordering_txt' + target_id_additional).hide();
+    }catch(err){}
+    
+    isNew = false;
+    is_Mode_Editor = false;
+    
+    var recordId = $('#data_RecordId' + target_id_additional).val();
+    if (recordId == '-1'){
+        action = 'Create';
+    }else{
+        action = 'Edit';
+        return;
+    }
+    
+    try {
+        var lineFound = -1;
+        var line = 0;
+        $.each(object_id_Created, function( i, val ){
+            line++;
+            if (val == target_id_additional)
+            {
+                lineFound = line;
+            }
+        });
+        
+        if (lineFound >= 0){
+            var $rows = $("#mercyTable tr");
+            //lineFound--;
+            $rows.eq(lineFound).hide();
+        }
+    }catch(err){}
+}
+
+function processLink_Save(p_this){
+    var action = 'Create';
+    
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Save', '');
+    
+    if ($('#data_MenuName_txt' + target_id_additional).val() == ''){
+        alert('Name must not be empty!');
+        return;
+    }
+    
+    var recordId = $('#data_RecordId' + target_id_additional).val();
+    if (recordId == '-1'){
+        action = 'Create';
+    }else{
+        action = 'Edit';
+    }
+    
+    // data to AJAX
+    $.ajax({
+        url: api_Request + '/Api/Menu/'+action
+        , type: 'POST'
+        , data: {'.id':recordId
+                , 'menuname':$('#data_MenuName_txt' + target_id_additional).val()
+                , 'isactive':ValueBit('#data_Status_chk' + target_id_additional)
+                , 'parentid':$('#data_Parent_txt' + target_id_additional).val()
+                , 'url':$('#data_Url_txt' + target_id_additional).val()
+                , 'logo':$('#data_Logo_txt' + target_id_additional).val()
+                , 'ordering':$('#data_Ordering_txt' + target_id_additional).val()
+        }
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)){
+                // empty data
+                alert('empty data');
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            isNew = false;
+            is_Mode_Editor = false;
+
+            alert('Success');
+            
+            Populate_DataGrid();
+        },
+        error: function (error){
+            $(this).remove();
+        }
+    });
+}
+
+function processLink_Delete(p_this){
+    // -- Global Flag
+    if (is_Mode_Editor) return;
+    
+    if ( ! confirm('Are you sure to delete ?')) return;
+    
+    var action = 'Delete';
+    
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Delete', '');
+        
+    // data to AJAX
+    $.ajax({
+        url: api_Request + '/Api/Menu/'+action
+        , type: 'GET'
+        , data: {'.id':$('#data_RecordId' + target_id_additional).val()}
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)){
+                // empty data
+                alert('empty data');
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            alert('Success Delete');
+                    
+            Populate_DataGrid();
+        },
+        error: function (error){
+            $(this).remove();
+        }
+    });
+}
+
+function OnKeyUp_Text(p_this){
+    Populate_DataGrid();
+}
+
+function link_Detail_API(v) {
+    window.location = mercyUrl('/Menuv/Form') + "?.id=" + v;
+}
+
+</script>

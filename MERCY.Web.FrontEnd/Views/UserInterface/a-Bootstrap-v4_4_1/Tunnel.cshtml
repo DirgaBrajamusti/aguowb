@@ -1,0 +1,1141 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.select2-selection__choice__remove {
+    float: right;
+    margin-left: 5px /* I added to separate a little bit */
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #00b4a5 !important;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    /*cursor: default;*/
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+    background-color: #00b4a5 !important;
+    color: #FFFFFF !important;
+    font-family: 'Poppins-Regular';
+    /*font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    text-align: left;*/
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #FFFFFF !important;
+}
+
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    /*height: 34px !important;*/
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+.select2-selection__choice {
+    background-color: #00B4A5;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+    height: 23px;
+    font-family: 'Poppins-Regular';
+}
+
+.select2-selection__choice {
+    padding-top: 3px !important;
+}
+
+.select2-selection select2-selection--single {
+    height: 32px !important;
+}
+
+.select2-container .select2-selection--multiple{
+    min-height:80px !important;
+}
+
+.active {
+    color: #00BDAA;
+    line-height: 14px;
+    text-align: left;
+    font-weight: bold;
+    font-style: italic;    
+}
+.inactive {
+    color: #FD5151;
+    line-height: 14px;
+    text-align: left;
+    font-weight: bold;
+    font-style: italic;    
+}
+
+.modal-history-xl {
+    max-width: 920px;
+}
+
+.mercy_button_2_fill{
+    background-color: #00B4A5;
+    border: 1px solid #00B4A5;
+    border-radius: 4px;
+    width: 78px;
+    height: 34px;
+}
+
+.mercy_button_2_fill .mercy_text_center{
+    color: #FFFFFF;
+    font-family: 'Poppins-SemiBold';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+}
+
+.mercy_button_2_fill:hover{
+    cursor: pointer;
+}
+#tableHistory_info{display:none;}
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet"/>
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Tunnel
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Tunnel
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:100px !important;">
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 70px;">
+                <div style="width:100%;padding:10px 0px !important;">
+                    Company:
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 200px;">
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Company" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md margin_padding_0">
+            <div class="row margin_padding_0">
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 15px 0px 15px !important;">
+            <div style="width:180px;">
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div>
+                        <input type="text" id="txtSearch_Name" value="" class="shadow-none text_search" style="width:100%;" placeholder="Search" onkeyup="OnKeyUp_Text(this)"/>
+                    </div>
+                    <div style="height:20px;width:100%;padding:0px 0px 0px 5px !important;margin:-32px 0px 0px 0px !important;">
+                        <img src="/images/ic-search.png"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0" style="padding: 0px 20px !important;">
+            <div class="row margin_padding_0" style="margin-bottom:20px !important;">
+                <div class="col col-md margin_padding_0" style="margin:20px 10px 0px 0px !important;">
+                    <div>
+                        <div class="mercy_button" style="width:100px;display:none" id="btnAdd">
+                            <div class="mercy_text_center">Add New</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0">
+                <table id="mercyTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                    <tr>
+                        <th>TunnelId</th>
+                        <th>No_Line</th>
+                        <th>
+                            <div style="color:white;text-align: center !important;width:100%">Action</div>
+                        </th>
+                        <th>No</th>
+                        <th>Company</th>
+                        <th>
+                            <div style="text-align: center !important;">Status</div>
+                        </th>
+                        <th>Name</th>
+                        <th>Product</th>
+                        <th>Effective Date</th>
+                        <th>Created by</th>
+                        <th>Approval</th>
+                        <th>Remark</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_History" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-history-xl">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px; padding-left: 22px;">
+                <div class="row margin_padding_0">
+                    <div id="titleGroupModal" class="title-modal">History Tunnel</div>
+                </div>
+                <div class="row margin_padding_0">
+                    <table id="tableHistory" class="table table-striped table-hover mercy_table mercy_table_header display nowrap" style="width:100%;">
+                        <thead>
+                        <tr>
+                            <th>RecordId</th>
+                            <th>No_Line</th>
+                            <th style="min-width:20px !important;">No</th>
+                            <th style="min-width:100px !important;">Company</th>
+                            <th style="min-width:150px !important;">Name</th>
+                            <th style="min-width:150px !important;">Product</th>
+                            <th style="min-width:100px !important;">Effective Date</th>
+                            <th style="min-width:100px !important;">Remark</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="row margin_padding_0" style="margin: 20px 5px 0px 0px !important;">
+                    <div class="col col-md-auto margin_padding_0" style="margin-left: 20px !important;">
+                        <div onclick="$('#modal_History').modal('hide');" class="mercy_button_2" style="width:100px;" id="btnHistory_Close">
+                            <div class="mercy_text_center">Close</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_Acknowledge" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px;">
+                <div class="flex-column">
+                    <div class="d-flex flex-column justify-content-center">
+                        <i class="fa fa-5x fa-exclamation-circle align-self-center" style="color:orange"></i>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <p class="font-weight-bold text-center">Acknowledge</p>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <p class="text-center">Are you sure want to acknowledge?</p>
+                    </div>
+                    <div class="d-flex flex-row justify-content-center">
+                        <div onclick="processLink_Acknowledge()" class="mercy_button_2 mr-2" style="width:100px;" id="btnAcknowledge_Yes">
+                            <div class="mercy_text_center">Yes</div>
+                        </div>
+                        <div onclick="$('#modal_Acknowledge').modal('hide');" class="mercy_button_2_fill ml-2" style="width:100px;" id="btnAcknowledge_No">
+                            <div class="mercy_text_center">No</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+// Flag
+var is_still_AJAX_dataList = false;
+
+// DataGrid
+var obj_html_Table;
+var obj_html_Site;
+var obj_html_Product;
+var obj_html_Table_History;
+
+// row
+var isNew = false;
+var is_Mode_Editor = false;
+var lineNumber_Data = 0;
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+var object_id_Deleted = [];
+var products = [];
+var acknowledgeId = null;
+
+$(document).ready(function (){
+    $(document).attr('title', 'Tunnel - List : Mercy');
+
+    $(window).resize(function (){
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+
+    $('#btnAdd').click(function (e){
+        processLink_Add();
+    });
+    
+    $('#btnSave').click(function (e){
+        SaveData();
+    });
+    
+    $('#btnViewData').click(function (e){
+        Populate_DataGrid();
+    });
+    
+    Create_ddl_Company();
+    
+    Load_Page_List();
+});
+
+function Clear_DataGrid_(p_id){
+    try {
+        $('#' + p_id).DataTable().clear().destroy();
+        //$('#'+p_id).DataTable().destroy();
+    }catch(err){}
+    
+    try {
+        $('#'+p_id+' tbody').empty();
+    }catch(err){}
+}
+
+function Clear_DataGrid(){
+    Create_Table();
+}
+
+function Create_Table(){
+    Clear_DataGrid_('mercyTable');
+
+    try {
+        obj_html_Table = $('#mercyTable').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                { "data": "TunnelId", "name": "TunnelId", "autoWidth": true }
+                , {
+                    "render": function (data, type, full, meta){
+                        return lineNumber_Data;
+                    }
+                    , visible: false
+                }
+                , {
+                    render: function (data, type, full, meta) {
+                        return '<div>'+
+                                '<input type="hidden" id="data_RecordId' + object_id_additional + '" value="' + full.TunnelId + '"/>' +
+                                '<i id="data_link_Edit' + object_id_additional + '" onclick="javascript:processLink_Edit(this)" class="fa fa-edit" style="cursor: pointer;font-size: 20px;color:white;' + (isNew?'display:none;':(permission.Is_Edit?'':'display:none;')) + '" title="Edit"></i>' +
+                                '<img src="../../../images/ic-history.png" id="data_link_History' + object_id_additional + '" onclick="javascript:processLink_History(' + full.TunnelId + ')" style="cursor: pointer;width: 24px;height: 24px;color:white;margin-left:10px;margin-top: -10px;' + (isNew?'display:none;':'') + '" alt="History">' +
+                                '<i id="data_link_Acknowledge' + object_id_additional + '" onclick="javascript:Show_Acknowledge_Modal(this)" class="fa fa-check" style="cursor: pointer;font-size: 20px;color:white;margin-left:10px;' + (isNew?'display:none;':(permission.Is_Edit?'':'display:none;')) + '" title="Acknowledge"></i>' +
+                                '<i id="data_link_Delete' + object_id_additional + '" onclick="javascript:processLink_Delete(this)" class="fa fa-trash" style="cursor: pointer;font-size: 20px;color:white;margin-left:10px;' + (isNew?'display:none;':(permission.Is_Delete?'':'display:none;')) + '" title="Delete"></i>' +
+                                '<i id="data_link_Save' + object_id_additional + '" onclick="javascript:processLink_Save(this)" class="fa fa-save" style="cursor: pointer;font-size: 20px;color:white;' + (isNew?'':'display:none;') + '" title="Save"></i>' +
+                                '<i id="data_link_Cancel' + object_id_additional + '" onclick="javascript:processLink_Cancel(this)" class="fa fa-times" style="cursor: pointer;font-size: 20px;color:white;margin-left:10px;' + (isNew?'':'display:none;') + '" title="Cancel"></i>'
+                                '</div>'
+                                ;
+                    }
+                    , className: "mercy_action_icon"
+                    , orderable: false
+                    , width: "165px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return (isNew?'':lineNumber_Data.toString() + '.');
+                    }
+                    , className: "mercy_text_right"
+                    , orderable: false
+                    , width: "20px"
+                }
+                , { "data": "CompanyCode", "name": "CompanyCode", width: "80px" }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Status_label' + object_id_additional + '"' + (full.IsActive.toString().toUpperCase()=="TRUE"?' class="active" ':' class="inactive" ') +' style="' + (isNew?'display:none;':'') + '">' + (full.IsActive.toString().toUpperCase()=="TRUE"?'Active':'In-Active') + '</span>' +
+                               '<input type="checkbox" id="data_Status_chk' + object_id_additional + '" class="shadow-none" ' + ' style="' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Name_label' + object_id_additional + '">' + full.Name + '</span>' +
+                               '<input type="text" id="data_Name_txt' + object_id_additional + '" class="shadow-none" value="" ' + ' style="width:100%;' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                    , orderable: false
+                    , width: "100px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Product_label' + object_id_additional + '" style="' + (isNew?'display:none;':'') + '">' + full.Product_Str + '</span>' +
+                               '<span id="data_Product_label_Val' + object_id_additional + '" style="display:none;">' + full.ProductId + '</span>' +
+                               '<div id="ddl_Product_Outer' + object_id_additional + '" style="display:none;"><select multiple="multiple" id="ddl_Product' + object_id_additional + '" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="height:500px;width:100%;' + (isNew?'':'display:none;') + '"></select></div>'
+                               ;
+                    }
+                    , width: "200px"
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return '<span id="data_EffectiveDate_label' + object_id_additional + '">' + `${full.EffectiveDate ? full.EffectiveDate_Str : '-'}` + '</span>' +
+                               '<input id="data_EffectiveDate_txt' + object_id_additional + '" class="mercy_select mercy_input_text mercy_date"' + ' data-date-format="dd-M-yyyy"' + ' placeholder="dd-M-yyyy"' + ' style="width:100% !important;' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                    }
+                }
+                , { "data": "FullName", "name": "FullName", width: "150px" }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Approval_label' + object_id_additional + '">' + `${full.Approval || '-'}` + '</span>';
+                    }
+                    , orderable: false
+                    , width: "100px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Remark_label' + object_id_additional + '">' + full.Remark + '</span>' +
+                               '<input type="text" id="data_Remark_txt' + object_id_additional + '" class="shadow-none" value="" ' + ' style="width:100%;' + (isNew?'':'display:none;') + '"/>'
+                               ;
+                        }
+                        , orderable: false
+                        , width: "100px"
+                }
+            ]
+            , "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
+            //, "order": [[3, 'desc'], [4, 'asc']]
+            , "order": [[1, 'asc']]
+        });
+
+        obj_html_Table.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }catch(err){}
+}
+
+function Populate_DataGrid(){
+    if (is_still_AJAX_dataList) return;
+    
+    is_still_AJAX_dataList = true;
+    
+    Clear_DataGrid();
+    
+    // reset
+    lineNumber_Data = 0;
+    object_id_Created = [];
+    object_id_Deleted = [];
+    
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/Tunnel'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation, company:$('#ddl_Company').val(), txt:$('#txtSearch_Name').val()}
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            is_still_AJAX_dataList = false;
+            
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // Special Purpose, getting information of CurrentUser
+            if (get_user_menu == '1'){
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+                
+                Create_Table();
+                
+                Populate_Data_ddl_Company();
+            }
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // make it "Intuitive"
+            Display_Buttons();
+            Display_Buttons_InLine_Editing();
+            
+            // assign Data to Table
+            /*try {
+                obj_html_Table.rows.add(data.Items); // add to DataTable instance
+                obj_html_Table.draw(); // always redraw
+            }catch(err){}*/
+            
+            products = data.Products;
+
+            data.Items.forEach(
+                function (item){
+                    isNew = false;
+                    object_Created_Count++;
+                    lineNumber_Data++;
+                    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                    
+                    // save to Array
+                    object_id_Created.push(object_id_additional);
+                    
+                    // add to Table
+                    obj_html_Table.row.add(item).draw(false);
+
+                    Create_ddl_Product('#ddl_Product' + object_id_additional.toString(), item.CompanyCode);
+                    $('#ddl_Product' + object_id_additional.toString()).val(item.Product).trigger('change');
+
+                }
+            );
+            
+            // Resize Table: because this DataTable is filled with new Data
+            resize_Table();
+        },
+        error: function (error){
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+function processLink_Add(){
+    // -- Global Flag
+    if (is_Mode_Editor) return;
+    
+    if ($('#ddl_Company').val() == 'all') return;
+    
+    // create "Record_Item"
+    var item = {CreatedOn_Str:'', CreatedOn_Str2:'', FullName:'', CompanyCode:'', Name:'', Product:'', Product_Str:'', IsActive:false, CompanyName:'', TunnelId:-1
+                    , CreatedBy: 0, CreatedOn : null, LastModifiedBy : 0, LastModifiedOn : null, EffectiveDate_Str: null, Remark: null}
+    
+    // flag for "New Record"
+    isNew = true;
+    
+    // do "Counting"
+    object_Created_Count++;
+    lineNumber_Data++;
+    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+    
+    // save to Array
+    object_id_Created.push(object_id_additional);
+    
+    // add to Table
+    obj_html_Table.row.add(item).draw(false);
+    
+    is_Mode_Editor = true;
+    $('#btnAdd').addClass('mercy_button_Add_disable');
+
+    // Special case for "Selection: multiple"
+    Create_ddl_Product('#ddl_Product' + object_id_additional.toString(), $('#ddl_Company').val());
+    $('#ddl_Product' + object_id_additional.toString()).val(null).trigger('change');
+    $('#ddl_Product_Outer' + object_id_additional.toString()).show();
+    $('#data_EffectiveDate_txt' + object_id_additional).datepicker('setDate', new Date());
+    $('#data_Remark_txt' + object_id_additional).val(null);
+    
+    $('#data_EffectiveDate_label' + object_id_additional).hide();
+    $('#data_EffectiveDate_txt' + object_id_additional).show();
+    $('#data_Remark_label' + object_id_additional).hide();
+    $('#data_Remark_txt' + object_id_additional).show();
+}
+
+function processLink_Edit(p_this){
+    // -- Global Flag
+    if (is_Mode_Editor) return;
+    
+    // just reminder about Pattern
+    // pattern is: {LABEL}'_' + object_Created_Count + '_' + lineNumber_Data;
+    
+    try {
+        var target_id = p_this.id;
+        var target_id_additional = target_id.replace('data_link_Edit', '');
+
+        $('#data_link_Edit' + target_id_additional).hide();
+        $('#data_link_History' + target_id_additional).hide();
+        $('#data_link_Acknowledge' + target_id_additional).hide();
+        $('#data_link_Delete' + target_id_additional).hide();
+        $('#data_link_Save' + target_id_additional).show();
+        $('#data_link_Cancel' + target_id_additional).show();
+        
+        // Firstly, copy data
+        var isChecked = ($('#data_Status_label' + target_id_additional).text() == 'Active');
+        $('#data_Status_chk' + target_id_additional).prop("checked", isChecked);
+        $('#data_Name_txt' + target_id_additional).val($('#data_Name_label' + target_id_additional).text());
+        $('#data_EffectiveDate_txt' + target_id_additional).datepicker('setDate', $('#data_EffectiveDate_label' + target_id_additional).text());
+        $('#ddl_Product' + target_id_additional.toString()).val($('#data_Product_label_Val' + target_id_additional).text()).trigger('change');
+        $('#data_Remark_txt' + target_id_additional).val($('#data_Remark_label' + target_id_additional).text());
+        
+        // Secondly, set Show/Hide
+        $('#data_Status_label' + target_id_additional).hide();
+        $('#data_Status_chk' + target_id_additional).show();
+        $('#data_Name_label' + target_id_additional).hide();
+        $('#data_Name_txt' + target_id_additional).show();
+        $('#data_EffectiveDate_label' + target_id_additional).hide();
+        $('#data_EffectiveDate_txt' + target_id_additional).show();
+        $('#data_Product_label' + target_id_additional).hide();
+        $('#ddl_Product_Outer' + target_id_additional.toString()).show();
+        $('#data_Approval_label' + target_id_additional).show();
+        $('#data_Remark_label' + target_id_additional).hide();
+        $('#data_Remark_txt' + target_id_additional).show();
+    }catch(err){}
+
+    is_Mode_Editor = true;
+    $('#btnAdd').addClass('mercy_button_Add_disable');
+}
+
+function processLink_Cancel(p_this){
+    // just reminder about Pattern
+    // pattern is: {LABEL}'_' + object_Created_Count + '_' + lineNumber_Data;
+    
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Cancel', '');
+        
+    try {
+        $('#data_link_Edit' + target_id_additional).show();
+        $('#data_link_History' + target_id_additional).show();
+        $('#data_link_Acknowledge' + target_id_additional).show();
+        $('#data_link_Delete' + target_id_additional).show();
+        $('#data_link_Save' + target_id_additional).hide();
+        $('#data_link_Cancel' + target_id_additional).hide();
+        
+        $('#data_Status_label' + target_id_additional).show();
+        $('#data_Status_chk' + target_id_additional).hide();
+        $('#data_Name_label' + target_id_additional).show();
+        $('#data_Name_txt' + target_id_additional).hide();
+        $('#data_EffectiveDate_label' + target_id_additional).show();
+        $('#data_EffectiveDate_txt' + target_id_additional).hide();
+        $('#data_Product_label' + target_id_additional).show();
+        $('#ddl_Product_Outer' + target_id_additional).hide();
+        $('#data_Approval_label' + target_id_additional).show();
+        $('#data_Remark_label' + target_id_additional).show();
+        $('#data_Remark_txt' + target_id_additional).hide();
+
+    }catch(err){}
+    
+    isNew = false;
+    is_Mode_Editor = false;
+    $('#btnAdd').removeClass('mercy_button_Add_disable');
+    
+    var recordId = $('#data_RecordId' + target_id_additional).val();
+    if (recordId == '' || recordId == '-1'){
+        action = 'Create';
+    }else{
+        action = 'Edit';
+        return;
+    }
+    
+    try {
+        var lineFound = -1;
+        var line = 0;
+        $.each(object_id_Created, function( i, val ){
+            line++;
+            if (val == target_id_additional)
+            {
+                lineFound = line;
+            }
+        });
+        
+        if (lineFound >= 0){
+            var $rows = $("#mercyTable tr");
+            //lineFound--;
+            $rows.eq(lineFound).hide();
+        }
+    }catch(err){}
+}
+
+function processLink_Save(p_this){
+    var action = 'Create';
+    
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Save', '');
+    
+    var recordId = $('#data_RecordId' + target_id_additional).val();
+    if (recordId == '-1'){
+        action = 'Create';
+    }else{
+        action = 'Edit';
+    }
+    
+    if ($('#data_Name_txt' + target_id_additional).val() == ''){
+        alert('Name must not be empty!');
+        return;
+    }
+
+    if (
+        $('#ddl_Product' + target_id_additional).val() == null
+        || $('#ddl_Product' + target_id_additional).val() == ''){
+        alert('Data is not valid (product is mandatory)');
+        return;
+    }
+    
+    if ($('#ddl_Product' + target_id_additional).val() == '0'){
+        alert('Data is not valid (product is mandatory)');
+        return;
+    }
+    
+    var effectiveDate = $('#data_EffectiveDate_txt' + target_id_additional).datepicker('getDate');
+    // data to AJAX
+    $.ajax({
+        url: api_Request + '/Api/Tunnel/'+action
+        , type: 'POST'
+        , data: {'.id':recordId
+                , 'company':$('#ddl_Company').val()
+                , 'name':$('#data_Name_txt' + target_id_additional).val()
+                , 'product':$('#ddl_Product' + target_id_additional).val()
+                , 'isactive':ValueBit('#data_Status_chk' + target_id_additional)
+                , 'effectiveDate': moment(effectiveDate).format('YYYY-MM-DD')
+                , 'remark': $('#data_Remark_txt' + target_id_additional).val()
+        }
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)){
+                // empty data
+                alert('empty data');
+                return;
+            }
+            
+            if ( ! data.Success){
+                if (data.Message.indexOf('An error occurred while updating the entries') !== -1){
+                    alert('Similar name of Tunnel is not allowed');
+                    return;
+                }
+                
+                alert(data.Message);
+                return;
+            }
+                            
+            isNew = false;
+            is_Mode_Editor = false;
+            
+            if ($('#ddl_Company').val() != 'all'){
+                $('#btnAdd').removeClass('mercy_button_Add_disable');
+            }
+            
+            if (action === 'Edit') {
+                products.forEach(function (v) {
+                    if (v.id === recordId && v.product !== $('#ddl_Product' + target_id_additional).val()) {
+                        var formData = new FormData();
+                        formData.append('.id', recordId)
+                        
+                        $.ajax({
+                            url: api_Request + '/Api/Notification/Tunnel_Edit'
+                            , type: 'POST'
+                            , data: formData
+                            // Don't let jQuery transform `FormData` into string
+                            , processData: false
+                            // Set `contentType` as form-data and normalize form-data sent to BE
+                            , contentType: false
+                            , beforeSend: function (request){
+                                // Set "Token" in HTTP_Header
+                                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+                            }
+                            , cache: false
+                            , success: function (data){
+                                if (!data.Success){
+                                    alert(data.Message);
+                                    return;
+                                }
+                            }
+                            , error: function (error){
+                                $(this).remove();
+                            }
+                        });
+                    }
+                });
+            }
+
+            alert('Success');
+            
+            Populate_DataGrid();
+        },
+        error: function (error){
+            $(this).remove();
+        }
+    });
+}
+
+function processLink_Delete(p_this){
+    // -- Global Flag
+    if (is_Mode_Editor) return;
+    
+    if ( ! confirm('Are you sure to delete ?')) return;
+    
+    var action = 'Delete';
+    
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Delete', '');
+        
+    // data to AJAX
+    $.ajax({
+        url: api_Request + '/Api/Tunnel/'+action
+        , type: 'GET'
+        , data: {'.id':$('#data_RecordId' + target_id_additional).val()}
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)){
+                // empty data
+                alert('empty data');
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+        
+            alert('Success Delete');
+                
+            Populate_DataGrid();
+        },
+        error: function (error){
+            $(this).remove();
+        }
+    });
+}
+
+function processLink_Acknowledge(){
+    // -- Global Flag
+    if (is_Mode_Editor) return;
+    
+    var action = 'Approve';
+    
+    var formData = new FormData();
+    formData.append('.id', acknowledgeId);
+    // data to AJAX
+        $.ajax({
+            url: api_Request + '/Api/Tunnel/'+action
+            , type: 'POST'
+            , data: formData
+            // Don't let jQuery transform `FormData` into string
+            , processData: false
+            // Set `contentType` as form-data and normalize form-data sent to BE
+            , contentType: false
+            , beforeSend: function (request){
+                // Set "Token" in HTTP_Header
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data){
+                if (!$.trim(data)){
+                    // empty data
+                    alert('empty data');
+                    return;
+                }
+                
+                if (!data.Success){
+                    alert(data.Message);
+                    return;
+                }
+            
+                $('#modal_Acknowledge').modal('hide');
+                alert('Acknowledged!');
+                    
+                Populate_DataGrid();
+            },
+            error: function (error){
+                $(this).remove();
+                $('#modal_Acknowledge').modal('hide');
+            }
+        });
+}
+
+function Show_Acknowledge_Modal(p_this) {
+    // -- Global Flag
+    if (is_Mode_Editor) return;
+
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Acknowledge', '');
+
+    acknowledgeId = $('#data_RecordId' + target_id_additional).val();
+    $('#modal_Acknowledge').appendTo("body").modal('show');
+}
+
+function OnKeyUp_Text(p_this){
+    Populate_DataGrid();
+}
+
+
+function Create_ddl_Company() {
+    if (obj_html_Site != null) return;
+
+    obj_html_Site = $('#ddl_Company').select2({
+        placeholder: 'Select Company'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Company').change(function (e) {
+        OnChange_ddl_Company();
+    });
+}
+
+function OnChange_ddl_Company() {
+    if (ignore_trigger_change_ddl_Company) return;
+    
+    if ($('#ddl_Company').val() == 'all'){
+        $('#btnAdd').addClass('mercy_button_Add_disable');
+    }else{
+        $('#btnAdd').removeClass('mercy_button_Add_disable');
+    }
+    
+    Populate_DataGrid();
+}
+
+function Populate_Data_ddl_Company() {
+    Clear_ddl_Company();
+    
+    // add Label: "ALL"
+    var option = new Option('-- ALL', 'all', true, true);
+    obj_html_Site.append(option);//.trigger('change');
+
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/Company/Get_ddl'
+        , type: 'GET'
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if (!$.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            data.Items.forEach(
+                function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.text, item.id, true, true);
+                    obj_html_Site.append(option);//.trigger('change');
+                }
+            );
+
+            // Inisial value
+            ignore_trigger_change_ddl_Company = true;
+            $('#ddl_Company').val('all').trigger('change');
+            $('#btnAdd').addClass('mercy_button_Add_disable');
+            ignore_trigger_change_ddl_Company = false;
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Clear_ddl_Company() {}
+
+function Create_ddl_Product(p_id, p_company) {
+    $(p_id).select2({
+        placeholder: 'Select Product'
+        //, tags: true
+        , multiple: false
+        , tokenSeparators: [',']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+    
+    var option;
+
+    products.forEach(
+        function (item) {
+            // create the option and append to Select2
+            if (item.CompanyCode == p_company){
+                option = new Option(item.ProductName, item.ProductId, true, true);
+                $(p_id).append(option);//.trigger('change');
+            }
+        }
+    );
+}
+
+function processLink_History(p_id){
+    $("#modal_History").appendTo("body").modal('show');
+    
+    Populate_DataGrid_History(p_id);
+}
+
+var isNew_History = false;
+var is_Mode_Editor_History = false;
+var lineNumber_History = 0;
+var object_Created_Count_History = 0;
+var object_id_additional_History = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created_History = [];
+var object_id_Deleted_History = [];
+
+function Populate_DataGrid_History(p_id){
+    Clear_DataGrid_History();
+    
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/Tunnel/History'
+        , type: 'GET'
+        , data: {'.id':p_id}
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            data.Items.forEach(
+                function (item){
+                    isNew_History = false;
+                    object_Created_Count_History++;
+                    lineNumber_History++;
+                    object_id_additional_History = '_' + object_Created_Count_History.toString() + '_' + lineNumber_History.toString();
+                    
+                    // save to Array
+                    object_id_Created_History.push(object_id_additional_History);
+                    
+                    // add to Table
+                    obj_html_Table_History.row.add(item).draw(false);
+                }
+            );
+            
+            $("#tableHistory_wrapper").width(1050);
+        },
+        error: function (error){
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+function Clear_DataGrid_History(){
+    lineNumber_History = 0;
+    object_id_Created_History = [];
+    object_id_Deleted_History = [];
+    
+    Create_Table_History();
+}
+
+function Create_Table_History(){
+    Clear_DataGrid_('tableHistory');
+
+    try {
+        obj_html_Table_History = $('#tableHistory').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": false
+            , "scrollY": true //"200px"
+            , "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                { "data": "RecordId", "name": "RecordId", visible: false, width: "20px" }
+                , {
+                    render: function (data, type, full, meta){
+                        return lineNumber_History;
+                    }
+                    , visible: false
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return (isNew_History?'':lineNumber_History.toString() + '.');
+                    }
+                    , className: "mercy_text_right"
+                    , orderable: true
+                    , width: "20px"
+                }
+                , { "data": "Company", "name": "Company", width: "100px", orderable: true }
+                , { "data": "Name", "name": "Name", width: "150px", orderable: true }
+                , { "data": "Product", "name": "Product", width: "150px", orderable: true }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span>' + `${full.EffectiveDate || '-'}` + '</span>';
+                    }
+                }
+                , { "data": "Remark", "name": "Remark", width: "100px", orderable: true }
+            ]
+            , "order": [[1, 'asc']]
+        });
+            
+        obj_html_Table_History.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        //$("#tableHistory_wrapper").width(1050);
+    }catch(err){}
+}
+
+</script>

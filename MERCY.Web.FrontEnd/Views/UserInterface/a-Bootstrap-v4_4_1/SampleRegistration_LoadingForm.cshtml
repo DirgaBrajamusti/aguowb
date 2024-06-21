@@ -1,0 +1,1094 @@
+﻿@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style scoped>
+    .form-title {
+        color: #4752B1;
+        font-family: 'Poppins-SemiBold';
+        font-size: 15px;
+    }
+
+    .btn-info {
+        background-color: #00B4A5;
+    }
+
+    .btn-outline-info {
+        border: 1px solid #00B4A5;
+    }
+
+    .border-schemes {
+        border: 1px solid #4752B1;
+    }
+
+    .card-schemes {
+        height: 420px;
+        overflow: auto;
+    }
+
+    #tableSchemes_wrapper, #tableReqSchemes_wrapper {
+        width: auto !important;
+    }
+
+    .max-table-schemes {
+        max-height: 300px;
+        overflow: auto;
+    }
+
+    .disabled-input {
+        background-color: #F1F1FC !important;
+        color: #232323 !important;
+    }
+
+    .delete-row {
+        cursor: pointer;
+    }
+
+    .border-print-card {
+        border: solid 1px #000000;
+        border-radius: 5px;
+        width: 13.5cm !important;
+        height: 2.7cm !important;
+        font-size: 11px !important;
+    }
+
+    .modal-xl {
+        max-width: 1050px;
+    }
+
+    #printArea {
+        display: none;
+    }
+
+    textarea {
+        border: 1px solid #AFAFB9;
+        border-radius: 4px;
+        resize: none;
+    }
+
+    @@media print {
+        #uName, #uTitle {
+            display: none;
+        }
+
+        #mainDiv {
+            display: none;
+        }
+
+        #printArea {
+            display: block;
+            overflow: hidden;
+        }
+
+        div.pageBreaker {
+            clear: both;
+            display: block;
+            page-break-after: always;
+        }
+
+        @@page {
+            size: landscape;
+        }
+
+        .title-print {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<div id="mainDiv" class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Sample Registration
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Sample Registration > Add New
+    </div>
+    <div class="card mt-3 p-3 pb-4">
+        <div id="isLoadingData" class="d-flex justify-content-center">
+            <img class="py-3" src="/images/spinner.gif"/>
+        </div>
+        <div id="isShowData" class="row">
+            <div class="col-5">
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Loading Number</p>
+                    <input id="txt_Loading_Number" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Dispatch ID</p>
+                    <input id="txt_Dispatch_Id" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">ETA</p>
+                    <input id="txt_Eta" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Contract</p>
+                    <input id="txt_Contract" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Lot Number</p>
+                    <input id="ddl_Lot_Number" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Remark</p>
+                    <textarea id="ddl_Remark" rows="6" class="w-100 p-2 mercy_input_text text-dark" placeholder="Enter remark"></textarea>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <div id="showFrom">
+                        <p class="mercy_form_Label m-0">Thickness (From)</p>
+                        <input id="ddl_From" type="number" class="w-100 mercy_select mercy_input_text_number px-2 text-dark" placeholder="0">
+                    </div>
+                    <div id="showTo">
+                        <p class="mercy_form_Label m-0">Thickness (To)</p>
+                        <input id="ddl_To" type="number" class="w-100 mercy_select mercy_input_text_number px-2 text-dark" placeholder="0">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col">
+                        <p class="mercy_form_Label m-0">Start Sampling</p>
+                        <div class="input-group date">
+                            <input id="txt_Start_Sampling" class="mercy_select mercy_input_text mercy_date text-dark" style="width:100% !important;" data-date-format="dd-M-yyyy hh:ii" placeholder="select Date" autocomplete="off" />
+                            <div class="input-group-prepend">
+                                <span class="input-group-text mercy_date_icon"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <p class="mercy_form_Label m-0">End Sampling</p>
+                        <div class="input-group date">
+                            <input id="txt_End_Sampling" class="mercy_select mercy_input_text mercy_date text-dark" style="width:100% !important;" data-date-format="dd-M-yyyy hh:ii" placeholder="select Date" autocomplete="off" />
+                            <div class="input-group-prepend">
+                                <span class="input-group-text mercy_date_icon"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Vessel Name</p>
+                    <input id="txt_Vessel_Name" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Customer</p>
+                    <input id="txt_Customer" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">ATA</p>
+                    <input id="txt_Ata" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Product</p>
+                    <input id="txt_Product" class="w-100 mercy_select mercy_input_text disabled-input" disabled>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Tonnage</p>
+                    <input id="ddl_Tonnage" class="w-100 mercy_select mercy_input_text px-2 text-dark" placeholder="Enter Tonnage">
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Location</p>
+                    <input id="ddl_Location" class="w-100 mercy_select mercy_input_text px-2 text-dark" placeholder="Enter Location">
+                </div>
+                <div class="mb-2">
+                    <button id="btnAddToTable" type="button" class="btn btn-info w-100 align-self-end" onclick="addDataToTable()">
+                        Add To Table List
+                    </button>
+                    <div id="activeStatusContainer" class="custom-control custom-switch">
+                        <input id="ddl_IsActive" type="checkbox" class="custom-control-input" onchange="toggleActiveStatus()">
+                        <label id="ddl_IsActive_Label" class="custom-control-label" for="ddl_IsActive">Is Active</label>
+                    </div>
+                    <p id="isLoadingActivate">Loading...</p>
+                </div>
+            </div>
+            <div class="col-2 px-4">
+                <button type="button" class="btn btn-info w-100 mb-3" id="btnRegister" onclick="showLoadingSubmitModal()">
+                    <span id="textRegister">Register</span>
+                </button>
+                <button type="button" class="btn btn-info w-100 mb-3" id="btnSave" onclick="saveChanges()">
+                    Save
+                </button>
+                <button type="button" class="btn btn-outline-info w-100 mb-3" id="btnCancel" onclick="Close_Session_Cancel()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="containerLoadingTable" class="card mt-3 p-3 pb-4">
+        <table id="loadingTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Lot Samples</th>
+                    <th>Tonnage</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="modalLoadingTable" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px;">
+                <div class="card mt-3 p-3 pb-4"  style="overflow: auto!important;">
+                    <table id="submitLoadingTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Site</th>
+                                <th>Sample ID</th>
+                                <th>Client</th>
+                                <th>Project</th>
+                                <th>Date Of Job</th>
+                                <th>Location</th>
+                                <th>Remark</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Loading Number</th>
+                                <th>Vessel Name</th>
+                                <th>Dispatch ID</th>
+                                <th>Customer</th>
+                                <th>ETA</th>
+                                <th>ATA</th>
+                                <th>Contract</th>
+                                <th>Product</th>
+                                <th>Lot Number</th>
+                                <th>Start Sampling</th>
+                                <th>End Sampling</th>
+                                <th>LotSamples</th>
+                                <th>Tonnage</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="my-3 d-flex flex-row justify-content-between">
+                    <div class="d-flex flex-row">
+                        <button id="btnSubmit" type="button" class="btn btn-info w-100 mr-1" onclick="postLoadingData()">Submit</button>
+                        <button id="btnDismiss" type="button" class="btn btn-outline-info w-100 mx-1" onclick="dismissGeneralSubmitModal()">Cancel</button>
+                        <div class="w-100 ml-1">
+                            <div id="spinnerRegister" class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="align-self-center">
+                        <input type="checkbox" id="loadingPrint" name="loadingPrint">
+                        <label for="loadingPrint">Print Label</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalSession" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px;">
+                <div class="d-flex flex-column">
+                    <p class="align-self-center">Your session is expired, do you want to extend the time ?</p>
+                </div>
+                <div class="my-3 d-flex flex-column">
+                    <div class="w-50 d-flex flex-row align-self-center">
+                        <button id="btnExtend" type="button" class="btn btn-info w-100 mr-1" onclick="extendSession()">Extend</button>
+                        <button id="btnCloseSession" type="button" class="btn btn-outline-info w-100 mx-1" onclick="Close_Session()">Close Session</button>
+                        <div id="spinnerSessionContainer" class="d-none ml-1">
+                            <div id="spinnerSession" class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="printArea"></div>
+<script type="text/javascript">
+    var tableLoading = null;
+    let loadingSubmitTable = null;
+    let vesselData = {};
+    let sampleRegistrationData = {};
+    let sequence = 0;
+    let dataDetail = {};
+
+    $(document).ready(function () {
+        $(document).attr('title', 'Sample Registration - Loading : Mercy');
+
+        $("#txt_Start_Sampling").datetimepicker({ todayBtn: 1, autoclose: true });
+        $("#txt_End_Sampling").datetimepicker({ todayBtn: 1, autoclose: true });
+
+        get_user_menu = '1';
+        get_user_relation = '1';
+
+        Show_UserInformation();
+        showSessionModal();
+
+        $('#printArea').appendTo(document.body);
+        $("#isLoadingData").children().show();
+        $("#isShowData").hide();
+        $("#btnAddToTable").hide();
+        $("#activeStatusContainer").hide();
+        $("#containerLoadingTable").hide();
+        $("#btnRegister").hide();
+        $("#btnSave").hide();
+        $("#isLoadingActivate").hide();
+
+        create_table_list();
+
+        if (Mode_Create()) {
+            vesselData = JSON.parse(localStorage.getItem("VesselData"));
+            sampleRegistrationData = JSON.parse(localStorage.getItem("SampleRegistrationData"));
+            sequence = vesselData.LotNumber + 1;
+
+            $("#txt_Loading_Number").val(vesselData.LoadingNumber ? vesselData.LoadingNumber : "-");
+            $("#txt_Vessel_Name").val(vesselData.Name ? vesselData.Name : "-");
+            $("#txt_Dispatch_Id").val(vesselData.DispatchId ? vesselData.DispatchId : "-");
+            $("#txt_Customer").val(vesselData.Customer ? vesselData.Customer : "-");
+            $("#txt_Eta").val(vesselData.ETA ? vesselData.ETA : "-");
+            $("#txt_Ata").val(vesselData.ATA ? vesselData.ATA : "-");
+            $("#txt_Contract").val(vesselData.Contract ? vesselData.Contract : "-");
+            $("#txt_Product").val(vesselData.Product ? vesselData.Product : "-");
+            $("#ddl_Lot_Number").val(`Lot ${sequence}`);
+
+            if (sampleRegistrationData.client.name !== 'Geology') {
+                $("#showFrom").hide();
+                $("#showTo").hide();
+            }
+
+            $('#spinnerRegister').addClass('d-none');
+            $("#isLoadingData").children().hide();
+            $("#isShowData").show();
+            $("#btnAddToTable").show();
+            $("#containerLoadingTable").show();
+            $("#btnRegister").show();
+
+            return;
+        }
+
+        paramid = paramid.replace(/'/g, '');
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/get'
+            , type: 'GET'
+            , data: { id: paramid, u_menu: get_user_menu, u_relation: get_user_relation }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+                dataDetail = data;
+
+                if (data.Item.IsActive) {
+                    $('#ddl_IsActive').prop('checked', true);
+                    $('#ddl_IsActive_Label').html('Active');
+                } else {
+                    $('#ddl_IsActive').prop('checked', false);
+                    $('#ddl_IsActive_Label').html('Inactive');
+                }
+
+                $("#txt_Loading_Number").val(data.Item.DetailLoading.LoadingNumber ? data.Item.DetailLoading.LoadingNumber : "-");
+                $("#txt_Vessel_Name").val(data.Item.DetailLoading.VesselName ? data.Item.DetailLoading.VesselName : "-");
+                $("#txt_Dispatch_Id").val(data.Item.DetailLoading.DispatchId ? data.Item.DetailLoading.DispatchId : "-");
+                $("#txt_Customer").val(data.Item.DetailLoading.Customer ? data.Item.DetailLoading.Customer : "-");
+                $("#txt_Eta").val(data.Item.DetailLoading.ETA ? data.Item.DetailLoading.ETA : "-");
+                $("#txt_Ata").val(data.Item.DetailLoading.ATA ? data.Item.DetailLoading.ATA : "-");
+                $("#txt_Contract").val(data.Item.DetailLoading.Contract ? data.Item.DetailLoading.Contract : "-");
+                $("#txt_Product").val(data.Item.DetailLoading.Product ? data.Item.DetailLoading.Product : "-");
+                $("#ddl_Lot_Number").val(`Lot ${data.Item.DetailLoading.LotNumber}`);
+                $("#ddl_Tonnage").val(data.Item.DetailLoading.Tonnage ? data.Item.DetailLoading.Tonnage : "-");
+                $("#ddl_Location").val(data.Item.Location ? data.Item.Location : "-");
+                $("#ddl_Remark").val(data.Item.Remark ? data.Item.Remark : "-");
+                $("#txt_Start_Sampling").val(moment(data.Item.DetailLoading.SamplingStart, 'YYYY-MM-DD HH:mm').format('DD-MMM-YYYY HH:mm'));
+                $("#txt_End_Sampling").val(moment(data.Item.DetailLoading.SamplingEnd, 'YYYY-MM-DD HH:mm').format('DD-MMM-YYYY HH:mm'))
+
+                if (data.Item.ClientName !== 'Geology') {
+                    $("#showFrom").hide();
+                    $("#showTo").hide();
+                    $("#ddl_From").val(data.Item.ThicknessFrom ? data.Item.ThicknessFrom : 0);
+                    $("#ddl_To").val(data.Item.ThicknessTo ? data.Item.ThicknessTo : 0);
+                }
+
+                $('#spinnerRegister').addClass('d-none');
+                $("#isLoadingData").children().hide();
+                $("#isShowData").show();
+                $("#activeStatusContainer").show();
+                $("#btnSave").show();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    })
+
+    function Show_UserInformation() {
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/User/Info'
+            , type: 'POST'
+            , data: { u_menu: get_user_menu, u_relation: get_user_relation }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+
+                resize_Table();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+    function create_table_list() {
+        Clear_DataGrid_("loadingTable");
+
+        tableLoading = $("#loadingTable").DataTable({
+            responsive: true,
+            searching: false,
+            bPaginate: false,
+            bInfo: false,
+            columns: [
+                { "data": "LotNumber", "name": "LotNumber", "autoWidth": true },
+                {
+                    data: null,
+                    className: "dt-center editor-delete",
+                    defaultContent: '<i class="delete-row fa fa-trash text-danger"/>',
+                    orderable: false,
+
+                },
+                { "data": "LotSamples", "name": "LotSamples", "autoWidth": true },
+                { "data": "Tonnage", "name": "Tonnage", "autoWidth": true }
+            ],
+            order: [[1, 'asc']],
+            columnDefs: [
+                {
+                    "targets": [0],
+                    "visible": false
+                }
+            ]
+        })
+        
+        tableLoading.on('draw', function () { });
+
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }
+
+    $('#loadingTable').on('click', 'td.editor-delete', function (e) {
+        e.preventDefault();
+
+        var table = $('#loadingTable').DataTable();
+        table
+            .row($(this).parents('tr'))
+            .remove()
+            .draw();
+    });
+    
+    function addDataToTable() {
+        var lotValue = $('#ddl_Lot_Number').val();
+        var tonnageValue = $('#ddl_Tonnage').val();
+        var startSampling = $("#txt_Start_Sampling").val();
+        var endSampling = $("#txt_End_Sampling").val();
+
+        if (!tonnageValue) {
+            alert("Tonnage must not be empty")
+            return;
+        }
+
+        if (!startSampling) {
+            alert("Start Sampling must not be empty");
+            return;
+        }
+
+        if (!endSampling) {
+            alert("End Sampling must not be empty");
+            return;
+        }
+
+        tableLoading.row.add({ LotNumber: sequence, LotSamples: `${$("#txt_Loading_Number").val()} ${lotValue}`, Tonnage: tonnageValue, StartSampling: startSampling, EndSampling: endSampling }).draw(false)
+
+        sequence++;
+        $('#ddl_Lot_Number').val(`Lot ${sequence}`);
+        $('#ddl_Tonnage').val('');
+        $("#txt_Start_Sampling").val('');
+        $("#txt_End_Sampling").val('');
+    }
+
+    function Clear_DataGrid_(p_id) {
+        try {
+            $('#' + p_id).DataTable().clear().destroy();
+        } catch (err) { }
+
+        try {
+            $('#' + p_id + ' tbody').empty();
+        } catch (err) { }
+    }
+
+    function createSubmitTable() {
+        Clear_DataGrid_("submitLoadingTable");
+
+        loadingSubmitTable = $("#submitLoadingTable").DataTable({
+            dom: '<"top">rt<"bottom"iflp><"clear">',
+            searching: false,
+            bPaginate: false,
+            bFilter: false,
+            bInfo: false,
+            columns: [
+                { "data": "CompanyCode", "name": "CompanyCode", "autoWidth": true },
+                {
+                    "data": "SiteId",
+                    "name": "SiteId",
+                    "autoWidth": true,
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.Name.site|| '-'}` + '</span>';
+                    }
+                },
+                {
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.DetailLoading.SampleId || '-'}` + '</span>';
+                    },
+                    "autoWidth": true
+                },
+                {
+                    "data": "ClientId.id",
+                    "name": "ClientId",
+                    "autoWidth": true,
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.Name.client || '-'}` + '</span>';
+                    }
+                },
+                {
+                    "data": "ProjectId.id",
+                    "name": "ProjectId",
+                    "autoWidth": true,
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.Name.project || '-'}` + '</span>';
+                    }
+                },
+                { "data": "DateOfJob", "name": "DateOfJob", "autoWidth": true },
+                {
+                    "data": "Remark",
+                    "name": "Remark",
+                    "autoWidth": true,
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.Remark || '-'}` + '</span>';
+                    }
+                },
+                {
+                    "data": "Location",
+                    "name": "Location",
+                    "autoWidth": true,
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.Location || '-'}` + '</span>';
+                    }
+                },
+                {
+                    "data": "ThicknessFrom",
+                    "name": "ThicknessFrom",
+                    "autoWidth": true,
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.ThicknessFrom || '-'}` + '</span>';
+                    }
+                },
+                {
+                    "data": "ThicknessTo",
+                    "name": "ThicknessTo",
+                    "autoWidth": true,
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.ThicknessTo || '-'}` + '</span>';
+                    }
+                },
+                { "data": "DetailLoading.LoadingNumber", "name": "LoadingNumber", "autoWidth": true },
+                { "data": "DetailLoading.VesselName", "name": "VesselName", "autoWidth": true },
+                { "data": "DetailLoading.DispatchId", "name": "DispatchId", "autoWidth": true },
+                { "data": "DetailLoading.Customer", "name": "Customer", "autoWidth": true },
+                { "data": "DetailLoading.ETA", "name": "ETA", "autoWidth": true },
+                { "data": "DetailLoading.ATA", "name": "ATA", "autoWidth": true },
+                {
+                    "render": function (data, type, full, meta) {
+                        return '<span>' + `${full.DetailLoading.Contract || '-'}` + '</span>';
+                    },
+                    "autoWidth": true
+                },
+                { "data": "DetailLoading.Product", "name": "Product", "autoWidth": true },
+                { "data": "DetailLoading.LotNumber", "name": "LotNumber", "autoWidth": true },
+                { "data": "DetailLoading.SamplingStart", "name": "SamplingStart", "autoWidth": true },
+                { "data": "DetailLoading.SamplingEnd", "name": "SamplingEnd", "autoWidth": true },
+                { "data": "DetailLoading.LotSamples", "name": "LotSamples", "autoWidth": true },
+                { "data": "DetailLoading.Tonnage", "name": "Tonnage", "autoWidth": true },
+            ],
+            order: [[1, 'asc']],
+            columnDefs: [{
+                "targets": '_all',
+                "defaultContent": ""
+            }]
+        })
+
+        loadingSubmitTable.on('draw', function () { });
+
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }
+
+    function showLoadingSubmitModal() {
+        if (!tableLoading.rows().data().length) {
+            alert("Table must not be empty");
+            return;
+        }
+
+        let prevFormDataSample = JSON.parse(localStorage.getItem('SampleRegistrationData'));
+        let prevFormDataVessel = JSON.parse(localStorage.getItem('VesselData'));
+
+        prevFormDataVessel.LotSamples = "";
+        prevFormDataVessel.Tonnage = "";
+
+        let loadingData = [];
+
+        createSubmitTable();
+
+        $.each(tableLoading.rows().data(), function (key, value) {
+            loadingData = {
+                CompanyCode: prevFormDataSample ? prevFormDataSample.company : null,
+                SiteId: prevFormDataSample ? prevFormDataSample.site.id : null,
+                DateOfJob: prevFormDataSample ? moment(prevFormDataSample.date, 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD') : null,
+                ClientId: prevFormDataSample ? prevFormDataSample.client.id : null,
+                ProjectId: prevFormDataSample ? prevFormDataSample.project.id : null,
+                RefTypeId: prevFormDataSample ? prevFormDataSample.refType : null,
+                ReceivedBy: prevFormDataSample ? prevFormDataSample.received : null,
+                Remark: $("#ddl_Remark").val(),
+                Location: $("#ddl_Location").val(),
+                Name: {
+                    site: prevFormDataSample.site.name,
+                    client: prevFormDataSample.client.name,
+                    project: prevFormDataSample.project.name
+                },
+                Schemes: [],
+                DetailLoading: {
+                    ATA: prevFormDataVessel.ATA,
+                    Contract: prevFormDataVessel.Contract,
+                    Customer: prevFormDataVessel.Customer,
+                    DispatchId: prevFormDataVessel.DispatchId,
+                    ETA: prevFormDataVessel.ETA,
+                    LoadingNumber: prevFormDataVessel.LoadingNumber,
+                    VesselName: prevFormDataVessel.Name,
+                    Product: prevFormDataVessel.Product,
+                    ShipmentNumber: prevFormDataVessel.ShipmentNumber,
+                    LotNumber: value.LotNumber,
+                    LotSamples: value.LotSamples,
+                    Tonnage: value.Tonnage,
+                    SamplingStart: moment(value.StartSampling, 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
+                    SamplingEnd: moment(value.EndSampling, 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm')
+                }
+            }
+
+            if (sampleRegistrationData.client.name === 'Geology') {
+                loadingData.ThicknessTo = $("#ddl_To").val();
+                loadingData.ThicknessFrom = $("#ddl_From").val();
+            }
+
+            prevFormDataSample.schemes.forEach(function (data) {
+                loadingData.Schemes.push({ SchemeId: data })
+            })
+
+            loadingSubmitTable.row.add(loadingData).draw(false);
+        });
+
+        resize_Table();
+
+        if (sampleRegistrationData.client.name !== 'Geology') {
+            loadingSubmitTable.column(8).visible(false);
+            loadingSubmitTable.column(9).visible(false);
+        }
+
+        $('#modalLoadingTable').appendTo('body').modal('show');
+    }
+
+    function dismissGeneralSubmitModal() {
+        $('#modalLoadingTable').modal('hide');
+    }
+
+    function postLoadingData() {
+        $('#spinnerRegister').removeClass('d-none');
+        $('#btnRegister').prop('disabled', true);
+        $('#btnSubmit').prop('disabled', true);
+        $('#btnDismiss').prop('disabled', true);
+
+        var formData = [];
+        $.each(loadingSubmitTable.rows().data(), function (key, value) {
+            delete value.Name;
+            formData.push(value)
+        });
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Create'
+            , type: 'POST'
+            , data: JSON.stringify(formData)
+            , dataType: "json"
+            , processData: false
+            , contentType: 'application/json'
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    $('#spinnerRegister').addClass('d-none');
+                    $('#btnRegister').prop('disabled', false);
+                    $('#btnSubmit').prop('disabled', false);
+                    $('#btnDismiss').prop('disabled', false);
+                    return;
+                }
+
+                if (!data.Success) {
+                    $('#spinnerRegister').addClass('d-none');
+                    $('#btnRegister').prop('disabled', false);
+                    $('#btnSubmit').prop('disabled', false);
+                    $('#btnDismiss').prop('disabled', false);
+
+                    alert(data.Message);
+                    return;
+                }
+
+                // close session
+                Close_Session(data.Data);
+
+                return;
+            }
+            , error: function (error) {
+                $('#spinnerRegister').addClass('d-none');
+                $('#btnRegister').prop('disabled', false);
+                $('#btnSubmit').prop('disabled', false);
+                $('#btnDismiss').prop('disabled', false);
+
+                $(this).remove();
+            }
+        });
+    }
+
+    function printLabel(data) {
+        var printArea = $('#printArea');
+        var dataStatics = ["TM", "GA", "GA", "STORE", "RAPID"];
+
+        for (var i = 0; i < data.length; i++) {
+            for (var index = 0; index < dataStatics.length; index++) {
+                var title = '<span class="font-weight-bold mb-2">' + data[i].SampleId + " - " + dataStatics[index] + " - " + '</span>';
+                var project = '<div class="row"><div class="col"><span>Client / Project :</span></div><div class="col"><span>' + data[i].ClientName + " / " + data[i].ProjectName + '</span></div></div>';
+                var sampleDate = '<div class="row">' +
+                    '<div class="col"><div class="row"><div class="col"><span>Sampling Date :</span></div><div class="col"><span>' + moment(data[i].DateSampleStart).format('DD-MMM-YYYY') + '</span></div></div></div>' +
+                    '</div>'
+                var preparationDate = '<div class="row">' +
+                    '<div class="col"><div class="row"><div class="col"><span>Preparation Date :</span></div><div class="col"><span>' + (data[i].Receive !== " " ? moment(data[i].Receive).format('DD-MMM-YYYY') : "-") + '</span></div></div></div>' +
+                    '</div>'
+                var contentContainer = '<div class="col">' + title + project + sampleDate + preparationDate + '</div>';
+                var container = '<div class="col pageBreaker border-print-card my-2 px-0 d-flex align-items-center">' + contentContainer + '</div>';
+                printArea.append(container);
+            }
+        }
+
+        window.print();
+
+        localStorage.removeItem("SampleRegistrationData");
+        localStorage.removeItem("VesselData");
+        window.location = mercyUrl('/SampleRegistrationv');
+    }
+
+    function cancelLoadingForm() {
+        localStorage.removeItem("SampleRegistrationData");
+        localStorage.removeItem("VesselData");
+        localStorage.removeItem('SecuritySession');
+        window.location = mercyUrl('/SampleRegistrationv');
+    }
+
+    function Close_Session(dataPrint) {
+        let SecuritySession = JSON.parse(localStorage.getItem('SecuritySession'));
+
+        $.ajax({
+            url: api_Request + '/Api/Session/CloseSession',
+            type: 'GET',
+            data: { menus: SecuritySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                $('#spinnerRegister').addClass('d-none');
+                $('#btnRegister').prop('disabled', false);
+                $('#btnSubmit').prop('disabled', false);
+                $('#btnDismiss').prop('disabled', false);
+                dismissGeneralSubmitModal();
+
+                if ($('#loadingPrint').is(':checked')) {
+                    printLabel(dataPrint);
+                    return;
+                }
+
+                alert("Success");
+
+                localStorage.removeItem("SampleRegistrationData");
+                localStorage.removeItem("VesselData");
+                localStorage.removeItem('SecuritySession');
+                window.location = mercyUrl('/SampleRegistrationv');
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function Close_Session_Cancel() {
+        let SecuritySession = JSON.parse(localStorage.getItem('SecuritySession'));
+
+        $.ajax({
+            url: api_Request + '/Api/Session/CloseSession',
+            type: 'GET',
+            data: { menus: SecuritySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                cancelLoadingForm();
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function setActiveDeactive() {
+        $("#isLoadingActivate").show();
+
+        updateStatusData = {
+            id: paramid,
+            IsActive: !dataDetail.Item.IsActive
+        }
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Update',
+            type: 'POST',
+            data: updateStatusData,
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                $("#isLoadingActivate").hide();
+
+                alert(data.Data.StatusUpdate);
+                window.location.reload();
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function saveChanges() {
+        $("#btnSave").text("loading...");
+
+        let formData = {
+            id: dataDetail.Item.Id,
+            DetailLoading: dataDetail.Item.DetailLoading,
+            DetailGeneral: null,
+            ThicknessTo: 0,
+            ThicknessFrom: 0
+        }
+
+        formData.DetailLoading.Tonnage = $("#ddl_Tonnage").val();
+        formData.Remark = $("#ddl_Remark").val();
+        formData.Location = $("#ddl_Location").val();
+        formData.DetailLoading.SamplingEnd = moment($("#txt_End_Sampling").val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+        formData.DetailLoading.SamplingStart = moment($("#txt_Start_Sampling").val(), 'DD-MMM-YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+
+        if (dataDetail.ClientName === 'Geology') {
+            formData.ThicknessTo = $("#ddl_To").val();
+            formData.ThicknessFrom = $("#ddl_From").val();
+        }
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Update',
+            type: 'POST',
+            data: formData,
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+
+                $("#btnSave").text("Save");
+
+                alert('Success');
+
+                window.location = mercyUrl("/SampleRegistrationv");
+            },
+            error: function (error) {
+                alert(error);
+                $("#btnSave").text("Save");
+            }
+        });
+    }
+
+    function toggleActiveStatus() {
+        $("#isLoadingActivate").show();
+
+        updateStatusData = {
+            id: paramid,
+            IsActive: !dataDetail.Item.IsActive
+        }
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Update',
+            type: 'POST',
+            data: updateStatusData,
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+
+                $("#isLoadingActivate").hide();
+
+                if ($('#ddl_IsActive').is(':checked')) {
+                    $('#ddl_IsActive_Label').html('Active');
+                    return;
+                }
+
+                $('#ddl_IsActive_Label').html('Inactive');
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    
+    function showSessionModal() {
+        var timeoutData = JSON.parse(localStorage.getItem('SessionTime'));
+        var now = moment(new Date(), 'YYYY-MM-DD HH:mm:ss');
+        var extendTime = moment(timeoutData.ExtendSessionTime, 'YYYY-MM-DD HH:mm:ssZ');
+        var timeout = moment.duration(extendTime.diff(now)).asMilliseconds();
+        setTimeout(() => {
+            $('#modalSession').appendTo('body').modal('show');
+        }, timeout);
+    }
+    
+    function closeSessionModal() {
+        $('#modalSession').modal('hide');
+    }
+    
+    function extendSession() {
+        var securitySession = JSON.parse(localStorage.getItem('SecuritySession'));
+        
+        $('#spinnerSessionContainer').removeClass('d-none');
+        $('#btnExtend').prop('disabled', true);
+        $('#btnCloseSession').prop('disabled', true);
+        $.ajax({
+            url: api_Request + '/Api/Session/ClaimSession',
+            type: 'GET',
+            data: { menus: securitySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+                
+                localStorage.setItem('SessionTime', JSON.stringify(data.Items));
+                $('#spinnerSessionContainer').addClass('d-none');
+                $('#btnExtend').prop('disabled', false);
+                $('#btnCloseSession').prop('disabled', false);
+                
+                closeSessionModal();
+                showSessionModal();
+            },
+            error: function (error) {
+                alert(error);
+                return null;
+            }
+        });
+    }
+</script>

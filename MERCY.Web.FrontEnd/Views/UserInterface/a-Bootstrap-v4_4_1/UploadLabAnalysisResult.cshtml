@@ -1,0 +1,1069 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_upload {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.mercy_analysis-result {
+    color: #232323;
+    font-family: 'Poppins-SemiBold';
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14px;
+    text-align: left;
+}
+
+.mercy_data_new {
+  color: #60C159;
+  font-family: 'Poppins-SemiBoldItalic';
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+
+.mercy_data_update {
+  color: #FFBD50;
+  font-family: 'Poppins-SemiBoldItalic';
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+
+.mercy_data_invalid {
+  color: #E73232;
+  font-family: 'Poppins-SemiBoldItalic';
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+.input_Upload_file {
+    background-color: #FFFFFF !important;
+    border: 1px solid #AFAFB9 !important;
+    border-radius: 4px !important;
+    height: 34px !important;
+}
+
+.button_Choose_file {
+    background-color: #D0D0D0 !important;
+    border: 1px solid #AFAFB9 !important;
+    border-radius: 2px !important;
+    width: 73px !important;
+    height: 18px !important;
+    
+    color: #FFFFFF;
+    font-family: 'Poppins-SemiBold';
+    font-size: 10px;
+    line-height: 12px;
+    text-align: left;
+}
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Upload Lab Analysis Result
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Upload Lab Analysis Result
+    </div> 
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0">
+            <div class="row margin_padding_0">
+                <div class="col-12 col-md-auto" style="margin:20px 10px 0px 0px !important;">
+                    <div style="width: 175px;">
+                        <div style="width:100%" class="mercy_analysis-result">Company</div>
+                        <div style="width:100%;padding:10px 0px;">
+                            <select id="ddl_Company" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-auto" style="margin:20px 10px 0px 0px !important;">
+                    <div style="width: 200px;">
+                        <div style="width:100%" class="mercy_analysis-result">Analysis Result</div>
+                        <div style="width:100%;padding:10px 0px;">
+                            <select class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" id="cbType" style="width:200px !important;">
+                                <option value="@OurUtility.UPLOAD_Sampling_ROM">Sampling ROM</option>
+                                <option value="@OurUtility.UPLOAD_Geology_Pit_Monitoring">Geology - Pit Monitoring</option>
+                                <option value="@OurUtility.UPLOAD_Geology_Explorasi">Geology - Explorasi</option>
+                                <option value="@OurUtility.UPLOAD_BARGE_LOADING">BARGE LOADING</option>
+                                <option value="@OurUtility.UPLOAD_CRUSHING_PLANT">CRUSHING PLANT</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md" style="margin:20px 10px 0px 0px !important;">
+                    <div class="row margin_padding_0" style="margin-top:25px !important;">
+                        <div class="col margin_padding_0" style="text-align:right;margin-right:10px !important;">
+                            <em id="imgText"></em><span id="imgProcess" style="padding-left: 10px; display: none;"><img src="/images/spinner.gif"></span>
+                        </div>
+                        <div style="width:370px;">
+                            <div class="container margin_padding_0">
+                                <div class="row margin_padding_0">
+                                    <div class="col margin_padding_0">
+                                        <input style="width:250px;" type="text" class="form-control shadow-none mercy_input_text input_Upload_file" id="txtFileName" placeholder="No file selected" disabled="false"/>
+                                    </div>
+                                    <div style="width:110px;">
+                                        <div id="btnChooseFile">
+                                            <label class="mercy_button mercy_text_center" style="width:100px;">
+                                                Choose file<input id="fileInput" style="display: none !important;" type="file"/>
+                                            </label>
+                                        </div>
+                                        <div id="btnUpload" style="display:none;">
+                                            <label class="mercy_button mercy_text_center" style="width:100px;">
+                                                Upload
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0" style="margin:30px 25px !important;display:none;" id="upload_SamplingROM">
+                <table id="mercyTable" class="display nowrap table table-striped mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>RecordId</th>
+                            <th>Date Request</th>
+                            <th>Date Sampling</th>
+                            <th>Day work</th>
+                            <th>LOT</th>
+                            <th>Lab ID</th>
+                            <th>TM %ad</th>
+                            <th>M %ad</th>
+                            <th>ASH %ad</th>
+                            <th>TS %ad</th>
+                            <th>CV %ad</th>
+                            <th>Remark</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="row margin_padding_0" style="margin:30px 25px !important;display:none;" id="upload_Pit">
+                <table id="mercyTable2" class="display nowrap table table-striped mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>RecordId</th>
+                            <th>Sample ID</th>
+                            <th>SampleType</th>
+                            <th>Laboratory ID</th>
+                            <th>Mass_Spl</th>
+                            <th>TM %ad</th>
+                            <th>M %ad</th>
+                            <th>VM %ad</th>
+                            <th>ASH %ad</th>
+                            <th>TS %ad</th>
+                            <th>Cal %ad</th>
+                            <th>Cal %db</th>
+                            <th>Cal %ar</th>
+                            <th>Cal %daf</th>
+                            <th>RD</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="row margin_padding_0" style="margin:30px 25px !important;display:none;" id="upload_Explorasi">
+                <table id="mercyTable3" class="display nowrap table table-striped mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>RecordId</th>
+                            <th>Sample ID</th>
+                            <th>SampleType</th>
+                            <th>Laboratory ID</th>
+                            <th>Mass_Spl</th>
+                            <th>TM %ad</th>
+                            <th>M %ad</th>
+                            <th>VM %ad</th>
+                            <th>ASH %ad</th>
+                            <th>TS %ad</th>
+                            <th>Cal %ad</th>
+                            <th>Cal %db</th>
+                            <th>Cal %ar</th>
+                            <th>Cal %daf</th>
+                            <th>RD</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="row margin_padding_0" style="margin:30px 25px !important;display:none;" id="upload_Barge">
+                <table id="mercyTable4" class="display nowrap table table-striped mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>RecordId</th>
+                            <th>Product</th>
+                            <th>JOB Number</th>
+                            <th>ID Number</th>
+                            <th>Service Trip Number</th>
+                            <th>Date Sampling</th>
+                            <th>Date Report</th>
+                            <th>Tonnage</th>
+                            <th>Name</th>
+                            <th>Destination</th>
+                            <th>Temperature</th>
+                            <th>TM %arb</th>
+                            <th>M %adb</th>
+                            <th>ASH %adb</th>
+                            <th>ASH %arb</th>
+                            <th>VM %adb</th>
+                            <th>VM %arb</th>
+                            <th>FC %adb</th>
+                            <th>FC %arb</th>
+                            <th>TS %adb</th>
+                            <th>TS %arb</th>
+                            <th>CV %adb</th>
+                            <th>CV %db</th>
+                            <th>CV %arb</th>
+                            <th>CV %daf</th>
+                            <th>CV %ad(15)</th>
+                            <th>CV %ad(16)</th>
+                            <th>CV %ad(17)</th>
+                            <th>Remark</th>
+                            <th>TM Plan</th>
+                            <th>TM Average</th>
+                            <th>Ash Plan</th>
+                            <th>Ash Average</th>
+                            <th>TS Plan</th>
+                            <th>TS Average</th>
+                            <th>CV Plan</th>
+                            <th>CV Average</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="row margin_padding_0" style="margin:30px 25px !important;display:none;" id="upload_Crush">
+                <table id="mercyTable5" class="display nowrap table table-striped mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>RecordId</th>
+                            <th>Product</th>
+                            <th>Date Production</th>
+                            <th>Shift Work</th>
+                            <th>Tonnage</th>
+                            <th>Sample ID</th>
+                            <th>TM %arb</th>
+                            <th>M %adb</th>
+                            <th>ASH %adb</th>
+                            <th>ASH %arb</th>
+                            <th>VM %adb</th>
+                            <th>VM %arb</th>
+                            <th>FC %adb</th>
+                            <th>FC %arb</th>
+                            <th>TS %adb</th>
+                            <th>TS %arb</th>
+                            <th>CV %adb</th>
+                            <th>CV %db</th>
+                            <th>CV %arb</th>
+                            <th>CV %daf</th>
+                            <th>CV %ad(15)</th>
+                            <th>CV %ad(16)</th>
+                            <th>CV %ad(17)</th>
+                            <th>Remark</th>
+                            <th>TM Plan</th>
+                            <th>TM Average</th>
+                            <th>Ash Plan</th>
+                            <th>Ash Average</th>
+                            <th>TS Plan</th>
+                            <th>TS Average</th>
+                            <th>CV Plan</th>
+                            <th>CV Average</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+var id_SamplingROM = -1;
+var tab_SamplingROM;
+var idPit = -1;
+var tabPit;
+var idExplorasi = -1;
+var tabExplorasi;
+var idBarge = -1;
+var tabBarge;
+var idCrush = -1;
+var tabCrush;
+
+// DropdownList
+var obj_html_Company = null;
+
+// row
+var lineNumber_Row = 0;
+
+// for Tracking
+var currentData_Company = 'TCM';
+var currentData_AnalysisResult = '@OurUtility.UPLOAD_Sampling_ROM';
+
+$(document).ready(function () {
+    
+    $(document).attr('title', 'Upload Lab Analysis Result : Mercy');
+    
+    $(window).resize(function (){
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+    
+    get_user_menu = '1';
+    get_user_relation = '1';
+    
+    Show_UserInformation();
+    
+    display_Default();
+    
+    $('#upload_SamplingROM').show();
+    //showData_SamplingROM();
+    
+    $('#cbType').on('change', function () {
+        analysisResult_Changed();
+    });
+    
+    $('#txtFileName').click(function(e) {
+        $('#fileInput').click();
+    });
+    
+    $('#btnUpload').click(function(e) {
+        $.ajax({
+            url: api_Request + '/Api/File/ProcessFile?.id=' + paramid + '&.ty=' + $("#cbType").val(),
+            type: 'GET',
+            dataType: "json",
+            beforeSend: function(request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            cache: false,
+            success: function (data) {
+                if (data.Status == 'Ok')
+                {
+                    SendEmail_after_Upload();
+                    alert(data.Count + ' of ' + data.Count2 + ' records successfully upload');
+                    analysisResult_Changed();
+                }
+                else
+                {
+                    alert('Unknown Error');
+                }
+            },
+            error: function (error) {
+                //$(this).remove();
+            }
+        });
+    });
+    
+    $('#fileInput').on('change', function () {
+        if ($("#cbType").val() == '') {
+            $("#fileInput").val('');
+            $("#txtFileName").val('');
+            alert('Analysis type tidak boleh kosong');
+            return;
+        }
+        
+        // Message: jika upload file Format lama
+        if ($('#fileInput')[0].files[0].name.endsWith(".xls")) {
+            $("#fileInput").val('');
+            $("#txtFileName").val('');
+            alert('Tidak boleh file .xls\nGunakan file Format Baru .xlsx');
+            return;
+        }
+        
+        // Message: jika berusaha Upload file selain .xlsx
+        if ( ! $('#fileInput')[0].files[0].name.endsWith(".xlsx")) {
+            $("#fileInput").val('');
+            $("#txtFileName").val('');
+            alert('Gunakan file Excel .xlsx');
+            return;
+        }
+        
+        var formData = new FormData();
+        formData.append('file', $('#fileInput')[0].files[0]);
+        
+        $("#txtFileName").val($('#fileInput')[0].files[0].name);
+        $('#imgText').text('Parsing...');
+        $('#imgProcess').show();
+        
+        $.ajax({
+            url: api_Request + '/Api/File/ChooseFile?.ty=' + $("#cbType").val()+'&company='+$("#ddl_Company").val(),
+            type: 'POST',
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            beforeSend: function(request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                $('#imgText').text('');
+                $('#imgProcess').hide();
+                
+                if (data.Status == 'Ok')
+                {
+                    paramid = data.Id;
+                    $('#btnChooseFile').hide();
+                    $('#btnUpload').show();
+                    
+                    hide_All();
+                    switch($("#cbType").val())
+                    {
+                        case '@OurUtility.UPLOAD_Sampling_ROM':
+                            id_SamplingROM = data.Id;
+                            $('#upload_SamplingROM').show();
+                            clearData('mercyTable');
+                            showData_SamplingROM();
+                            break;
+                        case '@OurUtility.UPLOAD_Geology_Pit_Monitoring':
+                            idPit = data.Id;
+                            $('#upload_Pit').show();
+                            clearData('mercyTable2');
+                            showData_PIT();
+                            break;
+                        case '@OurUtility.UPLOAD_Geology_Explorasi':
+                            idExplorasi = data.Id;
+                            $('#upload_Explorasi').show();
+                            clearData('mercyTable3');
+                            showData_Explorasi();
+                            break;
+                        case '@OurUtility.UPLOAD_BARGE_LOADING':
+                            idBarge = data.Id;
+                            $('#upload_Barge').show();
+                            clearData('mercyTable4');
+                            showData_Barge();
+                            break;
+                        case '@OurUtility.UPLOAD_CRUSHING_PLANT':
+                            idCrush = data.Id;
+                            $('#upload_Crush').show();
+                            clearData('mercyTable5');
+                            showData_Crush();
+                            break;
+                    }
+                }
+                else
+                {
+                    var msg = 'Upload file Gagal\n\n' + data.Message.replace('###', '\n');
+                    alert(msg);
+                    $("#fileInput").val('');
+                }
+            },
+        });
+    });
+    
+    Create_ddl_Company();
+    Create_ddl_AnalysisResult();
+});
+
+function showData_SamplingROM(){
+    tab_SamplingROM = $('#mercyTable').DataTable({
+        "processing": true
+        , "scrollX": true
+        , "serverSide": true
+        , "autoWidth": false
+        , "bFilter": false
+        , "dom": '<"top">rt<"bottom"iflp><"clear">'
+        , "ajax": {
+            "url": api_Request + '/Api/File/Sampling_ROM?.id='+id_SamplingROM
+            , "type": "POST"
+            , "datatype": "json"
+        }
+        , "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+        , "columns": [
+            { "data": "data_RecordId", "name": "data_RecordId", "autoWidth": true }
+            , { "data": "Date_Request", "name": "Date_Request", "autoWidth": true }
+            , { "data": "Date_Sampling", "name": "Date_Sampling", "autoWidth": true }
+            , { "data": "Day_work", "name": "Day_work", "autoWidth": true }
+            , { "data": "LOT", "name": "LOT", "autoWidth": true }
+            , { "data": "Lab_ID", "name": "Lab_ID", "autoWidth": true }
+            , { "data": "TM_Str", "name": "TM_Str", "autoWidth": true }
+            , { "data": "M_Str", "name": "M_Str", "autoWidth": true }
+            , { "data": "ASH_Str", "name": "ASH_Str", "autoWidth": true }
+            , { "data": "TS_Str", "name": "TS_Str", "autoWidth": true }
+            , { "data": "CV_Str", "name": "CV_Str", "autoWidth": true }
+            , { "data": "Remark", "name": "Remark", "autoWidth": true }
+            , {  
+                    "render": function (data, type, full, meta)  
+                    {
+                        var xclass = 'mercy_data_new';
+                        switch(full.Status)
+                        {
+                            case 'New':
+                                xclass = 'mercy_data_new';
+                                break;
+                            case 'Update':
+                                xclass = 'mercy_data_update';
+                                break;
+                            case 'Invalid':
+                                xclass = 'mercy_data_invalid';
+                                break;
+                        }
+                        
+                        return '<span class="' + xclass + '">'+ full.Status + '</span>';
+                    }
+                }
+        ]
+        , "lengthMenu": [[-1], ["All"]]
+        , data: { aku:'hehehe ' + id_SamplingROM.toString()
+        }
+    });
+    
+    resize_Table();
+}
+
+function showData_PIT(){
+    tabPit = $('#mercyTable2').DataTable({
+        "processing": true
+        , "scrollX": true
+        , "serverSide": true
+        , "autoWidth": false
+        , "bFilter": false
+        , "dom": '<"top">rt<"bottom"iflp><"clear">'
+        , "ajax": {
+            "url": api_Request + '/Api/File/Geology_Pit_Monitoring?.id='+idPit
+            , "type": "POST"
+            , "datatype": "json"
+        }
+        , "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+        , "columns": [
+            { "data": "data_RecordId", "name": "data_RecordId", "autoWidth": true }
+            , { "data": "Sample_ID", "name": "Sample_ID", "autoWidth": true }
+            , { "data": "SampleType", "name": "SampleType", "autoWidth": true }
+            , { "data": "Lab_ID", "name": "Lab_ID", "autoWidth": true }
+            , { "data": "Mass_Spl_Str", "name": "Mass_Spl_Str", "autoWidth": true }
+            , { "data": "TM_Str", "name": "TM_Str", "autoWidth": true }
+            , { "data": "M_Str", "name": "M_Str", "autoWidth": true }
+            , { "data": "VM_Str", "name": "VM_Str", "autoWidth": true }
+            , { "data": "Ash_Str", "name": "Ash_Str", "autoWidth": true }
+            , { "data": "TS_Str", "name": "TS_Str", "autoWidth": true }
+            , { "data": "Cal_ad_Str", "name": "Cal_ad_Str", "autoWidth": true }
+            , { "data": "Cal_db_Str", "name": "Cal_db_Str", "autoWidth": true }
+            , { "data": "Cal_ar_Str", "name": "Cal_ar_Str", "autoWidth": true }
+            , { "data": "Cal_daf_Str", "name": "Cal_daf_Str", "autoWidth": true }
+            , { "data": "RD_Str", "name": "RD_Str", "autoWidth": true }
+            , {  
+                    "render": function (data, type, full, meta)  
+                    {
+                        var xclass = 'mercy_data_new';
+                        switch(full.Status)
+                        {
+                            case 'New':
+                                xclass = 'mercy_data_new';
+                                break;
+                            case 'Update':
+                                xclass = 'mercy_data_update';
+                                break;
+                            case 'Invalid':
+                                xclass = 'mercy_data_invalid';
+                                break;
+                        }
+                        
+                        return '<span class="' + xclass + '">'+ full.Status + '</span>';
+                    }
+                }
+        ]
+        , "lengthMenu": [[-1], ["All"]]
+    });
+    
+    resize_Table();
+}
+
+function showData_Explorasi(){
+    tabExplorasi = $('#mercyTable3').DataTable({
+        "processing": true
+        , "scrollX": true
+        , "serverSide": true
+        , "autoWidth": false
+        , "bFilter": false
+        , "dom": '<"top">rt<"bottom"iflp><"clear">'
+        , "ajax": {
+            "url": api_Request + '/Api/File/Geology_Explorasi?.id='+idExplorasi
+            , "type": "POST"
+            , "datatype": "json"
+        }
+        , "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+        , "columns": [
+            { "data": "data_RecordId", "name": "data_RecordId", "autoWidth": true }
+            , { "data": "Sample_ID", "name": "Sample_ID", "autoWidth": true }
+            , { "data": "SampleType", "name": "SampleType", "autoWidth": true }
+            , { "data": "Lab_ID", "name": "Lab_ID", "autoWidth": true }
+            , { "data": "Mass_Spl_Str", "name": "Mass_Spl_Str", "autoWidth": true }
+            , { "data": "TM_Str", "name": "TM_Str", "autoWidth": true }
+            , { "data": "M_Str", "name": "M_Str", "autoWidth": true }
+            , { "data": "VM_Str", "name": "VM_Str", "autoWidth": true }
+            , { "data": "Ash_Str", "name": "Ash_Str", "autoWidth": true }
+            , { "data": "TS_Str", "name": "TS_Str", "autoWidth": true }
+            , { "data": "Cal_ad_Str", "name": "Cal_ad_Str", "autoWidth": true }
+            , { "data": "Cal_db_Str", "name": "Cal_db_Str", "autoWidth": true }
+            , { "data": "Cal_ar_Str", "name": "Cal_ar_Str", "autoWidth": true }
+            , { "data": "Cal_daf_Str", "name": "Cal_daf_Str", "autoWidth": true }
+            , { "data": "RD_Str", "name": "RD_Str", "autoWidth": true }
+            , {  
+                    "render": function (data, type, full, meta)  
+                    {
+                        var xclass = 'mercy_data_new';
+                        switch(full.Status)
+                        {
+                            case 'New':
+                                xclass = 'mercy_data_new';
+                                break;
+                            case 'Update':
+                                xclass = 'mercy_data_update';
+                                break;
+                            case 'Invalid':
+                                xclass = 'mercy_data_invalid';
+                                break;
+                        }
+                        
+                        return '<span class="' + xclass + '">'+ full.Status + '</span>';
+                    }
+                }
+        ]
+        , "lengthMenu": [[-1], ["All"]]
+    });
+    
+    resize_Table();
+}
+    
+function showData_Barge(){
+    tabBarge = $('#mercyTable4').DataTable({
+        "processing": true
+        , "scrollX":true
+        , "serverSide": true
+        , "autoWidth": false
+        , "bFilter": false
+        , "dom": '<"top">rt<"bottom"iflp><"clear">'
+        , "ajax": {
+            "url": api_Request + '/Api/File/BARGE_LOADING?.id='+idBarge
+            , "type": "POST"
+            , "datatype": "json"
+        }
+        , "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+        , "columns": [
+            { "data": "data_RecordId", "name": "data_RecordId", "autoWidth": true }
+            , { "data": "Sheet", "name": "Sheet", "autoWidth": true }
+            , { "data": "JOB_Number", "name": "JOB_Number", "autoWidth": true }
+            , { "data": "ID_Number", "name": "ID_Number", "autoWidth": true }
+            , { "data": "Service_Trip_Number", "name": "Service_Trip_Number", "autoWidth": true }
+            , { "data": "Date_Sampling", "name": "Date_Sampling", "autoWidth": true }
+            , { "data": "Date_Report", "name": "Date_Report", "autoWidth": true }
+            , { "data": "Tonnage_Str", "name": "Tonnage_Str", "autoWidth": true }
+            , { "data": "Name", "name": "Name", "autoWidth": true }
+            , { "data": "Destination", "name": "Destination", "autoWidth": true }
+            , { "data": "Temperature_Str", "name": "Temperature_Str", "autoWidth": true }
+            , { "data": "TM_Str", "name": "TM_Str", "autoWidth": true }
+            , { "data": "M_Str", "name": "M_Str", "autoWidth": true }
+            , { "data": "ASH_adb_Str", "name": "ASH_adb_Str", "autoWidth": true }
+            , { "data": "ASH_arb_Str", "name": "ASH_arb_Str", "autoWidth": true }
+            , { "data": "VM_adb_Str", "name": "VM_adb_Str", "autoWidth": true }
+            , { "data": "VM_arb_Str", "name": "VM_arb_Str", "autoWidth": true }
+            , { "data": "FC_adb_Str", "name": "FC_adb_Str", "autoWidth": true }
+            , { "data": "FC_arb_Str", "name": "FC_arb_Str", "autoWidth": true }
+            , { "data": "TS_adb_Str", "name": "TS_adb_Str", "autoWidth": true }
+            , { "data": "TS_arb_Str", "name": "TS_arb_Str", "autoWidth": true }
+            , { "data": "CV_adb_Str", "name": "CV_adb_Str", "autoWidth": true }
+            , { "data": "CV_db_Str", "name": "CV_db_Str", "autoWidth": true }
+            , { "data": "CV_arb_Str", "name": "CV_arb_Str", "autoWidth": true }
+            , { "data": "CV_daf_Str", "name": "CV_daf_Str", "autoWidth": true }
+            , { "data": "CV_ad_15_Str", "name": "CV_ad_15_Str", "autoWidth": true }
+            , { "data": "CV_ad_16_Str", "name": "CV_ad_16_Str", "autoWidth": true }
+            , { "data": "CV_ad_17_Str", "name": "CV_ad_17_Str", "autoWidth": true }
+            , { "data": "Remark", "name": "Remark", "autoWidth": true }
+            , { "data": "TM_Plan_Str", "name": "TM_Plan_Str", "autoWidth": true }
+            , { "data": "TM_Average_Str", "name": "TM_Average_Str", "autoWidth": true }
+            , { "data": "ASH_Plan_Str", "name": "ASH_Plan_Str", "autoWidth": true }
+            , { "data": "ASH_Average_Str", "name": "ASH_Average_Str", "autoWidth": true }
+            , { "data": "TS_Plan_Str", "name": "TS_Plan_Str", "autoWidth": true }
+            , { "data": "TS_Average_Str", "name": "TS_Average_Str", "autoWidth": true }
+            , { "data": "CV_Plan_Str", "name": "CV_Plan_Str", "autoWidth": true }
+            , { "data": "CV_Average_Str", "name": "CV_Average_Str", "autoWidth": true }
+            , {  
+                    "render": function (data, type, full, meta)  
+                    {
+                        var xclass = 'mercy_data_new';
+                        switch(full.Status)
+                        {
+                            case 'New':
+                                xclass = 'mercy_data_new';
+                                break;
+                            case 'Update':
+                                xclass = 'mercy_data_update';
+                                break;
+                            case 'Invalid':
+                                xclass = 'mercy_data_invalid';
+                                break;
+                        }
+                        
+                        return '<span class="' + xclass + '">'+ full.Status + '</span>';
+                    }
+                }
+        ]
+        , "lengthMenu": [[-1], ["All"]]
+    });
+    
+    resize_Table();
+}
+
+function showData_Crush(){
+    tabCrush = $('#mercyTable5').DataTable({
+        "processing": true
+        , "scrollX":true
+        , "serverSide": true
+        , "autoWidth": false
+        , "bFilter": false
+        , "dom": '<"top">rt<"bottom"iflp><"clear">'
+        , "ajax": {
+            "url": api_Request + '/Api/File/CRUSHING_PLANT?.id='+idCrush
+            , "type": "POST"
+            , "datatype": "json"
+        }
+        , "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+        , "columns": [
+            { "data": "data_RecordId", "name": "data_RecordId", "autoWidth": true }
+            , { "data": "Sheet", "name": "Sheet", "autoWidth": true }
+            , { "data": "Date_Production", "name": "Date_Production", "autoWidth": true }
+            , { "data": "Shift_Work", "name": "Shift_Work", "autoWidth": true }
+            , { "data": "Tonnage_Str", "name": "Tonnage_Str", "autoWidth": true }
+            , { "data": "Sample_ID", "name": "Sample_ID", "autoWidth": true }
+            , { "data": "TM_Str", "name": "TM_Str", "autoWidth": true }
+            , { "data": "M_Str", "name": "M_Str", "autoWidth": true }
+            , { "data": "ASH_adb_Str", "name": "ASH_adb_Str", "autoWidth": true }
+            , { "data": "ASH_arb_Str", "name": "ASH_arb_Str", "autoWidth": true }
+            , { "data": "VM_adb_Str", "name": "VM_adb_Str", "autoWidth": true }
+            , { "data": "VM_arb_Str", "name": "VM_arb_Str", "autoWidth": true }
+            , { "data": "FC_adb_Str", "name": "FC_adb_Str", "autoWidth": true }
+            , { "data": "FC_arb_Str", "name": "FC_arb_Str", "autoWidth": true }
+            , { "data": "TS_adb_Str", "name": "TS_adb_Str", "autoWidth": true }
+            , { "data": "TS_arb_Str", "name": "TS_arb_Str", "autoWidth": true }
+            , { "data": "CV_adb_Str", "name": "CV_adb_Str", "autoWidth": true }
+            , { "data": "CV_db_Str", "name": "CV_db_Str", "autoWidth": true }
+            , { "data": "CV_arb_Str", "name": "CV_arb_Str", "autoWidth": true }
+            , { "data": "CV_daf_Str", "name": "CV_daf_Str", "autoWidth": true }
+            , { "data": "CV_ad_15_Str", "name": "CV_ad_15_Str", "autoWidth": true }
+            , { "data": "CV_ad_16_Str", "name": "CV_ad_16_Str", "autoWidth": true }
+            , { "data": "CV_ad_17_Str", "name": "CV_ad_17_Str", "autoWidth": true }
+            , { "data": "Remark", "name": "Remark", "autoWidth": true }
+            , { "data": "TM_Plan_Str", "name": "TM_Plan_Str", "autoWidth": true }
+            , { "data": "TM_Average_Str", "name": "TM_Average_Str", "autoWidth": true }
+            , { "data": "ASH_Plan_Str", "name": "ASH_Plan_Str", "autoWidth": true }
+            , { "data": "ASH_Average_Str", "name": "ASH_Average_Str", "autoWidth": true }
+            , { "data": "TS_Plan_Str", "name": "TS_Plan_Str", "autoWidth": true }
+            , { "data": "TS_Average_Str", "name": "TS_Average_Str", "autoWidth": true }
+            , { "data": "CV_Plan_Str", "name": "CV_Plan_Str", "autoWidth": true }
+            , { "data": "CV_Average_Str", "name": "CV_Average_Str", "autoWidth": true }
+            , {  
+                    "render": function (data, type, full, meta)  
+                    {
+                        var xclass = 'mercy_data_new';
+                        switch(full.Status)
+                        {
+                            case 'New':
+                                xclass = 'mercy_data_new';
+                                break;
+                            case 'Update':
+                                xclass = 'mercy_data_update';
+                                break;
+                            case 'Invalid':
+                                xclass = 'mercy_data_invalid';
+                                break;
+                        }
+                        
+                        return '<span class="' + xclass + '">'+ full.Status + '</span>';
+                    }
+                }
+        ]                   
+        , "lengthMenu": [[-1], ["All"]]
+    });
+    
+    resize_Table();
+}
+
+function clearData(p_dataTable){
+    try
+    {
+        $('#'+p_dataTable).DataTable().clear().destroy();
+        //$('#'+p_dataTable).DataTable().destroy();
+        //$('#'+p_dataTable+' tbody').empty();
+    }
+    catch(err){}
+}
+
+function hide_All(){
+    $('#upload_SamplingROM').hide();
+    $('#upload_Pit').hide();
+    $('#upload_Explorasi').hide();
+    $('#upload_Barge').hide();
+    $('#upload_Crush').hide();
+    id_SamplingROM = -1;
+    idPit = -1;
+    idExplorasi = -1;
+    idBarge = -1;
+    idCrush = -1;
+    
+    clearData('mercyTable');
+    clearData('mercyTable2');
+    clearData('mercyTable3');
+    clearData('mercyTable4');
+    clearData('mercyTable5');
+}
+
+function display_Default(){
+    hide_All();
+    
+    $('#btnUpload').hide();
+    $('#btnChooseFile').show();
+    $('#imgProcess').hide();
+    $('#imgText').text('');
+    $("#fileInput").val('');
+    $("#txtFileName").val('');
+}
+
+function analysisResult_Changed(){
+    display_Default();
+    
+    resize_Table();
+    
+    switch($("#cbType").val())
+    {
+        case '@OurUtility.UPLOAD_Sampling_ROM':
+            $('#upload_SamplingROM').show();
+            showData_SamplingROM();
+            break;
+        case '@OurUtility.UPLOAD_Geology_Pit_Monitoring':
+            $('#upload_Pit').show();
+            showData_PIT();
+            break;
+        case '@OurUtility.UPLOAD_Geology_Explorasi':
+            $('#upload_Explorasi').show();
+            showData_Explorasi();
+            break;
+        case '@OurUtility.UPLOAD_BARGE_LOADING':
+            $('#upload_Barge').show();
+            showData_Barge();
+            break;
+        case '@OurUtility.UPLOAD_CRUSHING_PLANT':
+            $('#upload_Crush').show();
+            showData_Crush();
+            break;
+    }
+}
+
+var obj_html_Company = null;
+
+function Create_ddl_Company() {
+    if (obj_html_Company != null) return;
+
+    obj_html_Company = $('#ddl_Company').select2({
+        placeholder: 'Select Company'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        //, minimumResultsForSearch: 10
+    });
+
+    $('#ddl_Company').change(function (e) {
+        //OnChange_ddl_Company();
+    });
+}
+
+function Create_ddl_AnalysisResult() {
+    $('#cbType').select2();
+
+    $('#cbType').change(function (e) {
+        //OnChange_ddl_AnalysisResult();
+    });
+
+    // Inisial value
+    $('#cbType').val(currentData_AnalysisResult).trigger('change');
+}
+
+function Clear_ddl_Company() {
+    // Clear DropdownList
+    $('#ddl_Company').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Company();
+}
+
+function Populate_Data_ddl_Company() {
+    try {
+        var option;
+        var first = '';
+
+        uInfo.Relations.Companies.forEach(
+            function (item) {
+                // create the option and append to Select2
+                option = new Option(item.CompanyCode, item.CompanyCode, true, true);
+                obj_html_Company.append(option);//.trigger('change');
+                
+                if (first == '') first = item.CompanyCode;
+            }
+        );
+
+        // Inisial value for "Company"
+        ignore_trigger_change_ddl_Company = true;
+        $('#ddl_Company').val(first).trigger('change');
+        ignore_trigger_change_ddl_Company = false;
+    }catch(err){}
+}
+
+function Show_UserInformation() {
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/User/Info'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation, 'check_page': current_Page_URL}
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // make it "Intuitive"
+            if ( ! permission.Is_View){
+                alert('Permission is not enough. Read access is needed.');
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            after_GetUserInfo(data.User);
+            uInfo = data.User;
+            
+            resize_Table();
+            
+            Populate_Data_ddl_Company();
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function SendEmail_after_Upload(){
+    switch($("#cbType").val())
+    {
+        case '@OurUtility.UPLOAD_Sampling_ROM':
+            SendEmail('Upload_ROM_Sampling_General_Email');
+            SendEmail('Upload_ROM_Sampling_Specific_Email');
+            break;
+        case '@OurUtility.UPLOAD_Geology_Pit_Monitoring':
+            SendEmail('Upload_Geology_Pit_Monitoring_General_Email');
+            SendEmail('Upload_Geology_Pit_Monitoring_Specific_Email');
+            break;
+        case '@OurUtility.UPLOAD_Geology_Explorasi':
+            SendEmail('Upload_Geology_Exploration_General_Email');
+            SendEmail('Upload_Geology_Exploration_Specific_Email');
+            break;
+        case '@OurUtility.UPLOAD_BARGE_LOADING':
+            SendEmail('Upload_FC_Barging');
+            break;
+        case '@OurUtility.UPLOAD_CRUSHING_PLANT':
+            SendEmail('Upload_FC_Crushing');
+            break;
+    }
+}
+
+function SendEmail(p_api){
+
+    if (paramid === null) return;
+    if (paramid == null) return;
+    if (paramid == '') return;
+
+    $.ajax({
+        url: api_Request + '/Api/Notification/' + p_api + '?.id=' + paramid,
+        type: 'GET',
+        dataType: "json",
+        beforeSend: function(request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        },
+        cache: false,
+        success: function (data) {},
+        error: function (error) {
+            //$(this).remove();
+        }
+    });
+}
+</script>

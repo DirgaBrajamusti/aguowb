@@ -1,0 +1,367 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+.dt-avail {
+    color: #00BDAA;
+    font-family: 'NotoSans';
+    font-size: 12px;
+    line-height: 16.34px;
+    text-align: left;
+}
+
+/* Rating Star Widgets Style */
+.rating-stars ul {
+    list-style-type:none;
+    padding:0;
+    padding-top: 10px;
+    
+    -moz-user-select:none;
+    -webkit-user-select:none;
+}
+.rating-stars ul > li.star {
+    display:inline-block;
+  
+}
+
+/* Idle State of the stars */
+.rating-stars ul > li.star > i.fa {
+    font-size:2.5em; /* Change the size of the stars */
+    color:#ccc; /* Color on idle state */
+}
+
+/* Hover state of the stars */
+.rating-stars ul > li.star.hover > i.fa {
+    color:#FFCC36;
+}
+
+/* Selected state of the stars */
+.rating-stars ul > li.star.selected > i.fa {
+    color:#FFCC36;
+}
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Customer Feedback List
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Customer Feedback > Customer Feedback List
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:80px !important;">
+        <div class="col-12 col-md margin_padding_0">
+            <div class="row margin_padding_0">
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width:180px;">
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div>
+                        <input type="text" id="txtSearch_Name" value="" class="shadow-none text_search" style="width:100%;" placeholder="Search" onkeyup="OnKeyUp_Text(this)"/>
+                    </div>
+                    <div style="height:20px;width:100%;padding:0px 0px 0px 5px !important;margin:-32px 0px 0px 0px !important;">
+                        <img src="/images/ic-search.png"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width:120px;">
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div class="mercy_button_2" style="width:98px;"><div class="mercy_text_center" id="btnFeedback">Feedback</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0">
+            <div class="row margin_padding_0" style="margin:10px 25px !important;">
+                <table id="mercyTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>FeedbackId</th>
+                            <th><div style="color:white;text-align: center !important;">Action</div></th>
+                            <th>Name</th>
+                            <th>Date Rate</th>
+                            <th>Accuracy</th>
+                            <th>Objectivity</th>
+                            <th>Easy to Understand</th>
+                            <th>Detailed</th>
+                            <th>Punctuality</th>
+                            <th>Remark</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial(ui_Folder_ServerSide + "Feedback_Form.cshtml")
+
+<script type="text/javascript">
+
+// Flag
+var ignore_trigger_change_ddl_Site = false;
+var ignore_trigger_change_ddl_Company = false;
+var ignore_trigger_change_ddl_SHIFT = false;
+
+// DataGrid
+var obj_html_Table;
+
+// DropdownList
+var obj_html_Site = null;
+var obj_html_Company = null;
+
+// row
+var isNew = false;
+var lineNumber_Data = 0;
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+    
+// row
+var lineNumber_Row = 0;
+
+// for Tracking
+var currentData_Company = 'all';
+var currentData_Shift = '1';
+
+$(document).ready(function () {
+
+    $(document).attr('title', 'Customer Feedback - List : Mercy');
+
+    $(window).resize(function () {
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+    
+    $('#btnFeedback').click(function (e) {
+        Feedback_Form_Show();
+    });
+    
+    Load_Page_List();
+});
+
+function Clear_DataGrid_(p_id) {
+    try {
+        $('#' + p_id).DataTable().clear().destroy();
+        //$('#'+p_id).DataTable().destroy();
+        //$('#'+p_id+' tbody').empty();
+    }
+    catch (err) { }
+}
+
+function Clear_DataGrid() {
+    Create_Table();
+}
+
+function Create_Table() {
+    Clear_DataGrid_('mercyTable');
+
+    try {
+        obj_html_Table = $('#mercyTable').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": true
+            //, "ordering": false
+            , "columns": [
+                { "data": "FeedbackId", "name": "FeedbackId", "autoWidth": true }
+                , {
+                    render: function (data, type, full, meta) {
+                        var txtReturn ="";
+                        txtReturn += '<input type="hidden" id="data_RecordId' + object_id_additional + '" value="' + full.RecordId + '"/>';
+                        txtReturn +='<i onclick="openModalRating(' + full.Accuracy + ',' + full.Objectivity + ',' + full.EasyToUnderstand + ',' + full.Detailed + ',' + full.Punctuality + ',' + '\'' + full.Remark + '\')" class="fa fa-eye" style="cursor: pointer;font-size: 20px;color:white" title="View"></i>';
+                        return txtReturn;
+                    }
+                    , className: "mercy_action_icon"
+                    , orderable: false
+                    , width: "40px"
+                }
+                , { "data": "FullName", "name": "FullName", "autoWidth": true,"searchable": true, "orderable": true }
+                , { "data": "CreatedOn_Str", "name": "CreatedOn_Str", "autoWidth": true, "orderable": false }
+                , { "data": "Accuracy", "name": "Accuracy", "autoWidth": true, "orderable": false, className: "mercy_column_center" }
+                , { "data": "Objectivity", "name": "Objectivity", "autoWidth": true, "orderable": false, className: "mercy_column_center" }
+                , { "data": "EasyToUnderstand", "name": "EasyToUnderstand", "autoWidth": true, "orderable": false, className: "mercy_column_center" }
+                , { "data": "Detailed", "name": "Detailed", "autoWidth": true, "orderable": false, className: "mercy_column_center" }
+                , { "data": "Punctuality", "name": "Punctuality", "autoWidth": true, "orderable": false, className: "mercy_column_center" }
+                , { "data": "Remark", "name": "Remark", "autoWidth": true, "orderable": false }
+            ]
+            , "columnDefs": [{
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+                /*,{
+                    "targets": [7],
+                    "searchable": false,
+                    "orderable": false
+                }*/
+            ]
+            , "order": [[2, "asc"]]
+        });
+
+        obj_html_Table.on('draw', function () {
+            //lineNumber_Row++;
+            //console.log(lineNumber_Row);
+        });
+    }
+    catch (err) {}
+    
+    // Resize Table: because this DataTable is newly created
+    resize_Table();
+}
+
+var recordNumber = 0;
+
+function Populate_DataGrid() {
+    Clear_DataGrid();
+    
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/Feedback'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation, txt: $('#txtSearch_Name').val() }
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+           if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // Special Purpose, getting information of CurrentUser
+            if (get_user_menu == '1'){
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+                
+                Create_Table();
+            }
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // make it "Intuitive"
+            Display_Buttons();
+            
+            //try {
+                recordNumber = 0;
+
+                obj_html_Table.rows.add(data.Items); // add to DataTable instance
+                obj_html_Table.draw(); // always redraw
+            //} catch (err) {}
+            
+            // Resize Table: because this DataTable is filled with new Data
+            resize_Table();
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function setRating(ratingID, ratingValue) {
+    var stars = $('#' + ratingID + '').children('li.star');
+
+    for (i = 0; i < stars.length; i++) {
+        $(stars[i]).removeClass('selected');
+    }
+
+    for (i = 0; i < ratingValue; i++) {
+        $(stars[i]).addClass('selected');
+    }
+    /*
+    for (i = 0; i < ratingValue; i++) {
+        //alert("remove selected - " + i);
+        $('#' + ratingID + ' li.selected').removeClass('selected')
+    }
+    for (i = 0; i < ratingValue; i++) {
+        $('#' + ratingID + ' li.star').addClass('selected');
+    }
+    */
+
+}
+function openModalRating(ratingAccuracy, ratingObjectivity, ratingEasy, ratingDetailed, ratingPunctuality, remark) {
+    setRating("ratingAccuracy", ratingAccuracy);
+    setRating("ratingObjectivity", ratingObjectivity);
+    setRating("ratingEasy", ratingEasy);
+    setRating("ratingDetailed", ratingDetailed);
+    setRating("ratingPunctuality", ratingPunctuality);
+
+    $("#titleGroupModal").text("Tell us what you think");
+    $('#txtRemark').val(remark);
+    $('#btnSave').hide();
+    $('#btnCancel').hide();
+    $('#boxClose').show();
+    $('#btnClose').show();
+    $('#txtRemark').attr('disabled', true);
+    $("#groupModalTrx").modal().appendTo("body");
+}
+    
+function OnKeyUp_Text(p_this) {
+    Populate_DataGrid();
+}
+
+</script>
+
+@Html.Partial(ui_Folder_ServerSide + "Feedback_Load_IFrame.cshtml")

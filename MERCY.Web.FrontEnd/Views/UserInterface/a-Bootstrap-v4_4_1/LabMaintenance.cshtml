@@ -1,0 +1,725 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Lab Maintenance List
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Lab Maintenance
+    </div>
+    <div class="mercy_box_inner_content" style="min-height:100px !important; display: flex; justify-content: space-between; gap: 15px; padding: 15px; max-width: 1280px; flex-wrap: wrap;">
+        <div style="flex: 1 0 100px">
+            <div style="width:100%" class="filter_title">Site</div>
+            <div style="width:100%;padding:10px 0px !important;">
+                <select id="ddl_Site"
+                        class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text"
+                        style="width:100%;"></select>
+            </div>
+        </div>
+        <div style="flex: 1 0 100px ">
+            <div style="width:100%" class="filter_title">Company</div>
+            <div style="width:100%;padding:10px 0px !important;">
+                <select id="ddl_Company"
+                        class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text"
+                        style="width:100%;"></select>
+            </div>
+        </div>
+        <div style="flex: 1 0 100px ">
+            <div style="width:100%" class="filter_title">Category</div>
+            <div style="width:100%;padding:10px 0px !important;">
+                <select id="ddl_MaintenanceActivity" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+            </div>
+        </div>
+        <div style="flex: 1 0 100px ">
+            <div style="width:100%" class="filter_title">Instrument</div>
+            <div style="width:100%;padding:10px 0px !important;">
+                <select id="ddl_Instrument"
+                        class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text"
+                        style="width:100%;"></select>
+            </div>
+        </div>
+        <div style="flex: 1 0 100px ">
+            <div style="width:100%" class="filter_title"></div>
+            <div style="width:100%;padding:10px 0px !important;">
+                <div>
+                    <input type="text" id="txtSearch_Name" value="" class="shadow-none text_search" style="width:100%;" placeholder="Search" onkeyup="OnKeyUp_Text(this)" />
+                </div>
+                <div style="height:20px;width:100%;padding:0px 0px 0px 5px !important;margin:-28px 0px 0px 0px !important;">
+                    <img src="/images/ic-search.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0">
+            <div class="row margin_padding_0" style="margin:20px 25px !important;">
+                <div style="width: 300px;">
+                    <div class="col col-md-auto margin_padding_0"><div class="mercy_button" style="width:170px;" id="btnAdd"><div class="mercy_text_center">Add New Maintenance</div></div></div>
+                </div>
+            </div>
+            <div class="row margin_padding_0" style="margin:10px 25px !important;">
+                <table id="mercyTable" class="display nowrap table table-striped mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>RecordId</th>
+                            <th><div style="color:white;text-align: center !important;">Action</div></th>
+                            <th>No</th>
+                            <th>Site</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                            <th>Category</th>
+                            <th>Instrument</th>
+                            <th>Description</th>
+                            <th>Instrument Code</th>
+                            <th>Assigned To</th>
+                            <th>Next Schedule Date</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+// Flag
+var ignore_trigger_change_ddl_Instrument = false;
+var ignore_trigger_change_ddl_MaintenanceActivity = false;
+var ignore_trigger_change_ddl_Site = false;
+var ignore_trigger_change_ddl_Company = false;
+
+var is_still_AJAX_dataList = false;
+
+// DataGrid
+var obj_html_Table;
+var obj_html_MaintenanceActivity;
+
+// DropdownList
+var obj_html_Site;
+var obj_html_Company;
+var obj_html_Instrument;
+
+// row
+var isNew = false;
+var lineNumber_Data = 0;
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+
+$(document).ready(function (){
+    $(document).attr('title', 'Lab Maintenance - List : Mercy');
+
+    $(window).resize(function (){
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+
+    $('#btnAdd').click(function (e){
+        window.location = '/LabMaintenancev/Form';
+    });
+
+    Create_ddl_Site();
+    Create_ddl_Company();
+    Create_ddl_Instrument();
+    Create_ddl_MaintenanceActivity();
+    
+    Load_Page_List();
+
+    if (getExistingFilter('txt')) {
+        $('#txtSearch_Name').val(getExistingFilter('txt'));
+    }
+
+});
+
+function Clear_DataGrid_(p_id){
+    try {
+        $('#' + p_id).DataTable().clear().destroy();
+        //$('#'+p_id).DataTable().destroy();
+    }catch(err){}
+    
+    try {
+        $('#'+p_id+' tbody').empty();
+    }catch(err){}
+}
+
+function Clear_DataGrid(){
+    Create_Table();
+}
+
+function Create_Table(){
+    Clear_DataGrid_('mercyTable');
+
+    try {
+        obj_html_Table = $('#mercyTable').DataTable({
+            "bAutoWidth": true
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                { "data": "RecordId", "name": "RecordId", "autoWidth": true }
+                , {
+                    render: function (data, type, full, meta) {
+                        return '<div style="width:40px !important;">'+
+                                '<a href="/LabMaintenancev/Form?.id='+full.RecordId+'"><i class="fa fa-edit" style="cursor: pointer;font-size: 20px;color:white" title="Detail ROM Transfer"></i></a>'
+                                '</div>'
+                                ;
+                    }
+                    , className: "mercy_action_icon"
+                    , orderable: false
+                    , width: "40px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return lineNumber_Data.toString() + '.';
+                    }
+                }
+                , { "data": "SiteName", "name": "Site", "autoWidth": true }
+                , { "data": "CompanyName", "name": "Company", "autoWidth": true }
+                , { "data": "Status", "name": "Status", "autoWidth": true }
+                , { "data": "CategoryName", "name": "CategoryName", "autoWidth": true }
+                , { "data": "InstrumentName", "name": "InstrumentName", "autoWidth": true }
+                , { "data": "Description", "name": "Description", "autoWidth": true }
+                , { "data": "InstrumentCode", "name": "InstrumentCode", "autoWidth": true }
+                , { "data": "AssignedTo_FullName", "name": "AssignedTo_FullName", "autoWidth": true }
+                , { "data": "NextSchedule_Str", "name": "NextSchedule_Str", "autoWidth": true }
+                
+            ]
+            , "columnDefs": [{
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+                /*,{
+                    "targets": [7],
+                    "searchable": false,
+                    "orderable": false
+                }*/
+            ]
+            , "order": [[2, "asc"]]
+        });
+
+        obj_html_Table.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+
+    }catch(err){}
+}
+
+function Populate_DataGrid(){
+    if (is_still_AJAX_dataList) return;
+    
+    is_still_AJAX_dataList = true;
+    
+    Clear_DataGrid();
+    
+    // reset
+    lineNumber_Data = 0;
+    object_id_Created = [];
+
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/LabMaintenance'
+        , type: 'POST'
+        , data: {
+            u_menu: get_user_menu,
+            u_relation: get_user_relation,
+            company: $('#ddl_Company').val() || getExistingFilter('company'),
+            site: $('#ddl_Site').val() || getExistingFilter('site'),
+            Instrument: $('#ddl_Instrument').val() || getExistingFilter('Instrument'),
+            MaintenanceActivity: $('#ddl_MaintenanceActivity').val() || getExistingFilter('MaintenanceActivity'),
+            txt: $('#txtSearch_Name').val() || getExistingFilter('txt')
+        }
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            is_still_AJAX_dataList = false;
+            
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // Special Purpose, getting information of CurrentUser
+            if (get_user_menu == '1'){
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+                
+                Create_Table();
+
+                Populate_Data_ddl_Site();
+                Populate_Data_ddl_Company();
+                Populate_Data_ddl_Instrument();
+                Populate_Data_ddl_MaintenanceActivity();
+            }
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // make it "Intuitive"
+            Display_Buttons();
+            
+            // assign Data to Table
+            /*try {
+                obj_html_Table.rows.add(data.Items); // add to DataTable instance
+                obj_html_Table.draw(); // always redraw
+            }catch(err){}*/
+
+            Clear_DataGrid();
+            lineNumber_Data = 0;
+            data.Items.forEach(
+                function (item){
+                    isNew = false;
+                    object_Created_Count++;
+                    lineNumber_Data++;
+                    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                    
+                    // save to Array
+                    object_id_Created.push(object_id_additional);
+                    
+                    // add to Table
+                    obj_html_Table.row.add(item).draw(false);
+                }
+            );
+            
+            // Resize Table: because this DataTable is filled with new Data
+            resize_Table();
+        },
+        error: function (error){
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+function Create_ddl_Site() {
+    if (!!obj_html_Site) return;
+
+    obj_html_Site = $('#ddl_Site').select2({
+        placeholder: 'Select Site'
+        , tags: false
+        , multiple: false
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Site').change(function (e) {
+        OnChange_ddl_Site();
+    });
+}
+
+function OnChange_ddl_Site() {
+    if (ignore_trigger_change_ddl_Site) return;
+
+    clearFilter('company');
+    clearFilter('Instrument');
+    clearFilter('MaintenanceActivity');
+    // populate instrument and category based on site
+    Populate_Data_ddl_Company();
+    Populate_Data_ddl_Instrument();
+    Populate_Data_ddl_MaintenanceActivity();
+
+    saveFilter()
+    Populate_DataGrid();
+}
+
+function Clear_ddl_Site() {
+    Create_ddl_Site();
+}
+
+function Populate_Data_ddl_Site() {
+    try {
+        var option = new Option('-- ALL', 'all', true, true);
+        obj_html_Site.append(option);
+        
+        uInfo.Relations.Sites.forEach(
+            function (item) {
+                // create the option and append to Select
+                option = new Option(item.SiteName, item.SiteId, true, true);
+                obj_html_Site.append(option);
+            }
+        );
+
+        if (getExistingFilter('site')) {
+            var isAvailableInOptions = uInfo.Relations.Sites.find(site => Number(site.SiteId) === Number(getExistingFilter('site')))
+            if (isAvailableInOptions) {
+                obj_html_Site.val(getExistingFilter('site'));
+                $('#ddl_Site').val(getExistingFilter('site'));
+                return;
+            } else {
+                clearFilter('site');
+            }
+        }
+
+        // Inisial value for "Site"
+        ignore_trigger_change_ddl_Site = true;
+        // auto select if only 1 item
+        if (uInfo.Relations.Sites.length == 1) {
+            $('#ddl_Site').val(uInfo.Relations.Sites[0].SiteId).trigger('change');
+        } else {
+            $('#ddl_Site').val('all').trigger('change');
+        }
+        ignore_trigger_change_ddl_Site = false;
+    } catch (err) { }
+}
+
+function Create_ddl_Company() {
+    if (!!obj_html_Company) return;
+
+    obj_html_Company = $('#ddl_Company').select2({
+        placeholder: 'Select Company'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Company').change(function (e) {
+        OnChange_ddl_Company();
+    });
+}
+
+function OnChange_ddl_Company() {
+    if (ignore_trigger_change_ddl_Company) return;
+
+    clearFilter('Instrument');
+    clearFilter('MaintenanceActivity');
+    // populate instrument and category based on company
+    Populate_Data_ddl_Instrument()
+    Populate_Data_ddl_MaintenanceActivity();
+
+    saveFilter()
+    Populate_DataGrid();
+}
+
+function Clear_ddl_Company() {
+    obj_html_Company.empty();
+    Create_ddl_Company();
+}
+
+function Populate_Data_ddl_Company() {
+    try {
+        Clear_ddl_Company();
+
+        // add Label: "ALL"
+        var option = new Option('-- ALL', 'all', true, true);
+        obj_html_Company.append(option);//.trigger('change');
+
+        var siteId = $('#ddl_Site').val() || getExistingFilter('site');
+        var filteredCompaniesBySite = uInfo.Relations.Companies
+            .filter(company => siteId !== 'all' ? Number(company.SiteId) === Number(siteId) : true)
+
+        filteredCompaniesBySite.forEach(
+            function (item) {
+                // create the option and append to Select2
+                option = new Option(item.CompanyCode, item.CompanyCode, true, true);
+                obj_html_Company.append(option);//.trigger('change');
+            }
+        );
+
+        if (getExistingFilter('company')) {
+            var isAvailableInOptions = filteredCompaniesBySite.find(company => company.CompanyCode === getExistingFilter('company'))
+            if (isAvailableInOptions) {
+                obj_html_Company.val(getExistingFilter('company'));
+                $('#ddl_Company').val(getExistingFilter('company'));
+                return;
+            } else {
+                clearFilter('company');
+            }
+        }
+
+
+        if (filteredCompaniesBySite.length == 1) {
+            $('#ddl_Company').val(filteredCompaniesBySite[0].CompanyCode).trigger('change');
+            return;
+        }
+
+        // Inisial value for "Company"
+        ignore_trigger_change_ddl_Company = true;
+        // auto select if only 1 item
+        $('#ddl_Company').val('all').trigger('change');
+        ignore_trigger_change_ddl_Company = false;
+    } catch (err) { }
+}
+
+
+function Create_ddl_Instrument() {
+    if (!!obj_html_Instrument) return;
+
+    obj_html_Instrument = $('#ddl_Instrument').select2({
+        placeholder: 'Select instrument'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Instrument').change(function (e) {
+        OnChange_ddl_Instrument();
+    });
+}
+
+function OnChange_ddl_Instrument() {
+    if (ignore_trigger_change_ddl_Instrument) return;
+
+    saveFilter()
+    Populate_DataGrid();
+}
+
+function Populate_Data_ddl_Instrument() {
+    Clear_ddl_Instrument();
+
+    // add Label: "ALL"
+    var option = new Option('-- ALL', 'all', true, true);
+    obj_html_Instrument.append(option);
+
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/Instruments/Get_ddl'
+        , type: 'GET'
+        , dataType: "json"
+        , data: {
+            company: $('#ddl_Company').val() || getExistingFilter('company'),
+            site: $('#ddl_Site').val() || getExistingFilter('site')
+        }
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                //alert(data.Message);
+                return;
+            }
+            
+            data.Items.forEach(
+                function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.text, item.id, true, true);
+                    obj_html_Instrument.append(option);//.trigger('change');
+                }
+            );
+
+            if (getExistingFilter('Instrument')) {
+                obj_html_MaintenanceActivity.val(getExistingFilter('Instrument'));
+                $('#ddl_Instrument').val(getExistingFilter('Instrument'));
+                return;
+            }
+
+            if (data.Items.length == 1) {
+                $('#ddl_Instrument').val(data.Items[0].id);
+                return;
+            }
+
+            // Inisial value
+            ignore_trigger_change_ddl_Instrument = true;
+            $('#ddl_Instrument').val('all');
+            ignore_trigger_change_ddl_Instrument = false;
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Clear_ddl_Instrument() {
+    obj_html_Instrument.empty();
+    Create_ddl_Instrument();
+}
+
+function Create_ddl_MaintenanceActivity() {
+    if (!!obj_html_MaintenanceActivity) return;
+
+    obj_html_MaintenanceActivity = $('#ddl_MaintenanceActivity').select2({
+        placeholder: 'Select category'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_MaintenanceActivity').change(function (e) {
+        OnChange_ddl_MaintenanceActivity();
+    });
+}
+
+function OnChange_ddl_MaintenanceActivity() {
+    if (ignore_trigger_change_ddl_MaintenanceActivity) return;
+
+    saveFilter()
+    Populate_DataGrid();
+}
+
+function Populate_Data_ddl_MaintenanceActivity() {
+    Clear_ddl_MaintenanceActivity();
+
+    // add Label: "ALL"
+    var option = new Option('-- ALL', 'all', true, true);
+    obj_html_MaintenanceActivity.append(option);
+
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/MaintenanceActivity/Get_ddl'
+        , type: 'GET'
+        , dataType: "json"
+        , data: {
+            company: $('#ddl_Company').val() || getExistingFilter('company'),
+            site: $('#ddl_Site').val() || getExistingFilter('site')
+        }
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                //alert(data.Message);
+                return;
+            }
+            
+            data.Items.forEach(
+                function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.text, item.id, true, true);
+                    obj_html_MaintenanceActivity.append(option);//.trigger('change');
+                }
+            );
+
+            if (getExistingFilter('MaintenanceActivity')) {
+                obj_html_MaintenanceActivity.val(getExistingFilter('MaintenanceActivity'));
+                $('#ddl_MaintenanceActivity').val(getExistingFilter('MaintenanceActivity'));
+                return;
+            }
+
+            if (data.Items.length == 1) {
+                $('#ddl_MaintenanceActivity').val(data.Items[0].id).trigger('change');
+                return;
+            }
+            // Inisial value
+            ignore_trigger_change_ddl_MaintenanceActivity = true;
+            $('#ddl_MaintenanceActivity').val('all').trigger('change');
+            ignore_trigger_change_ddl_MaintenanceActivity = false;
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Clear_ddl_MaintenanceActivity() {
+    obj_html_MaintenanceActivity.empty();
+    Create_ddl_MaintenanceActivity();
+}
+
+function OnKeyUp_Text(p_this) {
+    saveFilter();
+    Populate_DataGrid();
+}
+
+function clearFilter(key) {
+    var existFilter = JSON.parse(localStorage.getItem('LabMaintenanceFilter'));
+    var filter = JSON.stringify({
+        ...existFilter,
+        [key]: null
+    });
+
+    localStorage.setItem('LabMaintenanceFilter', filter)
+}
+
+function saveFilter() {
+    var filter = JSON.stringify({
+        site: $("#ddl_Site").val() || getExistingFilter('site'),
+        company: $("#ddl_Company").val() || getExistingFilter('company'),
+        Instrument: $("#ddl_Instrument").val() || getExistingFilter('Instrument'),
+        MaintenanceActivity: $("#ddl_MaintenanceActivity").val() || getExistingFilter('MaintenanceActivity'),
+        txt: $('#txtSearch_Name').val()
+    });
+
+    localStorage.setItem('LabMaintenanceFilter', filter)
+}
+
+function getExistingFilter(key) {
+    if (localStorage.getItem('LabMaintenanceFilter')) {
+        var existFilter = JSON.parse(localStorage.getItem('LabMaintenanceFilter'));
+        return existFilter[key];
+    }
+    return null;
+}
+
+</script>

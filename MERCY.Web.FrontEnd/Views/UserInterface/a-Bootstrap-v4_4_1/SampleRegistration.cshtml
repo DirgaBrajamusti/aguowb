@@ -1,0 +1,1076 @@
+﻿@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+    #id_menu_SampleRegistration {
+        background-color: #000000;
+        border-radius: 4px;
+        /*opacity: 0.2;*/
+        background: rgba(0,0,0,0.2);
+        height: 52px;
+        margin: 5px 8px;
+    }
+
+    .filter_title {
+        color: #232323;
+        font-family: 'OpenSans-SemiBold';
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 17px;
+        opacity: 0.8700000047683716;
+        text-align: left;
+        height: 20px;
+    }
+
+    .select2-selection--single {
+        height: 34px !important;
+    }
+
+    .select2-selection__choice {
+        height: 34px !important;
+    }
+
+    .select2-selection__arrow {
+        height: 32px !important;
+    }
+
+    .border-print-card {
+        border: solid 1px #000000;
+        border-radius: 5px;
+        width: 13.5cm !important;
+        height: 2.7cm !important;
+        font-size: 12px !important;
+    }
+
+    .dataTables_scrollBody {
+        min-height: 50vh !important;
+    }
+
+    div.dts div.dataTables_scrollBody {
+        background: white;
+    }
+
+    #mercyTable_info {
+        padding-bottom: 30px;
+    }
+
+    #mercyTable_wrapper {
+        width: 100% !important;
+    }
+
+    #mercyTable_wrapper table {
+        min-width: 1800px !important;
+    }
+
+    #printArea {
+        display: none;
+    }
+
+    @@media print {
+        #mercytopbar {
+            display: none;
+        }
+
+        #mainDiv {
+            display: none;
+        }
+
+        #printArea {
+            display: block;
+            overflow: hidden;
+        }
+
+        div.pageBreaker {
+            clear: both;
+            display: block;
+            page-break-after: always;
+        }
+
+        @@page {
+            size: landscape;
+            margin: 0;
+            margin-left: 15px;
+            margin-top: 5px;
+        }
+
+        .title-print {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div id="mainDiv" class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Sample Registration
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Sample Registration
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:100px !important;">
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 150px;">
+                <div style="width:100%" class="filter_title">Site</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Site" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 200px;">
+                <div style="width:100%" class="filter_title">Company Name</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Company" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 150px;">
+                <div style="width:100%" class="filter_title">Client</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Client" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 150px;">
+                <div style="width:100%" class="filter_title">Project</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Project" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 160px;">
+                <div style="width:100%" class="filter_title">Date From</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div class="input-group date">
+                        <input type="text" id="txtDateFrom" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy" placeholder="dd-M-yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 160px;">
+                <div style="width:100%" class="filter_title">Date To</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div class="input-group date">
+                        <input type="text" id="txtDateTo" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy" placeholder="dd-M-yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0" style="padding: 0px 15px !important;">
+            <div class="row margin_padding_0" style="margin-bottom:20px !important;">
+                <div class="col col-md margin_padding_0" style="margin:20px 10px 0px 0px !important;">
+                    <div class="d-flex" style="width: 300px;">
+                        <div class="col col-md-auto margin_padding_0"><div class="mercy_button" style="width:200px;" id="btnAdd"><div class="mercy_text_center">Add Sample Registration</div></div></div>
+                        <div style="width:10px;"><img src="/images/spinner.gif" style="padding: 0px 0px 0px 20px;display:none;" id="imgLoadingList" /></div>
+                    </div>
+                </div>
+                <div class="col col-md-auto margin_padding_0" style="margin-top:20px !important;">
+                    <div style="width:250px;">
+                        <div>
+                            <input type="text" id="txtSearch_Name" value="" class="shadow-none mercy_text_search" style="width: 250px !important;" placeholder="Search" onkeyup="OnKeyUp_Text(this)" />
+                        </div>
+                        <div style="height:20px;width:100%;padding:0px 0px 0px 5px !important;margin:-32px 0px 0px 0px !important;">
+                            <img src="/images/ic-search.png" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0">
+                <table id="mercyTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header">
+                    <thead>
+                        <tr>
+                            <th>SampleId</th>
+                            <th><div style="color:white;text-align: center !important;">Action</div></th>
+                            <th>Company</th>
+                            <th>Site</th>
+                            <th>External ID</th>
+                            <th>Sample ID</th>
+                            <th>Client</th>
+                            <th>Project</th>
+                            <th>Date of Job</th>
+                            <th>Date Sampled Start</th>
+                            <th>Date Sampled End</th>
+                            <th>Date Received</th>
+                            <th>Shift</th>
+                            <th>Tonnage</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="printArea"></div>
+
+<script type="text/javascript">
+    // Table
+    var obj_html_Table = null;
+    var currentPage = getCurrentPage() || 0;
+    var currentPageSize = getCurrentPageSize() || 10;
+    var currentSortColumn = getCurrentSortColumn();
+    var currentSortBy = getCurrentSortBy();
+    // row
+    var isNew = false;
+    var is_Mode_Editor = false;
+    var lineNumber_Data = 0;
+    var object_Created_Count = 0;
+    var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+    var object_id_Created = [];
+    var object_id_Deleted = [];
+
+    // DropdownList
+    var obj_html_Site = null;
+    var obj_html_Company = null;
+    var obj_html_Client = null;
+    var obj_html_Project = null;
+
+    var isFirstRenderingClient = true;
+    var isFirstRenderingProject = true;
+    var firstRenderingFilter = localStorage.getItem('SampleRegFilter') ? JSON.parse(localStorage.getItem('SampleRegFilter')) : null;
+
+    $(document).ready(function () {
+        $(document).attr('title', 'Sample Registration - List : Mercy');
+
+        get_user_menu = '1';
+        get_user_relation = '1';
+
+        $(window).resize(function () {
+            // Resize Table: because the Window is Resized
+            resize_Table();
+        });
+
+        $('#btnAdd').click(function (e) {
+            window.location = mercyUrl('/SampleRegistrationv/Form');
+        });
+        $("#imgLoadingList").hide();
+
+        Create_ddl_Site();
+        Create_ddl_Company();
+        Create_ddl_Client();
+        Create_ddl_Project();
+        createDateFrom();
+        createDateTo();
+
+        Load_Page_List();
+
+        $("#txtSearch_Name").keyup(function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                Populate_DataGrid();
+            }
+        })
+
+        $('#printArea').appendTo(document.body);
+    })
+
+    function Show_UserInformation() {
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/User/Info'
+            , type: 'POST'
+            , data: { u_menu: get_user_menu, u_relation: get_user_relation }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+
+                resize_Table();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+    function Create_ddl_Site() {
+        if (obj_html_Site != null) return;
+
+        obj_html_Site = $('#ddl_Site').select2({
+            placeholder: 'Select Site'
+            , tags: false
+            , multiple: false
+            , minimumResultsForSearch: -1
+        });
+
+        $('#ddl_Site').change(function (e) {
+            $("#txtSearch_Name").val("");
+            obj_html_Company.empty();
+            obj_html_Client.empty();
+            obj_html_Project.empty();
+            Populate_Data_ddl_Company();
+            resetPage(obj_html_Site.val(), getExistingFilter('site') )
+            saveFilter();
+        });
+    }
+
+    function Create_ddl_Company() {
+        if (obj_html_Company != null) return;
+
+        obj_html_Company = $('#ddl_Company').select2({
+            placeholder: 'Select Company'
+            , tags: false
+            , multiple: false
+            , minimumResultsForSearch: -1
+        });
+
+        $('#ddl_Company').change(function (e) {
+            $("#txtSearch_Name").val("");
+            obj_html_Client.empty();
+            obj_html_Project.empty();
+            Populate_Data_ddl_Client();
+            Populate_DataGrid();
+
+            resetPage(obj_html_Company.val(), getExistingFilter('company'))
+            saveFilter();
+        });
+    }
+
+    function Create_ddl_Client() {
+        if (obj_html_Client != null) return;
+
+        obj_html_Client = $('#ddl_Client').select2({
+            placeholder: 'Select Client'
+            , tags: false
+            , multiple: false
+            , minimumResultsForSearch: -1
+            , allowClear: true
+        });
+
+        $('#ddl_Client').change(function (e) {
+            $("#txtSearch_Name").val("");
+            obj_html_Project.empty();
+
+            if ($('#ddl_Client').val()) {
+                Populate_Data_ddl_Project();
+            }
+            resetPage(obj_html_Client.val(), getExistingFilter('client'))
+            Populate_DataGrid();
+
+            saveFilter();
+        });
+    }
+
+    function Create_ddl_Project() {
+        if (obj_html_Project != null) return;
+
+        obj_html_Project = $('#ddl_Project').select2({
+            placeholder: 'Select Project'
+            , tags: false
+            , multiple: false
+            , minimumResultsForSearch: -1
+            , allowClear: true
+        });
+
+        $('#ddl_Project').change(function (e) {
+            $("#txtSearch_Name").val("");
+            resetPage(obj_html_Project.val(), getExistingFilter('project'))
+            Populate_DataGrid();
+
+            saveFilter();
+        });
+    }
+
+    function createDateFrom() {
+        $("#txtDateFrom").datepicker({
+            format: 'dd-M-yyyy',
+            autoclose: true,
+        }).on('changeDate', function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $('#txtDateTo').datepicker('setStartDate', minDate);
+        });
+
+        var currentDate = new Date();
+        var currentMonth = currentDate.getMonth();
+        var currentYear = currentDate.getFullYear();
+        var startMonthDate = getExistingFilter('dateFrom')
+            ? moment(getExistingFilter('dateFrom'), 'YYYY-MM-DD').toDate()
+            : new Date(currentYear, currentMonth, 1);
+
+        $('#txtDateFrom').datepicker('update', startMonthDate);
+        $('#txtDateFrom').datepicker('setEndDate', new Date());
+
+        $('#txtDateFrom').datepicker().on('changeDate', function (e) {
+            resetPage(moment($('#txtDateFrom').val(), 'DD-MMM-YYYY').format('YYYY-MM-DD'), getExistingFilter('dateFrom'))
+            Populate_DataGrid();
+
+            saveFilter();
+        });
+    }
+
+    function createDateTo() {
+        $('#txtDateTo').datepicker('setStartDate', new Date());
+
+        $("#txtDateTo").datepicker({
+            format: 'dd-M-yyyy',
+            autoclose: true,
+        }).on('changeDate', function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $('#txtDateFrom').datepicker('setEndDate', minDate);
+        });
+
+        var dateToValue = getExistingFilter('dateTo')
+            ? moment(getExistingFilter('dateTo'), 'YYYY-MM-DD').toDate()
+            : new Date();
+        $('#txtDateTo').datepicker('update', dateToValue);
+
+        $('#txtDateTo').datepicker().on('changeDate', function (e) {
+            Populate_DataGrid();
+            resetPage(moment($('#txtDateTo').val(), 'DD-MMM-YYYY').format('YYYY-MM-DD'), getExistingFilter('dateTo'))
+            
+            saveFilter();
+        });
+    }
+
+    function Clear_DataGrid_(p_id) {
+        try {
+            $('#' + p_id).DataTable().clear().destroy();
+        } catch (err) { }
+
+        try {
+            $('#' + p_id + ' tbody').empty();
+        } catch (err) { }
+    }
+
+    function Clear_DataGrid() {
+        lineNumber_Data = 0;
+        object_id_Created = [];
+        object_id_Deleted = [];
+
+        Create_Table();
+    }
+
+    function Create_Table() {
+        Clear_DataGrid_('mercyTable');
+
+        try {
+            obj_html_Table = $('#mercyTable').DataTable({
+                "bAutoWidth": false
+                , "bFilter": false
+                , "dom": '<"top">rt<"bottom"iflp><"clear">'
+                , "scrollX": true
+                , "paging": true
+                , "scrollY": "50vh"
+                , "scrollCollapse": true
+                , "serverSide": true
+                , "processing": true
+                , "pageLength": parseInt(currentPageSize)
+                , "displayStart": parseInt(currentPage) * obj_html_Table?.page?.info()?.length
+                , "ordering": true
+                , "order": []
+                , "ajax": {
+                    "url": api_Request + '/Api/SampleRegistration'
+                    , "type": "POST"
+                    , "beforeSend": function (request) {
+                        request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+                      }
+                    , "dataSrc": "Items"
+                    , "data": function (d) {
+                        orderLogic()
+                        var temp = {
+                            u_menu: get_user_menu,
+                            u_relation: get_user_relation,
+                            company: obj_html_Company.val(),
+                            site: obj_html_Site.val(),
+                            page: parseInt(currentPage)  + 1,
+                            pageSize: parseInt(currentPageSize) || 10,
+                            sortBy: currentSortBy,
+                            sortColumn: currentSortColumn,
+                            client: obj_html_Client.val(),
+                            project: obj_html_Project.val(),
+                            dateFrom: $('#txtDateFrom').val()
+                                ? moment($('#txtDateFrom').val(), 'DD-MMM-YYYY').format('YYYY-MM-DD')
+                                : null,
+                            dateTo: $('#txtDateTo').val()
+                                ? moment($('#txtDateTo').val(), 'DD-MMM-YYYY').format('YYYY-MM-DD')
+                                : null,
+                            search: $("#txtSearch_Name").val()
+                            
+                        }
+
+                        return temp
+                    }
+                   }
+                , "columns": [
+                    { "data": "SampleId", "name": "SampleId", "autoWidth": true }
+                    , {
+                        render: function (data, type, full, meta) {
+                            return '<div style="text-align: left; display: flex; flex-direction: row; gap: 10px;">' +
+                                `<a><i class="fa fa-edit" style="cursor: pointer;font-size: 20px; color:white;" title="Detail Sample" onclick="editRow('${full.ProjectType}', '${full.Id}', '${full.DateOfJob}', '${full.ProjectId}', '${full.ClientId}', '${full.CompanyCode}')"></i></a>` +
+                                `<a><i class="fa fa-print" style="cursor: pointer;font-size: 20px;color:white;" title="Print Sample" onclick="printLabel(${meta.row})"></i></a>` +
+                                (["In Progress", "register"].indexOf(full.Stage) > -1 ? `<a><i class="fa fa-trash" style="cursor: pointer;font-size: 20px; color:white;" title="Delete Sample" onclick="deleteRow('${full.Id}')"></i></a>` : '') +
+                                '</div>'
+                                ;
+                        }
+                        , className: "mercy_action_icon"
+                        , orderable: false
+                        , "width": "80px"
+                    }
+                    , { "data": "CompanyCode", "name": "Company", "autoWidth": true}
+                    , { "data": "SiteName", "name": "Site", "autoWidth": true }
+                    , { "data": "ExternalId", "name": "ExternalId", "autoWidth": true }
+                    , { "data": "SampleId", "name": "SampleId", "autoWidth": true }
+                    , { "data": "ClientName", "name": "Client", "autoWidth": true }
+                    , { "data": "ProjectName", "name": "Project", "autoWidth": true }
+                    , { "data": "DateOfJob", "name": "DateJob", "autoWidth": true }
+                    , { "data": "DateSampleStart", "name": "DateSampledEnd", "autoWidth": true }
+                    , { "data": "DateSampleEnd", "name": "DateSampledStart", "autoWidth": true }
+                    , { "data": "Receive", "name": "DateReceived", "autoWidth": true }
+                    , { "data": "Shift", "name": "Shift", "autoWidth": true }
+                    , { "data": "Tonnage", "name": "Tonnage", "autoWidth": true }
+
+                ]
+                , "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    }
+                    , {
+                        "targets": [1],
+                        "orderable": false,
+                        "width": "100%"
+                    }
+                ]
+            });
+            obj_html_Table.on('page.dt', function () {
+                var info = obj_html_Table.page.info();
+                currentPage = info.page
+                saveCurrentPage(info.page)
+            });
+
+            obj_html_Table.on('length.dt', function (e, settings, len) {
+                currentPage = 0
+                saveCurrentPage(0)
+                obj_html_Table.page(0)
+                var info = obj_html_Table.page.info();
+                currentPageSize = info.length
+                saveCurrentPageSize(info.length)
+            });
+            obj_html_Table.on('xhr.dt', function (e, settings, json, xhr) {
+                json.recordsTotal = json.meta?.Total || 0;
+                json.recordsFiltered = json.meta?.Total || 0;
+                json.data = json.Items;
+            });
+
+            // Resize Table: because this DataTable is newly created
+            resize_Table();
+        } catch (err) { }
+    }
+    function Populate_DataGrid() {
+        $("#imgLoadingList").show();
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration'
+            , type: 'POST'
+            , data: {
+                u_menu: get_user_menu,
+                u_relation: get_user_relation,
+                company: obj_html_Company.val(),
+                site: obj_html_Site.val(),
+                page: obj_html_Table?.page?.info()?.page + 1,
+                pageSize: obj_html_Table?.page?.info()?.length || 10,
+                client: obj_html_Client.val(),
+                project: obj_html_Project.val(),
+                dateFrom: $('#txtDateFrom').val()
+                    ? moment($('#txtDateFrom').val(), 'DD-MMM-YYYY').format('YYYY-MM-DD')
+                    : null,
+                dateTo: $('#txtDateTo').val()
+                    ? moment($('#txtDateTo').val(), 'DD-MMM-YYYY').format('YYYY-MM-DD')
+                    : null,
+                search: $("#txtSearch_Name").val()
+            }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                Clear_DataGrid();
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    alert(data.Message);
+
+                    window.location = '/NoAccess';
+                    return;
+                }
+
+                // Special Purpose, getting information of CurrentUser
+                if (get_user_menu == '1') {
+                    after_GetUserInfo(data.User);
+                    uInfo = data.User;
+                    Create_Table();
+
+                    Populate_Data_ddl_Site();
+                }
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+
+                // make it "Intuitive"
+                Display_Buttons();
+
+                data.Items.forEach(
+                    function (item) {
+                        isNew = false;
+                        object_Created_Count++;
+                        lineNumber_Data++;
+                        object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+
+                        // save to Array
+                        object_id_Created.push(object_id_additional);
+
+                    }
+                );
+
+                // Resize Table: because this DataTable is filled with new Data
+                resize_Table();
+                $("#imgLoadingList").hide();
+            },
+            error: function (error) {
+                $("#imgLoadingList").hide();
+                $(this).remove();
+            }
+        });
+    }
+
+    function Populate_Data_ddl_Site() {
+        try {
+            obj_html_Site.empty();
+
+            uInfo.Relations.Sites.forEach(
+                function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.SiteName, item.SiteId, true, true);
+                    obj_html_Site.append(option);//.trigger('change');
+                }
+            );
+
+            if (getExistingFilter('site')) {
+                obj_html_Site.val(getExistingFilter('site'));
+                $('#ddl_Site').val(getExistingFilter('site'));
+                $('#ddl_Site').trigger('change');
+                return;
+            }
+
+            // Initial value for "Site"
+            obj_html_Site.select(0);
+            $('#ddl_Site').trigger('change');
+        } catch (err) { }
+    }
+
+    function Populate_Data_ddl_Company() {
+        try {
+            obj_html_Company.empty();
+
+            var siteId = $('#ddl_Site').val();
+            uInfo.Relations.Companies
+                .filter((item) => Number(item.SiteId) === Number(siteId))
+                .forEach(function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.CompanyCode, item.CompanyCode, true, true);
+                    obj_html_Company.append(option);//.trigger('change');
+                }
+            );
+
+            if (getExistingFilter('company')) {
+                obj_html_Company.val(getExistingFilter('company'));
+                $('#ddl_Company').val(getExistingFilter('company'));
+                $('#ddl_Company').trigger('change');
+                return;
+            }
+
+            // Initial value for "Company"
+            obj_html_Company.select(0);
+            $('#ddl_Company').trigger('change');
+        } catch (err) { }
+    }
+
+    function Populate_Data_ddl_Client() {
+        obj_html_Client.empty();
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Get_ddl_Client_ByCompany',
+            type: 'GET',
+            data: { companyCode: obj_html_Company.val() },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data.Items) || !data.Success) {
+                    // empty data or failed
+
+                    return;
+                }
+
+                data.Items.forEach(function (item) {
+                    obj_html_Client.append(new Option(item.name, item.id, true, true));
+                });
+
+                if (getExistingFilter('client')) {
+                    isFirstRenderingClient = false;
+                    obj_html_Client.val(getExistingFilter('client'));
+                    $('#ddl_Client').trigger('change');
+                    return;
+                } else if (isFirstRenderingClient && firstRenderingFilter?.['client']) {
+                    isFirstRenderingClient = false;
+                    obj_html_Client.val(firstRenderingFilter?.['client']);
+                    $('#ddl_Client').trigger('change');
+                    return;
+                }
+                isFirstRenderingClient = false;
+                if (!firstRenderingFilter?.['client']) {
+                    isFirstRenderingProject = false;
+                }
+
+                // Initial value for "Client"
+                if (data.Items.length == 1) {
+                    obj_html_Client.val($("#ddl_Client option:first").val()).trigger('change');
+                    return
+                }
+
+                obj_html_Client.val('');
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function Populate_Data_ddl_Project() {
+        obj_html_Project.empty();
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Get_ddl_Project_ByClient',
+            type: 'GET',
+            data: { companyCode: obj_html_Company.val(), clientId: obj_html_Client.val() },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+
+                if (!$.trim(data.Items) || !data.Success) {
+                    // empty data or failed
+                    return;
+                }
+
+                data.Items.forEach(function (item) {
+                    obj_html_Project.append(new Option(item.name, item.id, true, true));
+                });
+
+                if (getExistingFilter('project')) {
+                    isFirstRenderingProject = false;
+                    obj_html_Project.val(getExistingFilter('project'));
+                    $('#ddl_Project').trigger('change');
+                    return;
+                } else if (isFirstRenderingProject && firstRenderingFilter?.['project']) {
+                    isFirstRenderingProject = false;
+                    obj_html_Project.val(firstRenderingFilter?.['project']);
+                    $('#ddl_Project').trigger('change');
+                    return;
+                }
+
+                // Initial value for "Client"
+                if (data.Items.length == 1) {
+                    if (isFirstRenderingProject && !firstRenderingFilter?.['project']) {
+                        isFirstRenderingProject = false;
+                        obj_html_Project.val('').trigger('change');
+                        return
+                    }
+
+                    isFirstRenderingProject = false;
+                    obj_html_Project.val($("#ddl_Project option:first").val()).trigger('change');
+                    return
+                }
+
+                isFirstRenderingProject = false;
+
+                obj_html_Project.val('');
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    $("#txtSearch_Name").on('keyup', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            Populate_DataGrid();
+        }
+    })
+
+    function printLabel(index) {
+        let dataRow = obj_html_Table.row(index).data();
+
+        if (dataRow.ProjectType === "Vessel") {
+            printVessel(dataRow);
+        } else {
+            printGeneral(dataRow);
+        }
+    }
+
+    function printVessel(data) {
+        var printArea = $('#printArea');
+        var dataStatics = ["TM", "GA", "GA", "STORE", "RAPID"];
+
+        printArea.empty();
+        for (var index = 0; index < dataStatics.length; index++) {
+            var title = '<span class="font-weight-bold mb-2 title-print">' + data.SampleId + " - " + dataStatics[index] + " - " + '</span>';
+            var project = '<div class="row"><div class="col"><span>Client / Project :</span></div><div class="col"><span>' + data.ClientName + " / " + data.ProjectName + '</span></div></div>';
+            var sampleDate = '<div class="row">' +
+                '<div class="col"><div class="row"><div class="col"><span>Sampling Date :</span></div><div class="col"><span>' + moment(data.DateSampleStart).format('DD-MMM-YYYY') + '</span></div></div></div>' +
+                '</div>'
+            var preparationDate = '<div class="row">' +
+                '<div class="col"><div class="row"><div class="col"><span>Preparation Date :</span></div><div class="col"><span>' + (data.Receive !== " " ? moment(data.Receive).format('DD-MMM-YYYY') : "-") + '</span></div></div></div>' +
+                '</div>'
+            var contentContainer = '<div class="col">' + title + project + sampleDate + preparationDate + '</div>';
+            var container = '<div class="col pageBreaker border-print-card my-2 px-0 d-flex align-items-center">' + contentContainer + '</div>';
+            printArea.append(container);
+        }
+
+        window.print();
+    }
+
+    function printGeneral(data) {
+        var printArea = $('#printArea');
+        var dataStatics = ["TM", "GA", "GA", "STORE", "RAPID"];
+
+        printArea.empty();
+        for (var index = 0; index < dataStatics.length; index++) {
+            var title = '<span class="font-weight-bold mb-2 title-print">' + data.SampleId + " - " + dataStatics[index] + " - " + '</span>';
+            var project = '<div class="row"><div class="col"><span>Client / Project :</span></div><div class="col"><span>' + data.ClientName + " / " + data.ProjectName + '</span></div></div>';
+            var sampleDate = '<div class="row">' +
+                '<div class="col"><div class="row"><div class="col"><span>Sampling Date :</span></div><div class="col"><span>' + moment(data.DateSampleStart).format('DD-MMM-YYYY') + '</span></div></div></div>' +
+                '<div class="col"><div class="row"><div class="col"><span>Shift :</span></div><div class="col"><span>' + data.Shift + '</span></div></div></div>' +
+                '</div>'
+            var preparationDate = '<div class="row">' +
+                '<div class="col"><div class="row"><div class="col"><span>Preparation Date :</span></div><div class="col"><span>' + (data.Receive !== " " ? moment(data.Receive).format('DD-MMM-YYYY') : "-") + '</span></div></div></div>' +
+                '<div class="col"><div class="row"><div class="col"><span>Shift :</span></div><div class="col"><span>' + (data.Shift === 3 ? 1 : (data.Shift + 1)) + '</span></div></div></div>' +
+                '</div>'
+            var contentContainer = '<div class="col">' + title + project + sampleDate + preparationDate + '</div>';
+            var container = '<div class="col pageBreaker border-print-card my-2 px-0 d-flex align-items-center">' + contentContainer + '</div>';
+            printArea.append(container);
+        }
+
+        window.print();
+    }
+
+    function editRow(projectType, idSample, date, projectId, clientId, companyCode) {
+        $.ajax({
+            url: api_Request + '/Api/Session/ClaimSession',
+            type: 'GET',
+            data: { menus: [`sampleregistrationv_${date}_${projectId}_${clientId}_${companyCode}`] },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+                localStorage.setItem('SecuritySession', JSON.stringify([`sampleregistrationv_${date}_${projectId}_${clientId}_${companyCode}`]));
+                localStorage.setItem('SessionTime', JSON.stringify(data.Items));
+                localStorage.setItem('SampleCompanyCode', companyCode);
+                if (projectType === "Vessel") {
+                    window.location = mercyUrl(`/SampleRegistrationv/LoadingForm?.id='${idSample}'`);
+                    return;
+                }
+                window.location = mercyUrl(`/SampleRegistrationv/GeneralForm?.id='${idSample}'`);
+            },
+            error: function (error) {
+                alert(error);
+                return null;
+            }
+        });
+    }
+
+    function deleteRow(idSample) {
+        if (!confirm('Are you sure you want to delete this sample ?')) return;
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Delete',
+            type: 'POST',
+            data: { sampleId: idSample },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+
+
+                $("#txtSearch_Name").val("");
+                Populate_DataGrid();
+
+            },
+            error: function (error) {
+                alert(error);
+                return null;
+            }
+        });
+    }
+
+    function saveFilter() {
+        var filter = JSON.stringify({
+            site: obj_html_Site.val(),
+            company: obj_html_Company.val(),
+            client: obj_html_Client.val(),
+            project: obj_html_Project.val(),
+            dateFrom: moment($('#txtDateFrom').val(), 'DD-MMM-YYYY').format('YYYY-MM-DD'),
+            dateTo: moment($('#txtDateTo').val(), 'DD-MMM-YYYY').format('YYYY-MM-DD')
+        });
+
+        localStorage.setItem('SampleRegFilter', filter)
+
+    }
+
+    function orderLogic() {
+        if (obj_html_Table?.order().length) {
+            var columns = obj_html_Table.settings().init().columns;
+            var tableOrder = obj_html_Table.order();
+            currentSortBy = tableOrder[0][1].toUpperCase();
+            saveCurrentSortBy(tableOrder[0][1].toUpperCase())
+            var info = obj_html_Table.page.info();
+            currentPage = info.page
+            saveCurrentPage(info.page)
+            currentSortColumn = columns[tableOrder[0][0]]?.data
+            saveCurrentSortColumn(columns[tableOrder[0][0]]?.data)
+        }
+    }
+
+    function saveCurrentPage(key) {
+        var pages = key
+
+        localStorage.setItem('Pages',pages)
+    }
+
+    function saveCurrentPageSize(key) {
+        var pageSize = key
+
+        localStorage.setItem('PageSize', pageSize)
+    }
+
+    function getCurrentPageSize() {
+        if (localStorage.getItem('PageSize')) {
+            var pageSize = localStorage.getItem('PageSize');
+            return pageSize;
+        }
+        return null;
+    }
+
+    function saveCurrentSortColumn(key) {
+        var sortColumn = key
+
+        localStorage.setItem('SortColumn', sortColumn)
+    }
+
+    function getCurrentSortColumn() {
+        if (localStorage.getItem('SortColumn')) {
+            var sortColumn = localStorage.getItem('SortColumn')
+            return sortColumn
+        }
+        return null        
+    }
+
+    function saveCurrentSortBy(key) {
+        var sortBy = key
+
+        localStorage.setItem('SortBy', sortBy)
+    }
+
+    function getCurrentSortBy() {
+        if (localStorage.getItem('SortBy')) {
+            var sortBy = localStorage.getItem('SortBy')
+            return sortBy
+        }
+        return null
+    }
+
+    function getCurrentPage() {
+        if (localStorage.getItem('Pages')) {
+            var pages = localStorage.getItem('Pages');
+            return pages;
+        }
+        return null
+    }
+
+    function resetPage(filterData, localData) {
+        if (filterData !== localData) {
+            currentPage = 0
+            saveCurrentPage(0)
+        }
+    }
+
+    function getExistingFilter(key) {
+        if (localStorage.getItem('SampleRegFilter')) {
+            var existFilter = JSON.parse(localStorage.getItem('SampleRegFilter'));
+            return existFilter[key];
+        }
+        return null;
+    }
+</script>

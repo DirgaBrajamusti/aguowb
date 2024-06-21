@@ -1,0 +1,650 @@
+﻿@using MERCY.Web.FrontEnd.Helpers;
+@using System.Configuration;
+
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style scoped>
+    .card {
+        overflow: auto !important;
+    }
+
+    .max-table {
+        overflow: auto !important;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    table {
+        width: 100% !important;
+    }
+
+    .dataTables_scrollHeadInner {
+        width: 100% !important;
+    }
+
+    .dataTables_scrollBody {
+        min-height: 50vh !important;
+    }
+
+    .dts_label {
+        display: none;
+    }
+
+    div.dts div.dataTables_scrollBody {
+        background: white;
+    }
+
+    #mercyTable_length {
+        display: none;
+    }
+
+    #mercyTable_paginate {
+        display: none;
+    }
+</style>
+
+<script src="@ui_Folder_Client_Side/js/arrow-table.js"></script>
+<script src="@ui_Folder_Client_Side/js/move-input-table.js"></script>
+<script src="@ui_Folder_Client_Side/js/jquery.tabbable.min.js"></script>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Input Analysis Sample (<span id="titleInput"></span>) - <span id="jobNumbers"></span>
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Analysis Sample > Input Analysis Sample
+    </div>
+    <div class="card mt-3 p-3">
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+                <button id="btnSave" type="button" class="btn btn-info px-5 mr-3" onclick="handleAction('save')">Save</button>
+                <button type="button" class="btn btn-outline-info px-5" onclick="handleAction('cancel')">Close</button>
+            </div>
+            <div style="width:180px;">
+                <div style="width:100%" class="filter_title"></div>
+                <div style="width:100%;">
+                    <div>
+                        <input type="text" id="txtSearch_Name" value="" class="shadow-none text_search" style="width:100%;" placeholder="Search" onkeyup="OnKeyUp_Text(this)" />
+                    </div>
+                    <div style="height:20px;width:100%;padding:0px 0px 0px 5px !important;margin:-32px 0px 0px 0px !important;">
+                        <img src="/images/ic-search.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-table">
+            <table id="mercyTable" class="table table-striped table-hover mercy_table mercy_table_header p-4" style="width:100%;"></table>
+        </div>
+    </div>
+</div>
+<div id="modalSession" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px;">
+                <div class="d-flex flex-column">
+                    <p class="align-self-center">Your session is expired, do you want to extend the time ?</p>
+                </div>
+                <div class="my-3 d-flex flex-column">
+                    <div class="w-50 d-flex flex-row align-self-center">
+                        <button id="btnExtend" type="button" class="btn btn-info w-100 mr-1" onclick="extendSession()">Extend</button>
+                        <button id="btnCloseSession" type="button" class="btn btn-outline-info w-100 mx-1" onclick="Close_Session()">Close Session</button>
+                        <div id="spinnerSessionContainer" class="d-none ml-1">
+                            <div id="spinnerSession" class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalDataChange" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px;">
+                <div class="d-flex flex-column">
+                    <p class="align-self-center">Data has been changed. Do you want to save?</p>
+                </div>
+                <div class="my-3 d-flex flex-column">
+                    <div class="w-50 d-flex flex-row align-self-center">
+                        <button id="btnYesDataChange" type="button" class="btn btn-info w-100 mr-1" onclick="">Yes</button>
+                        <button id="btnNoDataChange" type="button" class="btn btn-outline-info w-100 mx-1" onclick="">No</button>
+                        <button id="btnCancelDataChange" type="button" class="btn btn-outline-info w-100 mx-1" onclick="">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let dataTable = null;
+    let schemeTemplates = [];
+    let schemes = [];
+    let dataList = [];
+    let dataListBefore = [];
+    let dataPrevious = {};
+    let decimalConfig = 0;
+    let exceptDecimal = null;
+    let foundExcept = null;
+    let applyFormatting = null;
+    let isFromButton = false;
+
+    window.addEventListener('beforeunload', (event) => {
+        if (validateChangeValue() && !isFromButton) {
+            return event.returnValue = "are you sure?";
+        }
+    });
+
+    $(document).ready(function () {
+        $(document).attr('title', 'Input Analysis - List : Mercy');
+        // initiate
+        get_user_menu = '1';
+        get_user_relation = '1';
+        Show_UserInformation();
+        showSessionModal();
+
+        getAvailableSchemes();
+
+        // add class for remove existing important mercy.css
+        $("tr").addClass('header-css');
+
+
+    });
+
+    function Show_UserInformation() {
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/User/Info'
+            , type: 'POST'
+            , data: { u_menu: get_user_menu, u_relation: get_user_relation }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    window.location('/');
+                    return;
+                }
+
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+    function getAvailableSchemes() {
+        // get data from local storage
+        dataPrevious = JSON.parse(localStorage.getItem('SampleAnalysisData'));
+
+        schemeTemplates = dataPrevious.parameter;
+        $("#titleInput").text(dataPrevious.parameter.Name);
+
+        schemeTemplates.Details = JSON.parse(schemeTemplates.Details);
+
+        // Generate function from existing json
+        schemeTemplates.Details.rules = schemeTemplates.Details.rules.map(rule => ({
+            ...rule,
+            function: rule.fn !== null ? new Function(rule.fn.arguments, rule.fn.body) : null
+        }));
+
+        schemes = schemeTemplates;
+
+        // add some configuration
+        decimalConfig = Get_Decimal_Config();
+        exceptDecimal = Get_Except_Decimal_Config();
+        foundExcept = exceptDecimal.findIndex(el => el === dataPrevious.parameter.Name);
+
+        Create_Dynamic_Table();
+        getAnalysisResult(dataPrevious.companyCode, dataPrevious.analysisJobIds, dataPrevious.parameter.Id);
+    }
+
+    function Get_Decimal_Config() {
+        var num = "@ConfigurationManager.AppSettings["Decimal_Config"]";
+        return Number(num);
+    }
+
+    function Get_Except_Decimal_Config() {
+        var list = "@ConfigurationManager.AppSettings["Decimal_Config_Except"]";
+        return list.split(",");
+    }
+
+    function getAnalysisResult(companyCode, analysisJobIds, schemeId) {
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/DataEntry/GetAnalysisResults',
+            type: 'GET',
+            data: { companyCode: companyCode, analysisJobIds: analysisJobIds, schemeId: schemeId },
+            dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data) || !data.Success || !data.Items.length) {
+                    // empty data
+
+                    return;
+                }
+
+                $("#jobNumbers").text(data.JobNumbers.map(item => item));
+
+                dataListBefore = data.Items;
+                dataList = data.Items.map(item => ({
+                    ...item,
+                    ...(item.Attributes !== null ? JSON.parse(item.Attributes) : {}),
+                    Attributes: null
+                }));
+
+                // data calculation example (it could be ran after fetch)
+                dataList = dataList.map(d => {
+                    const newData = { ...d };
+                    schemes.Details.rules.filter(rule => rule.fn !== null).forEach(rule => {
+                        newData[rule.attribute] = rule.function(newData);
+                    })
+
+                    return newData;
+                });
+
+                Insert_Data();
+
+                // hacky way to adjust columns
+                setTimeout(() => {
+                    dataTable.columns.adjust().draw();
+                }, 1000);
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+    function Create_Dynamic_Table() {
+        // Dynamic Column & Detect if Column is input/no
+        let columnList = [];
+        let column = {}
+
+        schemeTemplates.Details.rules.forEach(function (col) {
+            if (col.input) {
+                column = {
+                    title: col.header,
+                    data: col.attribute,
+                    render: function (data, type, full, meta) {
+                        const found = dataListBefore.filter(el => el.Id === full.Id)
+                        const attributes = JSON.parse(found?.[0].Attributes);
+                        const dataBef = attributes[col.attribute] === "" ? "null" : attributes[col.attribute];
+                        return `<input type='number' style="max-width: 90px;" id=${col.attribute}_${meta.row} val=${meta.row} data-valuebef=${dataBef} name=${col.attribute} value=${full[col.attribute]}>`
+                    }
+                }
+            } else {
+                column = {
+                    title: col.header,
+                    data: col.attribute,
+                    render: function (data, type, full, meta) {
+                        applyFormatting = foundExcept === -1 || schemeTemplates.Details.externalAttributes.findIndex(attribute => attribute === col.attribute) !== -1;
+                        return (typeof (full[col.attribute]) === "number") && (applyFormatting) ? Number(parseFloat(full[col.attribute]).toFixed(decimalConfig)) : typeof (full[col.attribute]) === "number" ? Math.round(full[col.attribute]) : full[col.attribute];
+                    }
+                }
+            }
+            columnList.push(column);
+        })
+
+        // Insert Column to Table
+        try {
+            dataTable = $('#mercyTable').DataTable({
+                bAutoWidth: false,
+                bFilter: false,
+                bPaginate: true,
+                bInfo: false,
+                scrollX: true,
+                scrollY: '50vh',
+                scroller: true,
+                scrollCollapse: true,
+                deferRender: true,
+                columnDefs: [{
+                    targets: "_all",
+                    orderable: false
+                }],
+                "columns": columnList
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    function Insert_Data() {
+        // Insert Data to Table
+        dataList.forEach(function (data) {
+            dataTable.row.add(data).draw(false);
+        })
+
+        // Bind paste
+        dataTable.on('paste', "input[type='number']", function (e) {
+            e.preventDefault();
+            var pasteData = e.originalEvent.clipboardData.getData('text')
+            var rows = pasteData.split("\n");
+            var rowCurr = parseInt($(this).attr("id").slice(-1));
+            var colCurr = parseInt($(this).parent().parent().children().index($(this).parent()));
+
+            if (rows.length === 1) {
+                $(this).val(parseFloat(rows[0].replace(/,/g, ''))).trigger('change');
+                return
+            }
+
+            for (var y = 0; y < (rows.length - 1); y++) {
+                y = parseInt(y);
+                var cells = rows[y].split("\t");
+                for (var x in cells) {
+                    x = parseInt(x)
+                    var tdData = $('#mercyTable tbody tr').eq(y + rowCurr).find('td').eq(x + colCurr);
+
+                    if (tdData.children().length) {
+                        var childId = tdData.children().attr('id');
+                        var valData = cells[x].replace(/,/g, '');
+                        $(`#${childId}`).val(parseFloat(valData)).trigger('change');
+                    }
+                }
+            }
+        });
+
+        // Changes on input
+        dataTable.on("change", "input[type='number']", function (data) {
+            let idx = data.target.attributes.val.nodeValue;
+            let variableName = data.target.attributes.name.nodeValue;
+            if (dataTable) {
+                var newData = dataTable.row(idx).data();
+                newData[variableName] = $(this).val();
+
+                // get all function for update data
+                schemesFuncList = schemes.Details.rules.filter(element => element.function !== null);
+                schemesFuncList.forEach(function (data) {
+                    newData[data.attribute] = data.function(newData)
+                })
+
+                var scrollPos = dataTable.scroller().pixelsToRow($('.dataTables_scrollBody').scrollTop());
+
+                dataTable.rows($(this).closest("tr")).invalidate().draw(false);
+                dataTable.draw().scroller.toPosition(scrollPos, false);
+            }
+        })
+
+        $('#mercyTable').arrowTable({
+            enabledKeys: ['up', 'down'],
+            focusTarget: 'input',
+            namespace: 'arrowtable',
+            afterMove: function (input, targetFinder, direction) {
+                let exist = $(targetFinder).find(':input[type="number"]');
+                if (exist.length) {
+                    $(exist)[0].select();
+                }
+            }
+        });
+
+        // move to next input when press enter key
+        $('#mercyTable').moveInput({
+            afterMove: function (input, targetFinder, direction) {
+                let exist = $(targetFinder).find(':input[type="number"]');
+                if (exist.length) {
+                    $(exist)[0].select();
+                }
+            }
+        });
+    }
+
+    function Close_Page() {
+        localStorage.removeItem('SampleAnalysisData');
+        localStorage.removeItem('SecuritySession');
+        window.location = mercyUrl('/SampleAnalysisv');
+    }
+
+    function Save() {
+        $("#btnSave").text("Loading...");
+
+        let dataMapping = dataTable.rows().data().toArray();
+        let formData = [];
+        dataMapping.forEach(function (data, idx) {
+            let attributes = JSON.parse(dataListBefore[idx].Attributes);
+            let keys = Object.keys(attributes);
+            keys.forEach(function (key) {
+                attributes[key] = data[key];
+            })
+
+            let temp = {
+                Id: data.Id,
+                Attributes: JSON.stringify(attributes),
+                Total: data.Total
+            }
+            formData.push(temp);
+        })
+
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/DataEntry/UpdateAnalysisResult',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(formData),
+            dataType: "json",
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            cache: false,
+            success: function (data) {
+                if (!$.trim(data) || !data.Success || !data.Items.length) {
+                    // empty data
+                    return;
+                }
+
+                Close_Session();
+            },
+            error: function (error) {
+                $("#btnSave").text("Save");
+                $(this).remove();
+            }
+        })
+    }
+
+    function Close_Session() {
+        let SecuritySession = JSON.parse(localStorage.getItem('SecuritySession'));
+
+        $.ajax({
+            url: api_Request + '/Api/Session/CloseSession',
+            type: 'GET',
+            data: { menus: SecuritySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                $("#btnSave").text("Save");
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                alert('Success');
+                localStorage.removeItem('SampleAnalysisData');
+                localStorage.removeItem('SecuritySession');
+                window.location = mercyUrl('/SampleAnalysisv');
+            },
+            error: function (error) {
+                $("#btnSave").text("Save");
+                alert(error);
+            }
+        });
+    }
+
+    function Close_Session_Cancel() {
+        let SecuritySession = JSON.parse(localStorage.getItem('SecuritySession'));
+
+        $.ajax({
+            url: api_Request + '/Api/Session/CloseSession',
+            type: 'GET',
+            data: { menus: SecuritySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                Close_Page();
+            },
+            error: function (error) {
+                $("#btnSave").text("Save");
+                alert(error);
+            }
+        });
+    }
+
+    function showSessionModal() {
+        var timeoutData = JSON.parse(localStorage.getItem('SessionTime'));
+        var now = moment(new Date(), 'YYYY-MM-DD HH:mm:ss');
+        var extendTime = moment(timeoutData.ExtendSessionTime, 'YYYY-MM-DD HH:mm:ssZ');
+        var timeout = moment.duration(extendTime.diff(now)).asMilliseconds();
+        setTimeout(() => {
+            $('#modalSession').appendTo('body').modal('show');
+        }, timeout);
+    }
+
+    function closeSessionModal() {
+        $('#modalSession').modal('hide');
+    }
+
+    function extendSession() {
+        var securitySession = JSON.parse(localStorage.getItem('SecuritySession'));
+
+        $('#spinnerSessionContainer').removeClass('d-none');
+        $('#btnExtend').prop('disabled', true);
+        $('#btnCloseSession').prop('disabled', true);
+        $.ajax({
+            url: api_Request + '/Api/Session/ClaimSession',
+            type: 'GET',
+            data: { menus: securitySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+
+                localStorage.setItem('SessionTime', JSON.stringify(data.Items));
+                $('#spinnerSessionContainer').addClass('d-none');
+                $('#btnExtend').prop('disabled', false);
+                $('#btnCloseSession').prop('disabled', false);
+
+                closeSessionModal();
+                showSessionModal();
+            },
+            error: function (error) {
+                alert(error);
+                return null;
+            }
+        });
+    }
+
+    function validateChangeValue() {
+        var isChanged = false;
+        $("#mercyTable tr").each(function () {
+            $(this).closest('tr').find("input").each(function () {
+                var elem = $(this);
+                if (elem.val() != "") {
+                    if (elem.val() !== elem.data("valuebef")?.toString()) {
+                        isChanged = true;
+                    }
+                } else {
+                    if (elem.data("valuebef") !== null) {
+                        if (elem.val() !== elem.data("valuebef").toString()) {
+                            isChanged = true;
+                        }
+                    }
+                }
+            });
+        });
+        return isChanged;
+    }
+
+    function handleAction(action) {
+        if (validateChangeValue()) {
+            $('#modalDataChange').appendTo('body').modal('show');
+            return;
+        }
+
+        switch (action) {
+            case "save":
+                Save();
+                break;
+            case "cancel":
+                Close_Session_Cancel();
+                break;
+            default:
+                Close_Session_Cancel();
+                break;
+        }
+    }
+
+    function closeModalDataChange() {
+        $('#modalDataChange').modal('hide');
+    }
+
+    $("#btnCancelDataChange").click(function () {
+        closeModalDataChange();
+    })
+
+    $("#btnNoDataChange").click(function () {
+        isFromButton = true;
+        Close_Session_Cancel();
+    })
+
+    $("#btnYesDataChange").click(function () {
+        isFromButton = true;
+        closeModalDataChange();
+        Save();
+    })
+</script>

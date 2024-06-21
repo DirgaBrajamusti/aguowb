@@ -1,0 +1,2993 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_PortionBlending {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.oval {
+    background-color: #FFFFFF;
+    border: 1px solid #C9CDDB;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+}
+
+.no-hauling {
+    color: #232323;
+    font-family: 'NotoSans-Regular';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+}
+
+.mercy_input_text_readonly {
+    background-color: rgba(180, 178, 239, 0.18) !important;
+    cursor: not-allowed !important;
+}
+
+.mercy_input_text_by_portion_blending {
+    border: 1px solid #CBCBCB !important;
+    border-radius: 4px !important;
+    /*box-shadow: 0 8px 24px 0 rgba(0, 145, 255, 0.18) !important;*/
+    width: 140px;
+    height: 34px;
+    color: #3F3F3F;
+    font-family: 'OpenSans';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+}
+
+.mercy_input_text_by_outlook {
+    color: #3F3F3F !important;
+    font-family: 'OpenSans' !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 17px;
+    text-align: left;
+}
+
+.mercy_target {
+    color: #463191;
+    font-family: 'OpenSans-Bold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+}
+
+.mercy_by-outlook {
+    color: #463191;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+}
+
+.mercy_line {
+    border: 1px solid #D4D4D4;
+}
+
+.mercy_chk_destination {
+    width: 85px;
+}
+
+#mercyTable_info, #mercyTable_length, #mercyTable_paginate, #table_ROM_Quality_info, #table_ROM_Quality_length, #table_ROM_Quality_paginate
+, #table_ROM_Quality_ReadOnly_info {
+    display: none;
+}
+
+#table_ROM_Quality_wrapper {
+    width: 100%;
+}
+
+#table_ROM_Quality_wrapper.dataTables_wrapper.dt-bootstrap4.no-footer div.dataTables_scroll div.dataTables_scrollBody {
+    border: 1px solid #ced4da;
+}
+
+.mercy_align_right {
+    text-align: right !important;
+}
+
+.mercy_cell_textbox {
+    padding-top: 8px !important;
+    padding-bottom: 0px !important;
+}
+
+.mercy_portion {
+    background-color: #FFFFFF;
+    border: 1px solid #CBCBCB;
+    border-radius: 3px;
+    width: 55px;
+    height: 24px;
+    font-family: 'NotoSans-Regular';
+}
+
+.mercy_portion_green {
+    background-color: #60C159 !important;
+}
+
+.mercy_portion_red {
+    background-color: #E73232 !important;
+}
+
+.mercy_portion_yellow {
+    background-color: #FFBD50 !important;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+/*.mercy_date:disabled
+,.mercy_input_text:disabled
+,input[type="checkbox"]:disabled {
+    background-color: #eee;
+    color: #6c757d;
+}*/
+
+input[type="checkbox"]:disabled + label {
+	background-color: #eee;
+}
+
+.mercy_text_number {
+    background-color: #FFFFFF;
+    border: 1px solid #CBCBCB;
+    border-radius: 3px;
+    width: 55px;
+    height: 26px;
+    font-family: 'NotoSans-Regular';
+    text-align:right;
+}
+
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Add Portion Blending & Tunneling
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Portion Blending & Tunneling > Add Portion Blending & Tunneling
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:150px !important;">
+        <div class="col-12 col-md" style="padding-top: 15px !important;">
+            <div style="width:100%" class="filter_title">Site</div>
+            <div style="width:100%;padding:10px 10px 10px 0px;">
+                <select id="ddl_Site" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;display:none;"></select>
+            </div>
+            <div style="width:100%" class="filter_title">Product</div>
+            <div style="width:100%;padding:10px 10px 10px 0px;">
+                <div id="ddl_Product_div">
+                    <select id="ddl_Product" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:200px;"></select>
+                </div>
+                <input type="text" class="form-control shadow-none mercy_input_text" id="txt_Product" placeholder="Product" style='display:none;' />
+                <div id="lbl_Product" style="padding-left:10px;"></div>
+            </div>
+        </div>
+        <div class="col-12 col-md" style="padding-top: 15px;">
+            <div style="width:100%" class="filter_title">Company</div>
+            <div style="width:100%;padding:10px 10px 10px 0px;">
+                <select id="ddl_Company" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+            </div>
+            <div style="padding-top: 35px;" class="d-flex align-items-center">
+                <input type="checkbox" id="chkNoHauling" class="oval" />
+                <label for="chkNoHauling" class="ml-3 mb-0">No Hauling</label>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding-top: 15px !important;">
+            <div style="width: 200px;">
+                <div style="width:100%" class="filter_title">Blending Date</div>
+                <div style="width:100%;padding:10px 10px 10px 0px;">
+                    <div class="input-group date">
+                        <input id="txtDate" class="mercy_select mercy_input_text mercy_date" style="width:160px !important;" data-date-format="mm/dd/yyyy" placeholder="mm/dd/yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding-top: 15px !important;">
+            <div style="width: 200px;padding-right:20px;">
+                <div style="width:100%" class="filter_title">Shift</div>
+                <div style="width:100%;padding:10px 10px 10px 0px;">
+                    <select id="ddl_Shift" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:150px;">
+                        <option value="">Select shift</option>
+                        <option value="1">Shift 1</option>
+                        <option value="2">Shift 2</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding-top:45px !important;">
+            <div style="width: 140px;margin:auto;padding-bottom:20px;display:none;" id="btnSave_outer">
+                <div class="mercy_button" style="width:100px;"><div class="mercy_text_center" id="btnSave">Save</div></div>
+            </div>
+            <div style="width: 140px;margin:auto;padding-bottom:20px;display:none;" id="btnEdit_outer">
+                <div class="mercy_button" style="width:100px;"><div class="mercy_text_center" id="btnEdit">Edit Data</div></div>
+            </div>
+            <div style="width: 140px;margin:auto;">
+                <div class="mercy_button_2" style="width:100px;"><div class="mercy_text_center" id="btnCancel">Cancel</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:60px !important;margin-top:0px !important;">
+        <div class="col-12 col-md" style="padding-top: 15px;">
+            <div class="d-flex align-items-center">
+                <input type="checkbox" id="chkAdditionalBucket" class="oval" />
+                <label for="chkAdditionalBucket" class="ml-3 mb-0">Additional Bucket</label>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:70px !important;margin-top:0px !important;display:none;" id="div_Additional_Bucket_Section">
+        <div class="col-3">
+            <div class="d-flex align-items-center">
+                <div style="width: 35px;margin-right: 10px;" class="filter_title">ROM</div>
+                <div style="width: calc(100% - 35px);padding: 10px 10px 10px 0px;">
+                    <div id="ddl_ROM_div">
+                        <select id="ddl_ROM" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                    </div>
+                    <div id="lbl_ROM" style="padding-left:10px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="d-flex align-items-center">
+                <div style="min-width: 90px;margin-right:10px;" class="filter_title">Total Bucket</div>
+                <div style="min-width: 160px; padding: 10px 10px 10px 0px;">
+                    <select id="ddl_Total_Bucket" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;">
+                        <option value="">Select total bucket</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:90px !important;margin-top:0px !important;">
+        <div class="col-12 col-md" id="divRemark">
+            <div style="width:100%" class="filter_title">Remark</div>
+            <div style="width:100%;padding:10px 10px 10px 0px;">
+                <textarea class="form-control shadow-none mercy_input_text" id="txtRemark" rows="5" placeholder="remark" style="font-size:16px;"></textarea>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding-top:45px !important;">
+            <div style="width: 140px;">&nbsp;</div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" id="div_TARGET">
+        <div class="col">
+            <div class="row margin_padding_0 mercy_target" style="margin-top:16px !important;">TARGET</div>
+            <div class="row margin_padding_0 mercy_by-outlook" style="margin-top:16px !important;">By Outlook</div>
+            <div class="row margin_padding_0" style="margin-top:16px !important;">
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">CV</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_outlook mercy_input_text_readonly" id="txtCV" placeholder="Enter amount" onkeyup="OnKeyUp_CV(this)" value="0" readonly />
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">TS</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_outlook mercy_input_text_readonly" id="txtTS" placeholder="Enter amount" onkeyup="OnKeyUp_TS(this)" value="0.00" />
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">ASH</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_outlook mercy_input_text_readonly" id="txtASH" placeholder="Enter amount" onkeyup="OnKeyUp_ASH(this)" value="0.00" />
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">IM</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_outlook mercy_input_text_readonly" id="txtIM" placeholder="Enter amount" onkeyup="OnKeyUp_IM(this)" value="0.00" />
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">TM</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_outlook mercy_input_text_readonly" id="txtTM" placeholder="Enter amount" onkeyup="OnKeyUp_TM(this)" value="0.00" />
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">Ton</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_outlook mercy_portion_yellow" id="txtTon" placeholder="Enter amount" onkeyup="OnKeyUp_Ton(this)" value="0.00" />
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0 mercy_by-outlook" style="margin-top:16px !important;">By Portion Blending</div>
+            <div class="row margin_padding_0" style="margin-top:16px !important;">
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">CV</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtCV2" placeholder="" value="0" readonly />
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtCV3" placeholder="" value="0" readonly style="display:none;"/>
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">TS</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtTS2" placeholder="" value="0.00" readonly />
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtTS3" placeholder="" value="0.00" readonly style="display:none;"/>
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">ASH</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtASH2" placeholder="" value="0.00" readonly />
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtASH3" placeholder="" value="0.00" readonly style="display:none;"/>
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">IM</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtIM2" placeholder="" value="0.00" readonly />
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtIM3" placeholder="" value="0.00" readonly style="display:none;"/>
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;">
+                    <div style="width:100%" class="filter_title">TM</div>
+                    <div style="width:100%;padding:10px 10px 10px 0px;">
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtTM2" placeholder="" value="0.00" readonly />
+                        <input type="text" class="form-control shadow-none mercy_input_text mercy_align_right mercy_input_text_by_portion_blending mercy_input_text_readonly" id="txtTM3" placeholder="" value="0.00" readonly style="display:none;"/>
+                    </div>
+                </div>
+                <div class="col margin_padding_0" style="padding-right:10px !important;padding-top:30px !important;">
+                    <div class="mercy_button" style="width:100px;display:none;" id="btnAddROM"><div class="mercy_text_center">Add ROM</div></div>
+                </div>
+            </div>
+            <div class="row margin_padding_0 mercy_by-outlook" style="margin-top:16px !important;border: 1px solid #D4D4D4;border-style: dashed;border-width: 2px;"></div>
+            <div class="row margin_padding_0" style="height:40px;margin-top:30px !important;">
+                <div class="col-md-auto margin_padding_0">
+                    <div class="mercy_button" style="width:165px;display:none;" id="btnOptimizeBlending_Outer"><div class="mercy_text_center" id="btnOptimizeBlending">Optimize Blending</div></div>
+                </div>
+                <div class="col margin_padding_0">
+                    <img src="/images/spinner.gif" style="padding: 5px 0px 0 20px;display:none;" id="imgLoading_Optimize" />
+                </div>
+            </div>
+            <div class="row margin_padding_0" style="margin-top:10px !important;">
+                <div id="table_ROM_Quality_div" style="display:none;">
+                    <table id="table_ROM_Quality" class="table table-striped mercy_table mercy_table_header display nowrap" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>RecordId</th>
+                                <th>#</th>
+                                <th></th>
+                                <th>ROM</th>
+                                <th>Process Date</th>
+                                <th>Ton</th>
+                                <th>CV</th>
+                                <th>TS</th>
+                                <th>ASH</th>
+                                <th>IM</th>
+                                <th>TM</th>
+                                <th>Portion</th>
+                                <th>Ton</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="table_ROM_Quality_BEK_div" style="display:none;">
+                    <table id="table_ROM_Quality_BEK" class="table table-striped mercy_table mercy_table_header display nowrap" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>RecordId</th>
+                                <th>#</th>
+                                <th></th>
+                                <th>ROM</th>
+                                <th>Ton</th>
+                                <th>CV</th>
+                                <th>TS</th>
+                                <th>ASH</th>
+                                <th>IM</th>
+                                <th>TM</th>
+                                <th>Portion</th>
+                                <th>Ton</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="table_ROM_Quality_ReadOnly_div" style="display:none;">
+                    <table id="table_ROM_Quality_ReadOnly" class="table table-striped mercy_table mercy_table_header display nowrap" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>RecordId</th>
+                                <th>No_Line</th>
+                                <th>#</th>
+                                <th>ROM</th>
+                                <th>Process Date</th>
+                                <th>Ton</th>
+                                <th>CV</th>
+                                <th>TS</th>
+                                <th>ASH</th>
+                                <th>IM</th>
+                                <th>TM</th>
+                                <th>Portion</th>
+                                <th>Ton</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="row margin_padding_0 mercy_line" style="margin-top:30px !important;"></div>
+            <div class="row margin_padding_0 mercy_target" style="margin-top:30px !important;">DESTINATION</div>
+            <div class="row margin_padding_0 mercy_by-outlook" style="margin-top:16px !important;">Hopper</div>
+            <div id="div_Hoppers" class="row margin_padding_0" style="margin-top:16px !important;"></div>
+            <div class="row margin_padding_0 mercy_by-outlook" style="margin-top:16px !important;margin-bottom:16px !important;">Tunnel</div>
+            <div class="row margin_padding_0" style="margin-top:16px !important;margin-bottom:26px !important;">
+                <div id="div_Tunnels"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+// some Flags for some Components
+var ignore_trigger_change_ddl_Site = false;
+var ignore_trigger_change_ddl_Company = false;
+var ignore_trigger_change_ddl_Product = false;
+var ignore_trigger_change_ddl_Shift = false;
+
+// DataGrid
+var obj_html_ROM_Quality;
+var obj_html_ROM_Quality_BEK;
+var obj_html_ROM_Quality_ReadOnly;
+
+// DropdownList
+var obj_html_Site = null;
+var obj_html_Company = null;
+var obj_html_Product = null;
+var obj_html_ROM = null;
+var obj_html_Total_Bucket = null;
+
+// row
+var lineNumber_Data = 0;
+
+// for Tracking
+var currentData_Company = 'TCM';
+var currentData_Product = '';
+var currentData_Shift = '1';
+
+var currentData_CV = '0';
+var currentData_TS = '0.00';
+var currentData_ASH = '0.00';
+var currentData_IM = '0.00';
+var currentData_TM = '0.00';
+
+var dataDisplay_ROM_Quality = null;
+
+var current_Data = null;
+var current_ROM_Quality_Detail = null;
+
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+var object_id_Deleted = [];
+
+var tunnelReq = null;
+var hopperReq = null;
+
+var isAdditionalBucket = false;
+
+$(document).ready(function () {
+
+    $(document).attr('title', 'Portion Blending & Tunneling - Add');
+
+    $(window).resize(function () {
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+
+    $('#btnSave').click(function (e) {
+        const textButton = $(this).text();
+        if (textButton.toLowerCase() === 'submit' || textButton.toLowerCase() === 'save') {
+            SaveData();
+        }
+    });
+
+    $('#btnCancel').click(function (e) {
+        window.location = mercyUrl('/PortionBlendingv');
+    });
+
+    $('#chkNoHauling').click(function (e) {
+        if ($('#chkNoHauling').is(":checked")) {
+            $('#divRemark').show();
+            $('#div_TARGET').hide();
+        } else {
+            //$('#divRemark').hide();
+            $('#div_TARGET').show();
+        }
+    });
+
+    $('#chkAdditionalBucket').click(function (e) {
+        if ($('#chkAdditionalBucket').is(":checked")) {
+            $('#div_Additional_Bucket_Section').show();
+        } else {
+            $('#div_Additional_Bucket_Section').hide();
+        }
+    });
+
+    $("#txtDate").datepicker({
+        todayBtn: 1
+        , autoclose: true
+    }).on('changeDate', function (selected) {
+        //var minDate = new Date(selected.date.valueOf());
+        //$('#dateTo').datepicker('setStartDate', minDate);
+    });
+    $('#txtDate').datepicker('update', new Date());
+    
+    $('#btnAddROM').click(function (e){
+        // create "Record_Item"
+        var item = {RecordId:-1, Names:'', ROM_Id: -1, CV: 0, Block:'', ROM_Name:'', TM:0, TS:0, Ton:0, IM:0, ASH:0, Portion:0}
+        //var item = {Names:'nama', ROM_Id: 'romid', CV: 'cv', Block:'block', ROM_Name:'rom name', TM:'TM', TS:'TS', Ton:'Ton', IM:'IM', ASH:'ASH', Portion:'Portion'}
+        
+        // flag for "New Record"
+        isNew = true;
+        
+        // do "Counting"
+        object_Created_Count++;
+        lineNumber_Data++;
+        object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+        
+        // save to Array
+        object_id_Created.push(object_id_additional);
+        
+        // add to Table
+        obj_html_ROM_Quality_BEK.row.add(item).draw(false);
+    });
+    
+    $('#btnEdit').click(function (e) {
+        Switch_Mode_Edit();
+    });
+    
+    $('#btnOptimizeBlending').click(function (e) {
+        const textButton = $(this).text();
+        if (textButton.toLowerCase() === 'optimize blending') {
+            btnOptimizeBlending_Click();
+        }
+    });
+    
+    // reset
+    $('input:radio[name=chkHopper]').attr('checked',false);
+    $('input:radio[name=chkTunnel]').attr('checked',false);
+    $('input:radio[name=chkTunnel_BEK]').attr('checked',false);
+
+    Create_ddl_Site();
+    Create_ddl_Company();
+    Create_ddl_Product();
+    Create_ddl_Shift();
+    Create_ddl_ROM();
+    Create_ddl_Total_Bucket();
+    
+    Create_Table_ROM_Quality();
+    Create_Table_ROM_Quality_BEK();
+    Create_Table_ROM_Quality_Readonly();
+    
+    Load_Page_Form();
+});
+
+function Clear_DataGrid(p_id) {
+    try {
+        $('#' + p_id).DataTable().clear().destroy();
+        //$('#'+p_id).DataTable().destroy();
+        //$('#'+p_id+' tbody').empty();
+    }catch (err) { }
+}
+
+function Clear_DataGrid_ROM_Quality() {
+    Create_Table_ROM_Quality();
+}
+
+function Create_Table_ROM_Quality() {
+    Clear_DataGrid('table_ROM_Quality');
+
+    try {
+        obj_html_ROM_Quality = $('#table_ROM_Quality').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                { "data": "ROM_Id", "name": "ROM_Id", "autoWidth": true }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return lineNumber_Data.toString() + '.';
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return '<input type="checkbox" id="mercy_romQuality_chk_' + object_id_additional + '" class="shadow-none" onclick="ROM_Quality_CheckBox(this)"/>'
+                            + '<input type="hidden" id="mercy_romQuality_Ash_' + object_id_additional + '" value="' + full.ASH + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_CV_' + object_id_additional + '" value="' + full.CV + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_block_' + object_id_additional + '" value="' + full.Block + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_ROM_Name_' + object_id_additional + '" value="' + full.ROM_Name + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_ROM_ID_' + object_id_additional + '" value="' + full.ROM_Id + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_TM_' + object_id_additional + '" value="' + full.TM + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_TS_' + object_id_additional + '" value="' + full.TS + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_Ton_' + object_id_additional + '" value="' + full.Ton + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_im_' + object_id_additional + '" value="' + full.IM + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_recordid_' + object_id_additional + '" value="' + full.ROM_Id + '"/>'
+                            ;
+                    }
+                }
+                , { "data": "Names", "name": "Names", "autoWidth": false }
+                , { "data": "Process_Date_Str", "name": "Process_Date_Str", "autoWidth": false }
+                , { "data": "Ton_Str", "name": "Ton_Str", "autoWidth": true }
+                , { "data": "CV_Str", "name": "CV_Str", "autoWidth": true }
+                , { "data": "TS_Str", "name": "TS_Str", "autoWidth": true }
+                , { "data": "ASH_Str", "name": "ASH_Str", "autoWidth": true }
+                , { "data": "IM_Str", "name": "IM_Str", "autoWidth": true }
+                , { "data": "TM_Str", "name": "TM_Str", "autoWidth": true }
+                , {
+                    "render": function (data, type, full, meta) { return '<input type="text" id="mercy_romQuality_Portion_' + object_id_additional + '" value="' + full.Portion + '" style="text-align:right;width:50px;margin-top:-8px !important;display:none;" onkeyup="OnKeyUp_Portion(this)"/>'; }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<div id="mercy_romQuality_Ton_Portion_' + object_id_additional + '" style="height:24px;padding:2px 0px;"></div>'; }
+                }
+            ]
+            , "columnDefs": [
+                {
+                    "targets": [0,4]
+                    , "visible": false
+                    , "searchable": false
+                }
+                , {
+                    "targets": [1]
+                    , "width": "10px"
+                }
+                , {
+                    "targets": [2]
+                    , "width": "10px"
+                }
+                , {
+                    "targets": [3]
+                    , "width": "170px"
+                }
+                , {
+                    "targets": [1, 2]
+                    , "searchable": false
+                    , "orderable": false
+                }
+                , {
+                    className: "mercy_align_right"
+                    , targets: [1, 5, 6, 7, 8, 9, 10, 12]
+                }
+                , {
+                    targets: [4],
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        /*if (rowData[5] === 'Inactive' ) {
+                            $(td).css('text-align', 'right');
+                        }*/
+                    }
+                }
+            ]
+            , "order": [[3, "asc"]]
+        });
+        
+        obj_html_ROM_Quality.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }catch (err) { }
+}
+
+function Clear_DataGrid_ROM_Quality_BEK() {
+    Create_Table_ROM_Quality_BEK();
+}
+
+function Create_Table_ROM_Quality_BEK() {
+    Clear_DataGrid('table_ROM_Quality_BEK');
+    
+    try {
+        obj_html_ROM_Quality_BEK = $('#table_ROM_Quality_BEK').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                { "data": "ROM_Id", "name": "ROM_Id", "autoWidth": true }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return lineNumber_Data.toString() + '.';
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return '<input type="checkbox" id="mercy_romQuality_chk_' + object_id_additional + '" class="shadow-none" style="display:none;"/>'
+                            + '<img id="mercy_romQuality_Delete_' + object_id_additional + '" src="/images/ic-trash.png" style="padding:4px 0px 0px 6px;" onclick="processLink_Delete(this)">'
+                            ;
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return '<input type="text" id="mercy_romQuality_ROM_Name_' + object_id_additional + '" value="' + full.ROM_Name + '" style="width:180px !important;text-align:left !important;" class="mercy_text_number"/>'
+                            + '<input type="hidden" id="mercy_romQuality_recordid_' + object_id_additional + '" value="' + full.RecordId + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_block_' + object_id_additional + '" value="' + full.Block + '"/>'
+                            + '<input type="hidden" id="mercy_romQuality_ROM_ID_' + object_id_additional + '" value="' + full.ROM_Id + '"/>'
+                        ;
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<input type="text" id="mercy_romQuality_Ton_' + object_id_additional + '" value="' + full.Ton + '" class="mercy_text_number" onkeyup="OnKeyUp_Item_Ton(this)"/>'; }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<input type="text" id="mercy_romQuality_CV_' + object_id_additional + '" value="' + full.CV + '" class="mercy_text_number" onkeyup="OnKeyUp_Item_CV(this)"/>'; }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<input type="text" id="mercy_romQuality_TS_' + object_id_additional + '" value="' + full.TS + '" class="mercy_text_number" onkeyup="OnKeyUp_Item_TS(this)"/>'; }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<input type="text" id="mercy_romQuality_Ash_' + object_id_additional + '" value="' + full.ASH + '" class="mercy_text_number" onkeyup="OnKeyUp_Item_ASH(this)"/>'; }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<input type="text" id="mercy_romQuality_im_' + object_id_additional + '" value="' + full.IM + '" class="mercy_text_number" onkeyup="OnKeyUp_Item_IM(this)"/>'; }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<input type="text" id="mercy_romQuality_TM_' + object_id_additional + '" value="' + full.TM + '" class="mercy_text_number" onkeyup="OnKeyUp_Item_TM(this)"/>'; }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<input type="text" id="mercy_romQuality_Portion_' + object_id_additional + '" value="' + full.Portion + '" class="mercy_text_number" onkeyup="OnKeyUp_Portion(this)"/>'; }
+                }
+                , {
+                    "render": function (data, type, full, meta) { return '<div id="mercy_romQuality_Ton_Portion_' + object_id_additional + '" style="height:24px;padding:2px 0px;"></div>'; }
+                }
+            ]
+            , "columnDefs": [
+                {
+                    "targets": [0]
+                    , "visible": false
+                    , "searchable": false
+                }
+                , {
+                    "targets": [1]
+                    , "width": "10px"
+                }
+                , {
+                    "targets": [2]
+                    , "width": "10px"
+                }
+                , {
+                    "targets": [3]
+                    , "width": "170px"
+                }
+                , {
+                    "targets": [1, 2]
+                    , "searchable": false
+                    , "orderable": false
+                }
+                , {
+                    className: "mercy_align_right"
+                    , targets: [1, 5, 6, 7, 8, 9, 10, 11]
+                }
+            ]
+            , "order": [[3, "asc"]]
+        });
+
+        obj_html_ROM_Quality_BEK.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }catch (err) { }
+}
+
+    var recordNumber = 0;
+
+    function Create_ddl_Site() {
+        if (obj_html_Site != null) return;
+
+        obj_html_Site = $('#ddl_Site').select2({
+            placeholder: 'Select Site'
+            , tags: false
+            , multiple: false
+            //, tokenSeparators: [',', ' ']
+            //, minimumInputLength: 3
+            , minimumResultsForSearch: -1
+        });
+
+        $('#ddl_Site').change(function (e) {
+            OnChange_ddl_Site();
+        });
+    }
+
+    function OnChange_ddl_Site() {
+        if (ignore_trigger_change_ddl_Site) return;
+
+        Populate_Data_ddl_Company();
+    }
+
+    function Populate_Data_ddl_Site() {
+        try {
+            obj_html_Site.empty();
+
+            uInfo.Relations.Sites.forEach(
+                function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.SiteName, item.SiteId, true, true);
+                    obj_html_Site.append(option);//.trigger('change');
+                }
+            );
+
+            // Initial value for "Site"
+            obj_html_Site.select(0);
+            $('#ddl_Site').trigger('change');
+        } catch (err) { }
+    }
+
+function Create_ddl_Company() {
+    if (obj_html_Company != null) return;
+
+    obj_html_Company = $('#ddl_Company').select2({
+        placeholder: 'Select Company'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Company').change(function (e) {
+        OnChange_ddl_Company();
+    });
+}
+
+function OnChange_ddl_Company() {
+    
+    // ignore if required
+    if (ignore_trigger_change_ddl_Company) return;
+    
+    // reset
+    object_id_Created = [];
+    object_id_Deleted = [];
+    lineNumber_Data = 0;
+    
+    $('#txtCV').removeClass('mercy_portion_yellow');
+    $('#txtTS').removeClass('mercy_portion_yellow');
+    $('#txtASH').removeClass('mercy_portion_yellow');
+    $('#txtIM').removeClass('mercy_portion_yellow');
+    $('#txtTM').removeClass('mercy_portion_yellow');
+    
+    $('#txtCV').removeClass('mercy_portion_red');
+    $('#txtTS').removeClass('mercy_portion_red');
+    $('#txtASH').removeClass('mercy_portion_red');
+    $('#txtIM').removeClass('mercy_portion_red');
+    $('#txtTM').removeClass('mercy_portion_red');
+    
+    $('#div_Tunnel_TCM').hide();
+    $('#div_Tunnel_BEK').hide();
+    
+    $("#txtCV").prop("readonly", true);
+    $("#txtTS").prop("readonly", true);
+    $("#txtASH").prop("readonly", true);
+    $("#txtIM").prop("readonly", true);
+    $("#txtTM").prop("readonly", true);
+    
+    $('#txtCV').addClass('mercy_input_text_readonly');
+    $('#txtTS').addClass('mercy_input_text_readonly');
+    $('#txtASH').addClass('mercy_input_text_readonly');
+    $('#txtIM').addClass('mercy_input_text_readonly');
+    $('#txtTM').addClass('mercy_input_text_readonly');
+    
+    if ( ! Is_BEK()){
+        // TCM
+        $('#table_ROM_Quality_div').show();
+        $('#table_ROM_Quality_BEK_div').hide();
+        
+        // not BEK, always Hide
+        $('#btnAddROM').hide();
+        
+        if ( ! Mode_View()){
+            $('#txt_Product').hide();
+            $('#ddl_Product_div').show();
+        }
+        
+        // TEMPORARY
+        if ($('#ddl_Company').val() == 'TCM'){
+            $('#div_Tunnel_TCM').show();
+        }else{
+            $('#div_Tunnel_BEK').show();
+        }
+    
+        Populate_Data_ddl_Product();
+        
+        Populate_Data_ROM_Quality();
+    }
+    else
+    {
+        $('#table_ROM_Quality_div').hide();
+        $('#table_ROM_Quality_BEK_div').show();
+        
+        if ( ! Mode_View()){
+            // hanya tampil jika Bukan ReadOnly
+            $('#btnAddROM').show();
+            
+            $('#txt_Product').show();
+            $('#ddl_Product_div').hide();
+            
+            $("#txtCV").prop("readonly", false);
+            $("#txtTS").prop("readonly", false);
+            $("#txtASH").prop("readonly", false);
+            $("#txtIM").prop("readonly", false);
+            $("#txtTM").prop("readonly", false);
+            
+            $('#txtCV').removeClass('mercy_input_text_readonly');
+            $('#txtTS').removeClass('mercy_input_text_readonly');
+            $('#txtASH').removeClass('mercy_input_text_readonly');
+            $('#txtIM').removeClass('mercy_input_text_readonly');
+            $('#txtTM').removeClass('mercy_input_text_readonly');
+        }
+        
+        $("#txtCV").val(currentData_CV);
+        $("#txtTS").val(currentData_TS);
+        $("#txtASH").val(currentData_ASH);
+        $("#txtIM").val(currentData_IM);
+        $("#txtTM").val(currentData_TM);
+        
+        try{
+            if (parseFloat(currentData_CV) == 0.0){
+                $('#txtCV').addClass('mercy_portion_yellow');
+            }
+            if (parseFloat(currentData_TS) == 0.0){
+                $('#txtTS').addClass('mercy_portion_yellow');
+            }
+            if (parseFloat(currentData_ASH) == 0.0){
+                $('#txtASH').addClass('mercy_portion_yellow');
+            }
+            if (parseFloat(currentData_IM) == 0.0){
+                $('#txtIM').addClass('mercy_portion_yellow');
+            }
+            if (parseFloat(currentData_TM) == 0.0){
+                $('#txtTM').addClass('mercy_portion_yellow');
+            }
+        }catch (err){}
+        
+        $('#div_Tunnel_BEK').show();
+        
+        Populate_Data_ROM_Quality_BEK();
+    }
+
+    if (Mode_View()) {
+        $('#lbl_ROM').show();
+        $('#ddl_ROM_div').hide();
+    } else {
+        $('#lbl_ROM').hide();
+        $('#ddl_ROM_div').show();
+        Populate_Data_ddl_ROM();
+    }
+
+    Populate_Tunnel();
+    Populate_Hopper();
+}
+
+function Create_ddl_Shift() {
+    $('#ddl_Shift').select2();
+
+    $('#ddl_Shift').change(function (e) {
+        //OnChange_ddl_Shift();
+    });
+
+    // Inisial value
+    $('#ddl_Shift').val(currentData_Shift).trigger('change');
+}
+
+function OnChange_ddl_Shift() {
+    // ignore if required
+    if (ignore_trigger_change_ddl_Shift) return;
+}
+
+function Create_ddl_Product() {
+    if (obj_html_Product != null) return;
+
+    obj_html_Product = $('#ddl_Product').select2({
+        placeholder: 'Select Product'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+    
+    $('#ddl_Product').change(function (e) {
+        OnChange_ddl_Product();
+    });
+}
+
+function Clear_ddl_Company() {
+    // Clear DropdownList
+    $('#ddl_Company').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Company();
+}
+
+function Populate_Data_ddl_Company() {
+    try {
+        var option = null;
+
+        obj_html_Company.empty();
+
+        var siteId = $('#ddl_Site').val();
+        uInfo.Relations.Companies
+            .filter((item) => Number(item.SiteId) === Number(siteId))
+            .forEach(function (item) {
+                // create the option and append to Select2
+                option = new Option(item.CompanyCode, item.CompanyCode, true, true);
+                obj_html_Company.append(option);//.trigger('change');
+            }
+            );
+
+        // Initial value for "Company"
+        obj_html_Company.select(0);
+        $('#ddl_Company').trigger('change');
+    } catch (err) { }
+}
+
+function Populate_Data_ROM_Quality() {
+    var company = $("#ddl_Company").val();
+    var shift = $("#ddl_Shift").val();
+    var date = $("#txtDate").val();
+
+    Clear_DataGrid_ROM_Quality();
+    
+    if (Mode_View()){
+        $('#table_ROM_Quality_div').hide();
+        
+        // karena mode View, maka tidak usah ambil data ROM_Quality()
+        return;
+    }
+    
+    // tidak usah AJAX, jika belum "Siap"
+    if (company == null || company == ''
+        //|| shift == null || shift == ''
+        //|| date == null || date == ''
+    ) {
+        return;
+    }
+    
+    // check again, whether it is BEK or not BEK
+    if (Is_BEK()){
+        // karena BEK, maka tidak usah ambil data ROM_Quality()
+        return;
+    }
+    
+    // lakukan Check Permission
+    if (permission.Is_Add || permission.Is_Edit){
+        // ok, Valid
+    }else{
+        // karena Permission tidak Valid, maka tidak usah ambil data ROM_Quality()
+        return;
+    }
+    
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/PortionBlending/GetROMsQuality?company=' + company//+'&date='+date+'&shift='+shift
+        , type: 'GET'
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                //alert(data.Message);
+                return;
+            }
+            
+            try {
+                //https://stackoverflow.com/questions/30805784/dynamically-adding-rows-to-datatable-using-ajax-with-pagination-and-sorting
+                //obj_html_ROM_Quality.rows.add(data.Items); // add to DataTable instance
+                //obj_html_ROM_Quality.draw(); // always redraw
+                
+                // process all data
+                dataDisplay_ROM_Quality = data.Items;
+                
+                dataDisplay_ROM_Quality.forEach(
+                    function (item){
+                        isNew = true;
+                        object_Created_Count++;
+                        lineNumber_Data++;
+                        object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                        
+                        // save to Array
+                        object_id_Created.push(object_id_additional);
+                        
+                        // add to Table
+                        obj_html_ROM_Quality.row.add(item).draw(false);
+                    }
+                );
+                
+                // Display Data
+                DisplayData_Mapping_ROM_Quality();
+                
+            } catch (err) {}
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+    function Populate_Tunnel() {
+        if (tunnelReq) {
+            tunnelReq.abort();
+        }
+
+        tunnelReq = $.ajax({
+            url: api_Request + '/Api/Tunnel'
+            , type: 'POST'
+            , data: {
+                u_menu: get_user_menu,
+                u_relation: get_user_relation,
+                company: $('#ddl_Company').val()
+            }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                // Set "Token" in HTTP_Header
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                is_still_AJAX_dataList = false;
+
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    alert(data.Message);
+
+                    window.location = '/NoAccess';
+                    return;
+                }
+
+                // Special Purpose, getting information of CurrentUser
+                if (get_user_menu == '1') {
+                    after_GetUserInfo(data.User);
+                    uInfo = data.User;
+                }
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+
+                $('#div_Tunnels').empty();
+                data.Items
+                    .filter((item) => item.IsActive)
+                    .forEach(
+                        function (item) {
+                            $('#div_Tunnels')
+                                .append(`<input type="radio" name="chkTunnel" value="${item.Name}" /><label class="no-hauling mercy_chk_destination" style="margin-left: 5px; margin-top: -3px;">${item.Name}</label>`)
+                        }
+                    );
+
+                // data for RadioButton
+                if (Is_Display_Data() && current_Data !== null) {
+                    $("input[name='chkTunnel'][value='" + current_Data.Tunnel + "']").prop('checked', true);
+                }
+
+                tunnelReq = null;
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+    function Populate_Hopper() {
+        if (hopperReq) {
+            hopperReq.abort();
+        }
+
+        hopperReq = $.ajax({
+            url: api_Request + '/Api/Hopper'
+            , type: 'POST'
+            , data: {
+                u_menu: get_user_menu,
+                u_relation: get_user_relation,
+                company: $('#ddl_Company').val()
+            }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                // Set "Token" in HTTP_Header
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                is_still_AJAX_dataList = false;
+
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    alert(data.Message);
+
+                    window.location = '/NoAccess';
+                    return;
+                }
+
+                // Special Purpose, getting information of CurrentUser
+                if (get_user_menu == '1') {
+                    after_GetUserInfo(data.User);
+                    uInfo = data.User;
+                }
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // we need "Permission" information
+                permission = data.Permission;
+
+                $('#div_Hoppers').empty();
+                data.Items
+                    .filter((item) => item.IsActive)
+                    .forEach(
+                        function (item) {
+                            $('#div_Hoppers')
+                                .append(`<input type="radio" name="chkHopper" value="${item.Name}" /><label class="no-hauling mercy_chk_destination" style="margin-left: 5px; margin-top: -3px;width:170px !important;">${item.Name}</label>`)
+                        }
+                    );
+
+                // data for RadioButton
+                if (Is_Display_Data() && current_Data !== null) {
+                    $("input[name='chkHopper'][value='" + current_Data.Hopper + "']").prop('checked', true);
+                }
+
+                hopperReq = null;
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+    }
+
+function ROM_Quality_CheckBox(p_this) {
+    var id = p_this.id;
+    
+    var object_id_additional_ = id.replace('mercy_romQuality_chk_', '');
+    
+    // reset value "Portion"
+    $('#mercy_romQuality_Portion_' + object_id_additional_).val('0');
+    $('#mercy_romQuality_Ton_Portion_' + object_id_additional_).text('');
+    $('#mercy_romQuality_Ton_Portion_' + object_id_additional_).removeClass('mercy_portion_red');
+
+    $('#mercy_romQuality_Portion_' + object_id_additional_).removeClass('mercy_portion_green mercy_portion_red mercy_portion_yellow');
+    $('#mercy_romQuality_Portion_' + object_id_additional_).addClass('shadow-none mercy_portion mercy_portion_yellow');
+
+    // Show or Hide "Portion"
+    if ($('#mercy_romQuality_chk_' + object_id_additional_).is(":checked")) {
+        $('#mercy_romQuality_Portion_' + object_id_additional_).show();
+    } else {
+        $('#mercy_romQuality_Portion_' + object_id_additional_).hide();
+    }
+
+    Calculate_By_Portion_Blending(false);
+}
+
+function OnKeyUp_Portion(p_this) {
+    var id = p_this.id;
+    
+    var object_id_additional_ = id.replace('mercy_romQuality_Portion_', '');
+    
+    ROM_Quality_Portion_ById(object_id_additional_, true);
+}
+
+function ROM_Quality_Portion_ById(p_object_id_additional, p_is_Item) {
+    Calculate_By_Portion_Blending(true);
+
+    try {
+        $('#mercy_romQuality_Portion_' + p_object_id_additional).removeClass('mercy_portion_green mercy_portion_red mercy_portion_yellow');
+
+        var value_ton = $('#mercy_romQuality_Ton_' + p_object_id_additional).val();
+        var value_portion = $('#mercy_romQuality_Portion_' + p_object_id_additional).val();
+        
+        var value_ton_by_Outlook = $('#txtTon').val();
+        
+        // hilangkan terlebih dahulu "Formatting tanda koma"
+        value_portion = value_portion.replace(',', '');
+    
+        if ($.isNumeric(value_portion)) {
+            var portion = parseFloat(value_portion);
+            var ton = parseFloat(value_ton);
+            var ton_by_Outlook = parseFloat(value_ton_by_Outlook);
+            
+            var ton_calculation = ((portion * ton_by_Outlook) / 100.0).toFixed(2);
+            $('#mercy_romQuality_Ton_Portion_' + p_object_id_additional).text(addCommas(ton_calculation.toString()));
+            if (ton_calculation > ton){
+                $('#mercy_romQuality_Ton_Portion_' + p_object_id_additional).addClass('mercy_portion_red');
+            }
+            else{
+                $('#mercy_romQuality_Ton_Portion_' + p_object_id_additional).removeClass('mercy_portion_red');
+            }
+
+            if (portion <= 0.0) {
+                $('#mercy_romQuality_Portion_' + p_object_id_additional).addClass('shadow-none mercy_portion mercy_portion_yellow');
+            }
+            else if (portion <= 100.0) {
+                $('#mercy_romQuality_Portion_' + p_object_id_additional).addClass('shadow-none mercy_portion mercy_portion_green');
+            } else {
+                $('#mercy_romQuality_Portion_' + p_object_id_additional).addClass('shadow-none mercy_portion mercy_portion_red');
+            }
+        }
+        else {
+            $('#mercy_romQuality_Portion_' + p_object_id_additional).addClass('shadow-none mercy_portion mercy_portion_red');
+            $('#mercy_romQuality_Ton_Portion_' + p_object_id_additional).text('');
+        }
+    } catch (err) {
+        $('#mercy_romQuality_Portion_' + p_object_id_additional).addClass('shadow-none mercy_portion mercy_portion_red');
+        $('#mercy_romQuality_Ton_Portion_' + p_object_id_additional).text('');
+    }
+
+    if (p_is_Item) Calculate_By_Portion_Blending(false);
+}
+
+var portionTotal = 0.0;
+
+function Calculate_By_Portion_Blending(p_isReset_Only) {
+    $("#txtCV2").val('0');
+    $("#txtTS2").val('0.00');
+    $("#txtASH2").val('0.00');
+    $("#txtIM2").val('0.00');
+    $("#txtTM2").val('0.00');
+
+    if (p_isReset_Only) return;
+
+    var cv = 0.0;
+    var ts = 0.0;
+    var ash = 0.0;
+    var im = 0.0;
+    var tm = 0.0;
+    var cv_total = 0.0;
+    var ts_total = 0.0;
+    var ash_total = 0.0;
+    var im_total = 0.0;
+    var tm_total = 0.0;
+
+    var value_portion = '';
+    var portion = 0.0;
+    // reset
+    portionTotal = 0.0;
+
+    var isAll_Valid = true;
+
+    $('#txtCV2').removeClass('mercy_portion_red');
+    $('#txtTS2').removeClass('mercy_portion_red');
+    $('#txtASH2').removeClass('mercy_portion_red');
+    $('#txtIM2').removeClass('mercy_portion_red');
+    $('#txtTM2').removeClass('mercy_portion_red');
+
+    $.each(object_id_Created, function(i, valx){
+    
+        if (object_id_Deleted.indexOf(valx) !== -1){
+            // this Row will be Deleted
+            return true;
+            //continue;
+        }
+        
+        if ( ! Is_BEK()){
+            if ( ! $('#mercy_romQuality_chk_' + valx).is(":checked"))
+                return true;
+                //continue;
+        }
+        
+        value_portion = $('#mercy_romQuality_Portion_' + valx).val();
+
+        if ( ! Validate_Is_Numeric('#mercy_romQuality_Portion_' + valx)){
+            isAll_Valid = false;
+            return true;
+            //continue;
+        }
+        
+        try {
+            portion = parseFloat(value_portion);
+            portionTotal += portion;
+
+            cv = parseFloat($('#mercy_romQuality_CV_' + valx).val());
+            ts = parseFloat($('#mercy_romQuality_TS_' + valx).val());
+            ash = parseFloat($('#mercy_romQuality_Ash_' + valx).val());
+            im = parseFloat($('#mercy_romQuality_im_' + valx).val());
+            tm = parseFloat($('#mercy_romQuality_TM_' + valx).val());
+            
+            //Kalkulasi Quality, dengan strategi seperti berikut:
+            //   - pastikan bahwa semua data selalu di Round terlebih dahulu
+            //   - baru kemudian dilakukan Kalkulasi Penjumlahan
+            cv_total += ((portion * cv.toFixed(2)) / 100.0);
+            ts_total += ((portion * ts.toFixed(2)) / 100.0);
+            ash_total += ((portion * ash.toFixed(2)) / 100.0);
+            im_total += ((portion * im.toFixed(2)) / 100.0);
+            tm_total += ((portion * tm.toFixed(2)) / 100.0);
+
+            if (portion > 100.0) {
+                isAll_Valid = false;
+            }
+        }catch (err) {}
+    });
+    
+    // kembali dilakukan Rounding, agar konsisten
+    $('#txtCV2').val(addCommas(cv_total.toFixed(0).toString()));
+    $('#txtTS2').val(addCommas(ts_total.toFixed(2).toString()));
+    $('#txtASH2').val(addCommas(ash_total.toFixed(2).toString()));
+    $('#txtIM2').val(addCommas(im_total.toFixed(2).toString()));
+    $('#txtTM2').val(addCommas(tm_total.toFixed(2).toString()));
+
+    /*if (!isAll_Valid || portionTotal > 100.0) {
+        $('#txtCV2').addClass('mercy_portion_red');
+        $('#txtTS2').addClass('mercy_portion_red');
+        $('#txtASH2').addClass('mercy_portion_red');
+        $('#txtIM2').addClass('mercy_portion_red');
+        $('#txtTM2').addClass('mercy_portion_red');
+    }*/
+}
+
+function Validate_Is_Numeric(p_id) {
+    return Validate_Is_Numeric2(p_id, true);
+}
+
+function Validate_Is_Numeric2(p_id, p_change_Class) {
+    p_id = '#' + p_id;
+    p_id = p_id.replace('##', '#');
+    
+    if (p_change_Class) $(p_id).removeClass('mercy_portion_red');
+    
+    var value = $(p_id).val();
+    if (value == null || value == ''){
+        if (p_change_Class) $(p_id).addClass('mercy_portion_red');
+        return false;
+    }
+    
+    // hilangkan terlebih dahulu "Formatting tanda koma"
+    value = value.replace(',', '');
+    
+    // check menggunakan function Standard:JavaScript isNumeric()
+    if (!$.isNumeric(value)) {
+        if (p_change_Class) $(p_id).addClass('mercy_portion_red');
+        
+        return false;
+    }
+    
+    return true;
+}
+
+function Validate_Is_Numeric_include_Zero(p_this) {
+    var id = p_this.id;
+    
+    $('#'+id).removeClass('mercy_portion_yellow');
+    $('#'+id).removeClass('mercy_portion_red');
+    
+    if ( ! Validate_Is_Numeric(id)){
+        return false;
+    }
+    
+    var value_str = $('#'+id).val();
+    var value_float = parseFloat(value_str);
+    if (value_float == 0){
+        $('#'+id).addClass('mercy_portion_yellow');
+        return false;
+    }else if (value_float < 0){
+        $('#'+id).addClass('mercy_portion_red');
+        return false;
+    }
+    
+    return true;
+}
+
+function OnKeyUp_CV(p_this) {
+    if (Is_BEK()){
+        Validate_Is_Numeric_include_Zero(p_this);
+    }
+}
+
+function OnKeyUp_TS(p_this) {
+    if (Is_BEK()){
+        Validate_Is_Numeric_include_Zero(p_this);
+    }
+}
+
+function OnKeyUp_ASH(p_this) {
+    if (Is_BEK()){
+        Validate_Is_Numeric_include_Zero(p_this);
+    }
+}
+
+function OnKeyUp_IM(p_this) {
+    if (Is_BEK()){
+        Validate_Is_Numeric_include_Zero(p_this);
+    }
+}
+
+function OnKeyUp_TM(p_this) {
+    if (Is_BEK()){
+        Validate_Is_Numeric_include_Zero(p_this);
+    }
+}
+
+function OnKeyUp_Ton(p_this) {
+    Validate_Is_Numeric_include_Zero(p_this);
+        
+    $.each(object_id_Created, function(i, valx){
+    
+        if (object_id_Deleted.indexOf(valx) !== -1){
+            // this Row will be Deleted
+            return true;
+            //continue;
+        }
+        
+        if ( ! Is_BEK()){
+            if ( ! $('#mercy_romQuality_chk_' + valx).is(":checked"))
+                return true;
+                //continue;
+        }
+        
+        ROM_Quality_Portion_ById(valx, false);
+    });
+    
+    Calculate_By_Portion_Blending(false);
+}
+
+function SaveData() {
+    if (Mode_View()){
+        alert('ReadOnly data! Please click button Edit');
+        return;
+    }
+
+    if (!validate_All()) return;
+
+    $("#btnSave").text("Loading...");
+    $("#btnOptimizeBlending").text("Loading...");
+
+    $('#imgLoading').show();
+
+    var action = 'Create';
+    if (Mode_Create()) {}
+    else action = 'Edit?.id=' + paramid;
+    
+    var romQuality = '';
+    var product = '';
+    
+    if ( ! Is_BEK()){
+        // TCM
+        romQuality = Get_ROM_Quality();
+        product = $("#ddl_Product").val();
+    }
+    else{
+        romQuality = Get_ROM_Quality_BEK();
+        product = $("#txt_Product").val();
+    }
+    
+    var tunnel = $("input:radio[name='chkTunnel']:checked").val();
+    var hopper = $("input:radio[name='chkHopper']:checked").val();
+
+    $.ajax({
+        url: api_Request + '/Api/PortionBlending/' + action,
+        data: {
+            Company: $('#ddl_Company').val()
+            , Product: product
+            , BlendingDate: $("#txtDate").val()
+            , Shift: $("#ddl_Shift").val()
+            , NoHauling: ValueBit('chkNoHauling')
+            , Remark: $("#txtRemark").val()
+            , CV: $("#txtCV").val()
+            , TS: $("#txtTS").val()
+            , ASH: $("#txtASH").val()
+            , IM: $("#txtIM").val()
+            , TM: $("#txtTM").val()
+            , Ton: $("#txtTon").val()
+            , ROM_Quality: romQuality
+            , Hopper: hopper
+            , Tunnel: tunnel
+            , IsAdditionalBucket: ValueBit('chkAdditionalBucket')
+            , RomName: ValueBit('chkAdditionalBucket') == 1 ? $("#ddl_ROM option:selected").text() : ""
+            , RomId: ValueBit('chkAdditionalBucket') == 1 ? Number($("#ddl_ROM").val()) : ""
+            , TotalBucket: ValueBit('chkAdditionalBucket') == 1 ? Number($("#ddl_Total_Bucket").val()) : ""
+        },
+        type: 'POST',
+        dataType: "json",
+        cache: false,
+        beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        },
+        success: function (data) {
+            $('#imgLoading').hide();
+            $("#btnSave").text(Mode_Create() ? "Submit" : "Save");
+            $("#btnOptimizeBlending").text("Optimize Blending");
+
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            alert('Success Save');
+
+            window.location = mercyUrl('/PortionBlendingv');
+        },
+        error: function (error) {
+            $("#btnSave").text(Mode_Create() ? "Submit" : "Save");
+            $("#btnOptimizeBlending").text("Optimize Blending");
+            //$(this).remove();
+        }
+    });
+}
+
+function ValueBit(p_id) {
+    var result = 0;
+
+    if ($('#' + p_id).is(':checked')) result = 1;
+
+    return result;
+}
+
+function validate_All() {
+    if ($('#chkNoHauling').is(":checked")) {
+        if ($('#txtRemark').val() == '') {
+            alert('NoHauling, remark must not be Empty!');
+            return false;
+        }
+    }
+    else{
+        if ( ! Validate_Is_Numeric2('txtTon', false)){
+            alert('TON is not valid');
+            return false;
+        }
+    
+        var value_ton_by_Outlook = $('#txtTon').val();
+        var ton_by_Outlook = parseFloat(value_ton_by_Outlook);
+        if (ton_by_Outlook <= 0){
+            alert('Please input valid Ton value');
+            return false;
+        }
+        
+        var value_portion;
+        var portion = 0;
+        var portionTotal = 0;
+        var isAll_Valid = true;
+        var msg = '';
+        
+        var ton = 0;
+        
+        var count = 0;
+        
+        $.each(object_id_Created, function(iaa, valx){
+        
+            if (object_id_Deleted.indexOf(valx) !== -1){
+                // this Row will be Deleted
+                return true;
+                //continue;
+            }
+            
+            if ( ! Is_BEK()){
+                if ( ! $('#mercy_romQuality_chk_' + valx).is(":checked"))
+                    return true;
+                    //continue;
+            }
+            
+            count++;
+            
+            value_portion = $('#mercy_romQuality_Portion_' + valx).val();
+            
+            if (Validate_Is_Numeric('#mercy_romQuality_Portion_' + valx)) {
+                try {
+                    portion = parseFloat(value_portion);
+                    portionTotal += portion;
+                    
+                    if (portion > 100.0) {
+                        isAll_Valid = false;
+                        msg = 'There is portion > 100';
+                        return false;
+                        //break;
+                    }
+                    
+                    if (portion < 0) {
+                        isAll_Valid = false;
+                        msg = 'There is portion < 0';
+                        return false;
+                        //break;
+                    }
+                    
+                    var ton_calculation = ((portion * ton_by_Outlook) / 100.0).toFixed(2);
+                    
+                    ton = parseFloat($('#mercy_romQuality_Ton_' + valx).val());
+                    
+                    if (ton_calculation > ton){
+                        isAll_Valid = false;
+                        msg = 'There is ton which is not proper';
+                        return false;
+                        //break;
+                    }
+                }catch (err) {}
+            } else {
+                msg = 'Portion is not valid!';
+                isAll_Valid = false;
+            }
+        });
+        
+        if (count <= 0){
+            alert('Please select ROM Quality !');
+            return false;
+        }
+        
+        if ( ! isAll_Valid){
+            alert(msg);
+            return false;
+        }
+        
+        if (portionTotal != 100.0){
+            alert('Portion Total is not 100 ! {but ' + portionTotal.toString() + '}');
+            return false;
+        }
+        
+        if (Is_BEK()){
+            var val = 0;
+            
+            if ($('#txt_Product').val() == '') {
+                alert('Product must not be Empty!');
+                return false;
+            }
+            
+            if ( ! Validate_Is_Numeric2('txtCV', false)){
+                alert('CV is not valid');
+                return false;
+            }
+        
+            var check_value_str = $('#txtCV').val();
+            var check_value_float = parseFloat(check_value_str);
+            if (check_value_float <= 0){
+                alert('Please input valid CV value');
+                return false;
+            }
+            
+            if ( ! Validate_Is_Numeric2('txtTS', false)){
+                alert('TS is not valid');
+                return false;
+            }
+        
+            check_value_str = $('#txtTS').val();
+            check_value_float = parseFloat(check_value_str);
+            if (check_value_float <= 0){
+                alert('Please input valid TS value');
+                return false;
+            }
+            
+            if ( ! Validate_Is_Numeric2('txtASH', false)){
+                alert('ASH is not valid');
+                return false;
+            }
+        
+            check_value_str = $('#txtASH').val();
+            check_value_float = parseFloat(check_value_str);
+            if (check_value_float <= 0){
+                alert('Please input valid ASH value');
+                return false;
+            }
+            
+            if ( ! Validate_Is_Numeric2('txtIM', false)){
+                alert('IM is not valid');
+                return false;
+            }
+        
+            check_value_str = $('#txtIM').val();
+            check_value_float = parseFloat(check_value_str);
+            if (check_value_float <= 0){
+                alert('Please input valid IM value');
+                return false;
+            }
+            
+            if ( ! Validate_Is_Numeric2('txtTM', false)){
+                alert('TM is not valid');
+                return false;
+            }
+        
+            check_value_str = $('#txtTM').val();
+            check_value_float = parseFloat(check_value_str);
+            if (check_value_float <= 0){
+                alert('Please input valid TM value');
+                return false;
+            }
+            
+            $.each(object_id_Created, function(ii, valx){
+            
+                if (object_id_Deleted.indexOf(valx) !== -1){
+                    // this Row will be Deleted
+                    return true;
+                    //continue;
+                }
+                
+                if ($('#mercy_romQuality_ROM_Name_' + valx).val() == ''){
+                    isAll_Valid = false;
+                    msg = 'There is ROM Name that Empty!';
+                    return false;
+                    //break;
+                }
+                
+                if ( ! Validate_Is_Numeric('#mercy_romQuality_Ton_' + valx)) {
+                    isAll_Valid = false;
+                    msg = 'There is Ton that is not valid!';
+                    return false;
+                    //break;
+                }
+                
+                if ( ! Validate_Is_Numeric('#mercy_romQuality_CV_' + valx)) {
+                    isAll_Valid = false;
+                    msg = 'There is CV that is not valid!';
+                    return false;
+                    //break;
+                }
+                
+                if ( ! Validate_Is_Numeric('#mercy_romQuality_TS_' + valx)) {
+                    isAll_Valid = false;
+                    msg = 'There is TS that is not valid!';
+                    return false;
+                    //break;
+                }
+                
+                if ( ! Validate_Is_Numeric('#mercy_romQuality_Ash_' + valx)) {
+                    isAll_Valid = false;
+                    msg = 'There is ASH that is not valid!';
+                    return false;
+                    //break;
+                }
+                
+                if ( ! Validate_Is_Numeric('#mercy_romQuality_im_' + valx)) {
+                    isAll_Valid = false;
+                    msg = 'There is IM that is not valid!';
+                    return false;
+                    //break;
+                }
+                
+                if ( ! Validate_Is_Numeric('#mercy_romQuality_TM_' + valx)) {
+                    isAll_Valid = false;
+                    msg = 'There is TM that is not valid!';
+                    return false;
+                    //break;
+                }
+            });
+            
+            if ( ! isAll_Valid){
+                alert(msg);
+                return false;
+            }
+        }
+        
+        if ($("input:radio[name='chkHopper']:checked").val() == null){
+            alert('Select Hopper!');
+            return false;
+        }
+
+        if ($("input:radio[name='chkTunnel']:checked").val() == null) {
+            alert('Select Tunnel!');
+            return false;
+        }
+    }
+    if ($('#chkAdditionalBucket').is(":checked")) {
+        if ($('#ddl_ROM').val() == '') {
+            alert('Additional Bucket, ROM must not be Empty!');
+            return false;
+        }
+        if ($('#ddl_Total_Bucket').val() == '') {
+            alert('Additional Bucket, Total Bucket must not be Empty!');
+            return false;
+        }
+    }
+    return true;
+}
+
+function Get_ROM_Quality() {
+    var result = '';
+
+    var recordId = '';
+    var block = '';
+    var rom = '';
+    var romId = '';
+    var ton = '';
+
+    var cv = '';
+    var ts = '';
+    var ash = '';
+    var im = '';
+    var tm = '';
+    var portion = '';
+    
+    $.each(object_id_Created, function(ii, valx){
+    
+        if (object_id_Deleted.indexOf(valx) !== -1){
+            // this Row will be Deleted
+            return true;
+            //continue;
+        }
+        
+        if ( ! Is_BEK()){
+            if ( ! $('#mercy_romQuality_chk_' + valx).is(":checked"))
+                return true;
+                //continue;
+        }
+        
+        recordId = $('#mercy_romQuality_recordid_' + valx).val();
+        block = $('#mercy_romQuality_block_' + valx).val();
+        rom = $('#mercy_romQuality_ROM_Name_' + valx).val();
+        romId = $('#mercy_romQuality_ROM_ID_' + valx).val();
+        ton = $('#mercy_romQuality_Ton_' + valx).val();
+
+        cv = $('#mercy_romQuality_CV_' + valx).val();
+        ts = $('#mercy_romQuality_TS_' + valx).val();
+        ash = $('#mercy_romQuality_Ash_' + valx).val();
+        im = $('#mercy_romQuality_im_' + valx).val();
+        tm = $('#mercy_romQuality_TM_' + valx).val();
+        portion = $('#mercy_romQuality_Portion_' + valx).val();
+
+        result += recordId + '#' +
+            block + '#' +
+            rom + '#' +
+            romId + '#' +
+            ton + '#' +
+            cv + '#' +
+            ts + '#' +
+            ash + '#' +
+            im + '#' +
+            tm + '#' +
+            portion +
+            '###';
+    });
+
+    return result;
+}
+
+function DisplayData() {
+    $.ajax({
+        url: api_Request + '/Api/PortionBlending/Get',
+        type: 'GET',
+        data: {u_menu:get_user_menu, u_relation:get_user_relation, '.id':paramid},
+        dataType: "json",
+        cache: false,
+        beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        },
+        success: function (data) {
+            $('#imgLoading').hide();
+
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                // special case: Id not found
+                if (data.Message.indexOf('not found') !== -1){
+                    after_GetUserInfo(data.User);
+                    uInfo = data.User;
+                }
+                
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // Special Purpose, getting information of CurrentUser
+            if (get_user_menu == '1'){
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+                
+                Populate_Data_ddl_Site();
+            }
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // make it "Intuitive"
+            Display_Buttons_Form();
+            //TODO: Display_Buttons_Form_RomTransfer();
+            
+            if (Mode_Create()){
+                // Stop here
+                // data.Item is null
+                
+                $('#btnOptimizeBlending_Outer').show();
+                
+                return;
+            }
+            
+            Switch_Mode_View();
+            
+            // show Data
+            current_Data = data.Item;
+            current_ROM_Quality_Detail = data.ROM_Quality;
+            
+            // some Flags for some Components
+            ignore_trigger_change_ddl_Product = true;
+            ignore_trigger_change_ddl_Shift = true;
+            
+            currentData_Company = current_Data.Company;
+            ignore_trigger_change_ddl_Company = false;
+            $('#ddl_Company').val(currentData_Company).trigger('change');
+            ignore_trigger_change_ddl_Company = false;
+            $('#lbl_Product').text(current_Data.Product);
+            
+            $('#txtDate').val(current_Data.BlendingDate_Str);
+            $('#ddl_Shift').val(current_Data.Shift).trigger('change');
+            
+            $('#chkNoHauling').prop("checked", false);
+            $('#txtRemark').text(current_Data.Remark);
+            
+            $('#div_TARGET').show();
+
+            if (current_Data.NoHauling) {
+                $('#chkNoHauling').prop("checked", true);
+                $('#divRemark').show();
+                $('#div_TARGET').hide();
+            }
+
+            $('#chkAdditionalBucket').prop("checked", false);
+
+            if (current_Data.ROM_ID != null && current_Data.ROM_Name != null && current_Data.TotalBucket != null) {
+                isAdditionalBucket = true
+            }
+
+            if (isAdditionalBucket) {
+                $('#chkAdditionalBucket').prop("checked", true);
+                $('#chkAdditionalBucket').trigger('click');
+                $('#lbl_ROM').text(current_Data.ROM_Name);
+                $('#ddl_Total_Bucket').val(current_Data.TotalBucket).trigger('change');
+            }
+            
+            currentData_CV = addCommas(current_Data.CV.toString());
+            currentData_TS = addCommas(current_Data.TS.toString());
+            currentData_ASH = addCommas(current_Data.ASH.toString());
+            currentData_IM = addCommas(current_Data.IM.toString());
+            currentData_TM = addCommas(current_Data.TM.toString());
+            
+            $("#txtCV").val(currentData_CV);
+            $("#txtTS").val(currentData_TS);
+            $("#txtASH").val(currentData_ASH);
+            $("#txtIM").val(currentData_IM);
+            $("#txtTM").val(currentData_TM);
+            $('#txtTon').val(current_Data.Ton);
+            
+            $('#txtCV').removeClass('mercy_portion_yellow');
+            $('#txtTS').removeClass('mercy_portion_yellow');
+            $('#txtASH').removeClass('mercy_portion_yellow');
+            $('#txtIM').removeClass('mercy_portion_yellow');
+            $('#txtTM').removeClass('mercy_portion_yellow');
+            $('#txtTon').removeClass('mercy_portion_yellow');
+            
+            $('#table_ROM_Quality_ReadOnly_div').show();
+            Populate_Data_ROM_Quality_ReadOnly();
+            
+            $("#txtCV3").val(addCommas(data.Quality_CV));
+            $("#txtTS3").val(addCommas(data.Quality_TS));
+            $("#txtASH3").val(addCommas(data.Quality_ASH));
+            $("#txtIM3").val(addCommas(data.Quality_IM));
+            $("#txtTM3").val(addCommas(data.Quality_TM));
+            
+            // data for RadioButton
+            $("input[name='chkTunnel_BEK'][value='" + current_Data.Tunnel + "']").prop('checked', true);
+            
+            Display_Tunnel();
+        },
+        error: function (error) {
+            //$(this).remove();
+        }
+    });
+}
+
+function DisplayData_Mapping_ROM_Quality() {
+    try {
+        if (current_ROM_Quality_Detail == null) return;
+
+        current_ROM_Quality_Detail.forEach(
+            function (item) {
+                $.each(object_id_Created, function(iii, valx){
+                
+                    if (object_id_Deleted.indexOf(valx) !== -1){
+                        // this Row will be Deleted
+                        return true;
+                        //continue;
+                    }
+                    
+                    if ( ! Is_BEK()){
+                        if ($('#mercy_romQuality_recordid_' + valx).val() == item.ROMQuality_RecordId) {
+                            $('#mercy_romQuality_chk_' + valx).prop("checked", true);
+
+                            $('#mercy_romQuality_Portion_' + valx).show();
+                            $('#mercy_romQuality_Portion_' + valx).val(item.Portion).trigger('change');
+                            
+                            ROM_Quality_Portion_ById(valx, false);
+                        }
+                    }else{
+                        ROM_Quality_Portion_ById(valx, false);
+                    }
+                });
+                
+                Calculate_By_Portion_Blending(false);
+            }
+        );
+    } catch (err) { }
+}
+
+function addCommas(nStr) {
+    try {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+
+        return x1 + x2;
+    }catch (err) { }
+
+    return nStr.toString();
+}
+
+function processParameters(){
+    var arr = [];
+    var obj = {};
+    var obj2 = {};
+    
+    try{
+        var param_Name = '';
+        var param_Value = '';
+        var recordId = null;
+        var dataProcessed = 0;
+        var data_Deleted = '';
+        
+        $.each(object_id_Created, function(i, val){
+            if (object_id_Deleted.indexOf(val) !== -1){
+                // this Row will be Deleted
+                data_Deleted += param_Value = $('#data_RecordId' + val).val() + ',';
+            }else if($('#data_link_Operation' + val).text() == 'Edit'){
+                // -- skip it
+                // this Row is not changed
+            }else{
+                // create object
+                param_Name = 'RecordId'+dataProcessed.toString();
+                param_Value = $('#data_RecordId' + val).val();
+                if (param_Value == null || param_Value == '' || param_Value == '-1'){
+                    param_Value = '-1';
+                }
+                obj = {};
+                obj[param_Name] = param_Value;
+                obj2[param_Name] = param_Value;
+                // add to Array
+                arr.push(obj);
+                
+                // create object
+                param_Name = 'Status'+dataProcessed.toString();
+                param_Value = ValueBit('#data_Status_chk' + val);
+                obj = {};
+                obj[param_Name] = param_Value;
+                obj2[param_Name] = param_Value;
+                // add to Array
+                arr.push(obj);
+                
+                // create object
+                param_Name = 'InstrumentName'+dataProcessed.toString();
+                param_Value = $('#data_InstrumentName_txt' + val).val();
+                obj = {};
+                obj[param_Name] = param_Value;
+                obj2[param_Name] = param_Value;
+                // add to Array
+                arr.push(obj);
+                
+                dataProcessed++;
+            }
+        });
+        
+        // create object
+        param_Name = 'Deleted';
+        param_Value = data_Deleted;
+        obj = {};
+        obj[param_Name] = param_Value;
+        obj2[param_Name] = param_Value;
+        // add to Array
+        arr.push(obj);
+        
+        obj2['InstrumentType'] = $('#ddl_InstrumentType').val();
+    }catch(err){}
+    
+    return obj2;
+}
+
+function Get_ROM_Quality_BEK() {
+    var result = '';
+
+    var recordId = '';
+    var block = '';
+    var rom = '';
+    var romId = '';
+    var ton = '';
+
+    var cv = '';
+    var ts = '';
+    var ash = '';
+    var im = '';
+    var tm = '';
+    var portion = '';
+    
+    $.each(object_id_Created, function(i, valx){
+    
+        if (object_id_Deleted.indexOf(valx) !== -1){
+            // this Row will be Deleted
+            return true;
+            //continue;
+        }
+        
+        recordId = $('#mercy_romQuality_recordid_' + valx).val();
+        block = $('#mercy_romQuality_block_' + valx).val();
+        rom = $('#mercy_romQuality_ROM_Name_' + valx).val();
+        romId = $('#mercy_romQuality_ROM_ID_' + valx).val();
+        ton = $('#mercy_romQuality_Ton_' + valx).val();
+
+        cv = $('#mercy_romQuality_CV_' + valx).val();
+        ts = $('#mercy_romQuality_TS_' + valx).val();
+        ash = $('#mercy_romQuality_Ash_' + valx).val();
+        im = $('#mercy_romQuality_im_' + valx).val();
+        tm = $('#mercy_romQuality_TM_' + valx).val();
+        portion = $('#mercy_romQuality_Portion_' + valx).val();
+        
+        result += recordId + '#' +
+            block + '#' +
+            rom + '#' +
+            romId + '#' +
+            ton + '#' +
+            cv + '#' +
+            ts + '#' +
+            ash + '#' +
+            im + '#' +
+            tm + '#' +
+            portion +
+            '###';
+    });
+    
+    return result;
+}
+
+function Populate_Data_ROM_Quality_BEK() {
+
+    Clear_DataGrid_ROM_Quality_BEK();
+
+    try{
+        current_ROM_Quality_Detail.forEach(
+            function (item){
+                isNew = false;
+                object_Created_Count++;
+                lineNumber_Data++;
+                object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                
+                // save to Array
+                object_id_Created.push(object_id_additional);
+                
+                // add to Table
+                obj_html_ROM_Quality_BEK.row.add(item).draw(false);
+            }
+        );
+        
+        // Display Data
+        DisplayData_Mapping_ROM_Quality();
+        
+        if (Mode_View()){
+            $('#table_ROM_Quality_BEK_div').hide();
+        }
+    }catch(err){}
+}
+
+function Clear_ddl_Product() {
+    // Clear DropdownList
+    $('#ddl_Product').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Product();
+}
+
+function Populate_Data_ddl_Product() {
+    Clear_ddl_Product();
+
+    var option = null;
+
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/Product/Get_ddl?company=' + $('#ddl_Company').val()
+        , type: 'GET'
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                //alert(data.Message);
+                return;
+            }
+            
+            var firstProduct = '';
+            
+            data.Items.forEach(
+                function (item) {
+                    // create the option and append to Select2
+                    option = new Option(item.Product_name, item.Product_name, true, true);
+                    obj_html_Product.append(option);//.trigger('change');
+                    
+                    if (firstProduct == ''){
+                        firstProduct = item.Product_name;
+                    }
+                }
+            );
+            
+            if ( ! Is_Display_Data())
+            {
+                // Inisial value for "Product"
+                $('#ddl_Product').val(firstProduct).trigger('change');
+            }
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function OnChange_ddl_Product() {
+    // ignore if required
+    if (ignore_trigger_change_ddl_Product) return;
+    
+    // initialization
+    $("#txtCV").val('0');
+    $("#txtTS").val('0.00');
+    $("#txtASH").val('0.00');
+    $("#txtIM").val('0.00');
+    $("#txtTM").val('0.00');
+    
+    if (Is_BEK()) return;
+    
+    // if Product isEmpty, return from this Function
+    if ($("#ddl_Product").val() == null
+        || $("#ddl_Product").val() == '') return;
+    
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/Product/Get?company=' + $('#ddl_Company').val() + '&productName=' + $("#ddl_Product").val()
+        , type: 'GET'
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                //alert(data.Message);
+                return;
+            }
+            
+            var item = data.Item[0];
+            
+            $("#txtCV").val(item.CV_Str);
+            $("#txtTS").val(item.TS_Str);
+            $("#txtASH").val(item.ASH_Str);
+            $("#txtIM").val(item.IM_Str);
+            $("#txtTM").val(item.TM_Str);
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Create_ddl_ROM() {
+    if (obj_html_ROM != null) return;
+
+    obj_html_ROM = $('#ddl_ROM').select2({
+        placeholder: 'Select ROM'
+        , tags: false
+        , multiple: false
+        , minimumResultsForSearch: -1
+    });
+}
+
+function Clear_ddl_ROM() {
+    // Clear DropdownList
+    $('#ddl_ROM').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_ROM();
+}
+
+function Populate_Data_ddl_ROM() {
+    var company = $("#ddl_Company").val();
+
+    Clear_ddl_ROM();
+
+    var option = null;
+
+    // tidak usah AJAX, jika belum "Siap"
+    if (company == null || company == '') {
+        return;
+    }
+
+    // get data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/PortionBlending/GetROMsQuality?company=' + company
+        , type: 'GET'
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+            if (!$.trim(data)) {
+                // empty data
+                return;
+            }
+
+            if (!data.Success) {
+                //alert(data.Message);
+                return;
+            }
+
+            try {
+                var firstROM = '';
+
+                data.Items.forEach(
+                    function (item) {
+                        // create the option for dropdownlist ROM and append to Select2
+                        option = new Option(item.Names, item.ROM_Id);
+                        obj_html_ROM.append(option);
+
+                        if (firstROM == '') {
+                            firstROM = item.ROM_Id;
+                        }
+                    }
+                );
+
+                if ((!Is_Display_Data() && current_Data == null) ||
+                    (!Is_Display_Data() && (current_Data != null && current_Data.ROM_ID == null))
+                ) {
+                    // Inisial value for "ROM"
+                    $('#ddl_ROM').val(firstROM).trigger('change');
+                } else if (isAdditionalBucket) {
+                    // Trigger change for 'ROM' in additional bucket section
+                    $("#ddl_ROM option").filter(function () {
+                        return $(this).text() == current_Data.ROM_Name;
+                    }).prop('selected', true);
+                }
+            } catch (err) { }
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+function Create_ddl_Total_Bucket() {
+    if (obj_html_Total_Bucket != null) return;
+
+    obj_html_Total_Bucket = $('#ddl_Total_Bucket').select2({
+        placeholder: 'Select Total Bucket'
+        , tags: false
+        , multiple: false
+        , minimumResultsForSearch: -1
+    });
+}
+
+function Is_BEK(){
+    //return ($('#ddl_Company').val() == 'BEK');
+    
+    // Always FALSE
+    return false;
+}
+
+function OnKeyUp_Item(p_this) {
+    var id = p_this.id;
+    
+    if (Validate_Is_Numeric2(id, true)){
+        Calculate_By_Portion_Blending(false);
+        
+        return true;
+    }
+    
+    return false;
+}
+
+function OnKeyUp_Item_Ton(p_this) {
+    if (OnKeyUp_Item(p_this)){
+        var id = p_this.id;
+    
+        var object_id_additional_ = id.replace('mercy_romQuality_Ton_', '');
+    
+        ROM_Quality_Portion_ById(object_id_additional_, true);
+    }
+}
+
+function OnKeyUp_Item_CV(p_this) {
+    OnKeyUp_Item(p_this);
+}
+
+function OnKeyUp_Item_TS(p_this) {
+    OnKeyUp_Item(p_this);
+}
+
+function OnKeyUp_Item_ASH(p_this) {
+    OnKeyUp_Item(p_this);
+}
+
+function OnKeyUp_Item_IM(p_this) {
+    OnKeyUp_Item(p_this);
+}
+
+function OnKeyUp_Item_TM(p_this) {
+    OnKeyUp_Item(p_this);
+}
+
+function Switch_Mode_View(){
+    $("#ddl_Company").attr("disabled", true);
+    $("#txtDate").attr("disabled", true);
+    $('#txtDate').addClass('mercy_text_disable');
+    $("#ddl_Shift").attr("disabled", true);
+
+    $('#lbl_Product').show();
+    $('#txt_Product').hide();
+    $('#ddl_Product_div').hide();
+    
+    $("#ddl_Product").attr("disabled", true);
+    $("#txt_Product").attr("disabled", true);
+    $("#chkNoHauling").attr("disabled", true);
+
+    $('#lbl_ROM').show();
+    $('#ddl_ROM_div').hide();
+
+    $("#chkAdditionalBucket").attr("disabled", true);
+    $("#ddl_ROM").attr("disabled", true);
+    $("#ddl_Total_Bucket").attr("disabled", true);
+    
+    $("#txtRemark").attr("disabled", true);
+    $('#txtRemark').addClass('mercy_text_disable');
+    
+    $("#txtTon").attr("disabled", true);
+    $('#txtTon').addClass('mercy_text_disable');
+    
+    // button karena "ReadOnly"
+    $("#btnEdit_outer").show();
+    $("#btnSave_outer").hide();
+
+    $('#txtCV2').hide();
+    $('#txtTS2').hide();
+    $('#txtASH2').hide();
+    $('#txtIM2').hide();
+    $('#txtTM2').hide();
+    $('#txtCV3').show();
+    $('#txtTS3').show();
+    $('#txtASH3').show();
+    $('#txtIM3').show();
+    $('#txtTM3').show();
+    
+    Display_Tunnel();
+}
+
+function Switch_Mode_Edit(){
+    is_mode_edit = true;
+    
+    $('#lbl_Product').hide();
+    if (Is_BEK()){
+        $('#txt_Product').show();
+    }else{
+        $('#ddl_Product_div').show();
+    }
+    
+    $("#ddl_Product").attr("disabled", false);
+    $("#txt_Product").attr("disabled", false);
+    $("#chkNoHauling").attr("disabled", false);
+
+    $('#lbl_ROM').hide();
+    $('#ddl_ROM_div').show();
+
+    $("#chkAdditionalBucket").attr("disabled", false);
+    $("#ddl_ROM").attr("disabled", false);
+    $("#ddl_Total_Bucket").attr("disabled", false);
+    
+    $("#txtRemark").attr("disabled", false);
+    $('#txtRemark').removeClass('mercy_text_disable');
+    
+    $("#txtTon").attr("disabled", false);
+    $('#txtTon').removeClass('mercy_text_disable');
+    
+    // button 
+    $("#btnEdit_outer").hide();
+    $("#btnSave_outer").show();
+    
+    $('#table_ROM_Quality_ReadOnly_div').hide();
+    
+    if ( ! Is_BEK()){
+        // TCM
+        $('#table_ROM_Quality_div').show();
+    }
+    else{
+        $('#table_ROM_Quality_BEK_div').show();
+        $('#btnAddROM').show();
+    }
+    
+    $('#txtCV2').show();
+    $('#txtTS2').show();
+    $('#txtASH2').show();
+    $('#txtIM2').show();
+    $('#txtTM2').show();
+    $('#txtCV3').hide();
+    $('#txtTS3').hide();
+    $('#txtASH3').hide();
+    $('#txtIM3').hide();
+    $('#txtTM3').hide();
+    
+    // show some Data into "Components"
+    $('#txtRemark').val(current_Data.Remark);
+    
+    ignore_trigger_change_ddl_Product = true;
+    $('#ddl_Product').val(current_Data.Product).trigger('change');
+    $('#txt_Product').val(current_Data.Product);
+    
+    // some Flags for some Components
+    ignore_trigger_change_ddl_Company = false;
+    //ignore_trigger_change_ddl_Product = false;
+    ignore_trigger_change_ddl_Shift = false;
+    
+    // Trigger change for 'Company'
+    $('#ddl_Company').val(currentData_Company).trigger('change');
+
+    // for special purpose, let put it here
+    ignore_trigger_change_ddl_Product = false;
+    
+    $('#btnOptimizeBlending_Outer').show();
+}
+
+function Create_Table_ROM_Quality_Readonly() {
+    Clear_DataGrid('table_ROM_Quality_ReadOnly');
+
+    try {
+        obj_html_ROM_Quality_ReadOnly = $('#table_ROM_Quality_ReadOnly').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                { "data": "ROM_Id", "name": "ROM_Id", "autoWidth": true }
+                , {
+                    render: function (data, type, full, meta){
+                        return lineNumber_Data;
+                    }
+                    , visible: false
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return lineNumber_Data_Readonly.toString() + '.';
+                    }
+                    , className: "mercy_text_right"
+                    , orderable: false
+                    , width: "20px"
+                }
+                , { "data": "Names", "name": "Names", "autoWidth": false }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return '';
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return addCommas(full.Ton.toString());
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return addCommas(full.CV_Str.toString());
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return addCommas(full.TS.toString());
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return addCommas(full.ASH.toString());
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return addCommas(full.IM.toString());
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return addCommas(full.TM.toString());
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return addCommas(full.Portion.toString());
+                    }
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return addCommas(((parseFloat(full.Portion) * data_Ton) / 100.0).toFixed(2).toString());
+                    }
+                }
+            ]
+            , "columnDefs": [
+                {
+                    "targets": [0,4]
+                    , "visible": false
+                    , "searchable": false
+                }
+                , {
+                    "targets": [1]
+                    , "width": "10px"
+                }
+                , {
+                    "targets": [2]
+                    , "width": "10px"
+                }
+                , {
+                    "targets": [3]
+                    , "width": "170px"
+                }
+                , {
+                    "targets": [1, 2]
+                    , "searchable": false
+                    , "orderable": false
+                }
+                , {
+                    className: "mercy_align_right"
+                    , targets: [1, 5, 6, 7, 8, 9, 10, 11, 12]
+                }
+            ]
+            , "order": [[1, "asc"]]
+        });
+        
+        obj_html_ROM_Quality_ReadOnly.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }catch (err) { }
+}
+
+var lineNumber_Data_Readonly = 0;
+var data_Ton = 1.0;
+
+function Populate_Data_ROM_Quality_ReadOnly() {
+    try{
+        data_Ton = parseFloat($('#txtTon').val());
+    }catch(err){}
+    
+    try{
+        current_ROM_Quality_Detail.forEach(
+            function (item){
+                lineNumber_Data_Readonly++;
+                
+                // add to Table
+                obj_html_ROM_Quality_ReadOnly.row.add(item).draw(false);
+            }
+        );
+    }catch(err){}
+    
+    // Resize Table: because this DataTable is filled with new Data
+    resize_Table();
+}
+
+function processLink_Delete(p_this){
+    try {
+        if (lineNumber_Data<=1){
+            alert('Data is only 1. Please do not delete it!');
+            return;
+        }
+        if (lineNumber_Data<= (object_id_Deleted.length+1)){
+            alert('Enough for Delete!');
+            return;
+        }
+        
+        var target_id = p_this.id;
+        var target_id_additional = target_id.replace('mercy_romQuality_Delete_', '');
+        
+        var lineFound = -1;
+        var line = 0;
+        $.each(object_id_Created, function( i, val ){
+            line++;
+            if (val == target_id_additional)
+            {
+                lineFound = line;
+            }
+        });
+        
+        if (lineFound >= 0){
+            var $rows = $("#table_ROM_Quality_BEK tr");
+            //lineFound--;
+            $rows.eq(lineFound).hide();
+            
+            // save to Array
+            object_id_Deleted.push(target_id_additional);
+        }
+    }catch(err){}
+}
+
+function Display_Tunnel(){
+    $('#div_Tunnel_TCM').hide();
+    $('#div_Tunnel_BEK').hide();
+    
+    if ($('#ddl_Company').val() == 'TCM'){
+        $('#div_Tunnel_TCM').show();
+    }else{
+        $('#div_Tunnel_BEK').show();
+    }
+}
+
+function btnOptimizeBlending_Click(){
+    
+    $('#imgLoading_Optimize').hide();
+    
+    var object_Selected = [];
+    var line = {};
+    var line_selected = 0;
+    var i = 0;
+    
+    $.each(object_id_Created, function(i, valx){
+        i++;
+        
+        if (object_id_Deleted.indexOf(valx) !== -1){
+            // this Row will be Deleted
+            return true;
+            //continue;
+        }
+        
+        if ( ! Is_BEK()){
+            if ( ! $('#mercy_romQuality_chk_' + valx).is(":checked")){
+                return true;
+                //continue;
+            }
+        }
+        
+        line_selected++;
+        
+        line = {};
+        line['Key'] = valx;
+        line['ROM'] = $('#mercy_romQuality_ROM_Name_' + valx).val();
+        line['Ton'] = $('#mercy_romQuality_Ton_' + valx).val();
+        line['CV'] = $('#mercy_romQuality_CV_' + valx).val();
+        line['TS'] = $('#mercy_romQuality_TS_' + valx).val();
+        line['ASH'] = $('#mercy_romQuality_Ash_' + valx).val();
+        line['IM'] = $('#mercy_romQuality_im_' + valx).val();
+        line['TM'] = $('#mercy_romQuality_TM_' + valx).val();
+        
+        object_Selected.push(line);
+    });
+    
+    if (line_selected<=0){
+        alert('No data is selected!');
+        return;
+    }
+    
+    $('#imgLoading_Optimize').show();
+    
+    var data = {};
+    data['Count'] = line_selected;
+    data['Lines'] = object_Selected;
+    
+    var data_str = JSON.stringify(data);
+    
+    $.ajax({
+        url: api_Request + '/Api/PortionBlending/Optimize',
+        type: 'POST',
+        data: {data_selected:data_str},
+        dataType: "json",
+        cache: false,
+        beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        },
+        success: function (data) {
+            $('#imgLoading_Optimize').hide();
+
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                //window.location = '/NoAccess';
+                return;
+            }
+                
+            data.Result.forEach(
+                function (item){
+                    $('#mercy_romQuality_Portion_' + item.Key).val(item.Portion).trigger('keyup');
+                }
+            );
+        },
+        error: function (error) {
+            $('#imgLoading_Optimize').hide();
+            
+            //$(this).remove();
+        }
+    });
+}
+
+</script>

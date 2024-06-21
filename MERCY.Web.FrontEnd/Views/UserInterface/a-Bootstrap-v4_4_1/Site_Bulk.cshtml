@@ -1,0 +1,569 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Site
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Site
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0" style="padding: 0px 20px !important;">
+            <div class="row margin_padding_0" style="margin-bottom:20px !important;">
+                <div class="col col-md-auto margin_padding_0" style="margin:20px 10px 0px 0px !important;">
+                    <div style="width: 120px;">
+                        <div class="mercy_button" style="width:100px;display:none" id="btnAdd"><div class="mercy_text_center">Add New</div></div>
+                    </div>
+                </div>
+                <div class="col col-md-auto margin_padding_0" style="margin-top:20px !important;">
+                    <div style="width: 190px;">
+                        <div class="mercy_button" style="width:170px;" id="btnSave"><div class="mercy_text_center">Save</div></div>
+                    </div>
+                </div>
+                <div class="col col-md margin_padding_0"></div>
+                <div class="col col-md-auto margin_padding_0" style="margin-top:20px !important;">
+                    <div style="width:250px;">
+                        <div>
+                            <input type="text" id="txtSearch_Name" value="" class="shadow-none mercy_text_search" style="width: 250px !important;" placeholder="Search" onkeyup="OnKeyUp_Text(this)"/>
+                        </div>
+                        <div style="height:20px;width:100%;padding:0px 0px 0px 5px !important;margin:-32px 0px 0px 0px !important;">
+                            <img src="/images/ic-search.png"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin_padding_0">
+                <table id="mercyTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>RecordId</th>
+                            <th>No_Line</th>
+                            <th><div style="color:white;text-align: center !important;">Action</div></th>
+                            <th>No</th>
+                            <th><div style="text-align: center !important;">Status</div></th>
+                            <th>Site</th>
+                            <th>Created Date</th>
+                            <th>Created by</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function (){
+    $(document).attr('title', 'Sites - List : Mercy');
+
+    $(window).resize(function (){
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+
+    $('#btnAdd').click(function (e){
+        processLink_Add();
+    });
+    
+    $('#btnSave').click(function (e){
+        SaveData();
+    });
+    
+    $('#btnViewData').click(function (e){
+        Populate_DataGrid();
+    });
+    
+    Load_Page_List();
+});
+
+function OnKeyUp_Text(p_this){
+    Populate_DataGrid();
+}
+
+function Clear_DataGrid_(p_id){
+    if ( ! p_id.includes('#')) p_id = '#'+p_id;
+    
+    try {
+        $(p_id).DataTable().clear().destroy();
+        //$(p_id).DataTable().destroy();
+    }catch(err){}
+    
+    try {
+        $(p_id+' tbody').empty();
+    }catch(err){}
+}
+
+var obj_html_Table;
+var str_name_Table = '#mercyTable';
+
+var lineNumber_Data = 0;
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+var object_id_Deleted = [];
+
+function Create_Table(){
+
+    Clear_DataGrid_(str_name_Table);
+    
+    try {
+        obj_html_Table = $(str_name_Table).DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                { "data": "SiteId", "name": "SiteId", "autoWidth": true }
+                , {
+                    render: function (data, type, full, meta){
+                        return lineNumber_Data;
+                    }
+                    , visible: false
+                }
+                , {
+                    render: function (data, type, full, meta) {
+                        return '<div style="width:50px !important;">'+
+                                '<input type="hidden" id="data_RecordId' + object_id_additional + '" value="' + full.SiteId + '"/>' +
+                                '<input type="hidden" id="data_Confirm' + object_id_additional + '" value="0"/>' +
+                                '<i id="data_link_Edit' + object_id_additional + '" onclick="javascript:processLink_Edit(this)" class="fa fa-edit" style="cursor: pointer;font-size: 20px;color:white;' + (full.SiteId==-1?'display:none;':(permission.Is_Edit?'':'display:none;')) + '" title="Edit"></i>' +
+                                '<i id="data_link_Delete' + object_id_additional + '" onclick="javascript:processLink_Delete(this)" class="fa fa-trash" style="cursor: pointer;font-size: 20px;color:white;margin-left:10px;' + (full.SiteId==-1?'display:none;':(permission.Is_Delete?'':'display:none;')) + '" title="Delete"></i>' +
+                                '<i id="data_link_Confirm' + object_id_additional + '" onclick="javascript:processLink_Confirm(this)" class="fa fa-check" style="cursor: pointer;font-size: 20px;color:white;' + (full.SiteId==-1?'':'display:none;') + '" title="Confirm"></i>' +
+                                '<i id="data_link_Cancel' + object_id_additional + '" onclick="javascript:processLink_Cancel(this)" class="fa fa-times" style="cursor: pointer;font-size: 20px;color:white;margin-left:10px;' + (full.SiteId==-1?'':'display:none;') + '" title="Cancel"></i>'
+                                '</div>'
+                                ;
+                    }
+                    , className: "mercy_action_icon"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return (full.SiteId==-1?'':lineNumber_Data.toString() + '.');
+                    }
+                    , className: "mercy_text_right"
+                    , orderable: false
+                    , width: "20px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_Status_label' + object_id_additional + '" style="' + (full.SiteId==-1?'display:none;':'') + '">' + (full.IsActive.toString().toUpperCase()=="TRUE"?'Active':'In-Active') + '</span>' +
+                               '<input type="checkbox" id="data_Status_chk' + object_id_additional + '" class="shadow-none" ' + ' style="' + (full.SiteId==-1?'':'display:none;') + '"/>'
+                               ;
+                    }
+                    , className: "mercy_column_center"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return '<span id="data_SiteName_label' + object_id_additional + '">' + full.SiteName + '</span>' +
+                               '<input type="text" id="data_SiteName_txt' + object_id_additional + '" class="shadow-none" value="" ' + ' style="width:300px;' + (full.SiteId==-1?'':'display:none;') + '"/>'
+                               ;
+                    }
+                }
+                , { "data": "CreatedOn_Str", "name": "CreatedOn_Str", width: "140px" }
+                , { "data": "FullName", "name": "FullName", width: "250px" }
+            ]
+            , "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
+            //, "order": [[3, 'desc'], [4, 'asc']]
+            , "order": [[1, 'asc']]
+        });
+
+        obj_html_Table.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }catch(err){}
+}
+
+function Populate_DataGrid(){
+    Create_Table();
+    
+    // reset
+    lineNumber_Data = 0;
+    object_id_Created = [];
+    object_id_Deleted = [];
+    
+    // data from AJAX
+    $.ajax({
+        'async': false
+        ,url: api_Request + '/Api/Site'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation, txt:$('#txtSearch_Name').val()}
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // Special Purpose, getting information of CurrentUser
+            if (get_user_menu == '1'){
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+                
+                Create_Table();
+            }
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // make it "Intuitive"
+            Display_Buttons();
+            Display_Buttons_InLine_Editing();
+            
+            // assign Data to Table
+            /*try {
+                obj_html_Table.rows.add(data.Items); // add to DataTable instance
+                obj_html_Table.draw(); // always redraw
+            }catch(err){}*/
+            
+            data.Items.forEach(
+                function (item){
+                    object_Created_Count++;
+                    lineNumber_Data++;
+                    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                    
+                    // save to Array
+                    object_id_Created.push(object_id_additional);
+                    
+                    // add to Table
+                    obj_html_Table.row.add(item).draw(false);
+                }
+            );
+            
+            // Resize Table: because this DataTable is filled with new Data
+            resize_Table();
+        },
+        error: function (error){
+            $(this).remove();
+        }
+    });
+}
+
+function processLink_Add(){
+    // create "Record_Item"
+    var item = {CreatedOn_Str:'', CreatedOn_Str2:'', FullName:''
+                    // flag for "New Record"
+                    , SiteId:-1
+                    , SiteName:'', IsActive:false
+                    , CreatedBy: 0, CreatedOn : null
+                    , LastModifiedBy : 0, LastModifiedOn : null}
+    
+    // do "Counting"
+    object_Created_Count++;
+    lineNumber_Data++;
+    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+    
+    // save to Array
+    object_id_Created.push(object_id_additional);
+    
+    // add to Table
+    obj_html_Table.row.add(item).draw(false);
+}
+
+function processLink_Edit(p_this){
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Edit', '');
+    
+    // Flag
+    $('#data_Confirm' + target_id_additional).val('0');
+    
+    // "Icons" for Action
+    $('#data_link_Edit' + target_id_additional).hide();
+    $('#data_link_Delete' + target_id_additional).hide();
+    $('#data_link_Confirm' + target_id_additional).show();
+    $('#data_link_Cancel' + target_id_additional).show();
+    
+    // Firstly, copy data
+    var isChecked = ($('#data_Status_label' + target_id_additional).text() == 'Active');
+    $('#data_Status_chk' + target_id_additional).prop("checked", isChecked);
+    $('#data_SiteName_txt' + target_id_additional).val($('#data_SiteName_label' + target_id_additional).text());
+    
+    // Secondly, set Show/Hide
+    $('#data_Status_label' + target_id_additional).hide();
+    $('#data_Status_chk' + target_id_additional).show();
+    $('#data_SiteName_label' + target_id_additional).hide();
+    $('#data_SiteName_txt' + target_id_additional).show();
+}
+
+function processLink_Cancel(p_this){
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Cancel', '');
+    
+    // Flag
+    $('#data_Confirm' + target_id_additional).val('0');
+    
+    // "Icons" for Action
+    $('#data_link_Edit' + target_id_additional).show();
+    $('#data_link_Delete' + target_id_additional).show();
+    $('#data_link_Confirm' + target_id_additional).hide();
+    $('#data_link_Cancel' + target_id_additional).hide();
+    
+    // set Show/Hide
+    $('#data_Status_label' + target_id_additional).show();
+    $('#data_Status_chk' + target_id_additional).hide();
+    $('#data_SiteName_label' + target_id_additional).show();
+    $('#data_SiteName_txt' + target_id_additional).hide();
+    
+    var recordId = $('#data_RecordId' + target_id_additional).val();
+    if (recordId == '-1'){
+        // this action = 'Create';
+    }else{
+        // this action = 'Edit';
+        return;
+    }
+    
+    try {
+        var lineFound = -1;
+        var line = 0;
+        $.each(object_id_Created, function( i, val ){
+            line++;
+            if (val == target_id_additional)
+            {
+                lineFound = line;
+            }
+        });
+        
+        if (lineFound >= 0){
+            var $rows = $(str_name_Table + " tr");
+            //lineFound--;
+            $rows.eq(lineFound).hide();
+        }
+    }catch(err){}
+}
+
+function processLink_Delete(p_this){
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Delete', '');
+    
+    // Flag
+    $('#data_Confirm' + target_id_additional).val('0');
+    
+    /*if (lineNumber_Data<=1){
+        alert('Data is only 1. Please do not delete it!');
+        return;
+    }
+    if (lineNumber_Data<= (object_id_Deleted.length+1)){
+        alert('Enough for Delete!');
+        return;
+    }*/
+    
+    try {
+        var lineFound = -1;
+        var line = 0;
+        $.each(object_id_Created, function( i, val ){
+            line++;
+            if (val == target_id_additional)
+            {
+                lineFound = line;
+            }
+        });
+        
+        if (lineFound >= 0){
+            var $rows = $(str_name_Table + " tr");
+            //lineFound--;
+            $rows.eq(lineFound).hide();
+            
+            // save to Array
+            object_id_Deleted.push(target_id_additional);
+        }
+    }catch(err){}
+}
+
+function processLink_Confirm(p_this){
+    var target_id = p_this.id;
+    var target_id_additional = target_id.replace('data_link_Confirm', '');
+    
+    // Flag
+    $('#data_Confirm' + target_id_additional).val('1');
+    
+    // "Icons" for Action
+    $('#data_link_Edit' + target_id_additional).show();
+    $('#data_link_Delete' + target_id_additional).show();
+    $('#data_link_Confirm' + target_id_additional).hide();
+    $('#data_link_Cancel' + target_id_additional).hide();
+    
+    // Firstly, copy data
+    $('#data_Status_label' + target_id_additional).text((ValueBit('#data_Status_chk' + target_id_additional)?'Active':'In-Active'));
+    $('#data_SiteName_label' + target_id_additional).text($('#data_SiteName_txt' + target_id_additional).val());
+    
+    // Secondly, set Show/Hide
+    $('#data_Status_label' + target_id_additional).show();
+    $('#data_Status_chk' + target_id_additional).hide();
+    $('#data_SiteName_label' + target_id_additional).show();
+    $('#data_SiteName_txt' + target_id_additional).hide();
+}
+
+function SaveData(){
+    var p = processParameters();
+    
+    // data to AJAX
+    $.ajax({
+        url: api_Request + '/Api/Site/Bulk'
+        , type: 'POST'
+        , data: p
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                return;
+            }
+            
+            alert('Success');
+            
+            Populate_DataGrid();
+        },
+        error: function (error){
+            $(this).remove();
+        }
+    });
+}
+
+function processParameters(){
+    var arr = [];
+    var obj = {};
+    var obj2 = {};
+    
+    try{
+        var param_Name = '';
+        var param_Value = '';
+        var recordId = null;
+        var dataProcessed = 0;
+        var data_Deleted = '';
+        
+        $.each(object_id_Created, function(i, val){
+            if (object_id_Deleted.indexOf(val) !== -1){
+                // this Row will be Deleted
+                data_Deleted += param_Value = $('#data_RecordId' + val).val() + ',';
+            }else if($('#data_Confirm' + val).val() == '1'){
+                // create object
+                param_Name = 'RecordId'+dataProcessed.toString();
+                param_Value = $('#data_RecordId' + val).val();
+                if (param_Value == null || param_Value == '' || param_Value == '-1'){
+                    param_Value = '-1';
+                }
+                obj = {};
+                obj[param_Name] = param_Value;
+                obj2[param_Name] = param_Value;
+                // add to Array
+                arr.push(obj);
+                
+                // create object
+                param_Name = 'Status'+dataProcessed.toString();
+                param_Value = ValueBit('#data_Status_chk' + val);
+                obj = {};
+                obj[param_Name] = param_Value;
+                obj2[param_Name] = param_Value;
+                // add to Array
+                arr.push(obj);
+                
+                // create object
+                param_Name = 'Name'+dataProcessed.toString();
+                param_Value = $('#data_SiteName_txt' + val).val();
+                obj = {};
+                obj[param_Name] = param_Value;
+                obj2[param_Name] = param_Value;
+                // add to Array
+                arr.push(obj);
+                
+                dataProcessed++;
+            }
+        });
+        
+        // create object
+        param_Name = 'Deleted';
+        param_Value = data_Deleted;
+        obj = {};
+        obj[param_Name] = param_Value;
+        obj2[param_Name] = param_Value;
+        // add to Array
+        arr.push(obj);
+    }catch(err){}
+    
+    return obj2;
+}
+
+</script>

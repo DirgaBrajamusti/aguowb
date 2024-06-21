@@ -1,0 +1,929 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_LoadingRequest {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+
+.modal-lg {
+    max-width: 1100px;
+    margin: auto;
+}
+
+#tableLoadingPlan_info, #tableLoadingPlan_length, #tableLoadingPlan_paginate {
+    display: none;
+}
+
+div.dataTables_wrapper {
+    width: 100% !important;
+}
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Loading Request List
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Loading Request
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:100px !important;">
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 100px;">                
+                <div style="width:100%" class="filter_title">Site</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Site" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 100px;">
+                <div style="width:100%" class="filter_title">Company</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Company" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 160px;">
+                <div style="width:100%" class="filter_title">Created On</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div class="input-group date">
+                        <input id="txtDateFrom" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy" placeholder="dd-M-yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 120px;">
+                <div style="width:100%" class="filter_title">Shipment Type</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Shipment_Type" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;">
+                        <option value="all">-- ALL</option>
+                        <option value="@OurUtility.Shipment_Type_Trans">Trans Shipment</option>
+                        <option value="@OurUtility.Shipment_Type_Direct">Direct Shipment</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 200px;">
+                <div style="width:100%" class="filter_title">Vessel</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Vessel" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 200px;">
+                <div style="width:100%" class="filter_title">Buyer</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select id="ddl_Buyer" class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" style="width:100%;"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md margin_padding_0">
+            <div class="row margin_padding_0">
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0" style="padding: 0px 15px !important;">
+            <div class="row margin_padding_0" style="margin-bottom:20px !important;">
+                <div class="col col-md margin_padding_0" style="margin:20px 10px 0px 0px !important;">
+                    <div style="width: 300px;">
+                        <div class="col col-md-auto margin_padding_0"><div class="mercy_button" style="width:78px;" id="btnAdd"><div class="mercy_text_center">Add</div></div></div>
+                    </div>
+                </div>
+                <div class="col col-md-auto margin_padding_0" style="margin-top:20px !important;">
+                    <div style="width:250px;">
+                        <div>
+                            <input type="text" id="txtSearch_Name" value="" class="shadow-none mercy_text_search" style="width: 250px !important;" placeholder="Search" onkeyup="OnKeyUp_Text(this)"/>
+                        </div>
+                        <div style="height:20px;width:100%;padding:0px 0px 0px 5px !important;margin:-32px 0px 0px 0px !important;">
+                            <img src="/images/ic-search.png"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mercyTableContainer" class="row margin_padding_0"></div>
+        </div>
+    </div>
+</div>
+<div id="modal_LoadingPlan" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" >
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px; padding-left: 22px;">
+                <div class="row margin_padding_0">
+                    <div id="titleGroupModal" class="title-modal">Loading Plan</div>
+                </div>
+                    <div class="row margin_padding_0">
+                        <table id="tableLoadingPlan" class="table table-striped table-hover mercy_table mercy_table_header display nowrap" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>RecordId</th>
+                                    <th>No_Line</th>
+                                    <th style="min-width:20px !important;">No</th>
+                                    <th style="min-width:20px !important;"></th>
+                                    <th style="min-width:100px !important;">Shipment Type</th>
+                                    <th style="min-width:200px !important;">Vessel</th>
+                                    <th style="min-width:200px !important;">Buyer</th>
+                                    <th style="min-width:150px !important;">Created On</th>
+                                    <th style="min-width:170px !important;">Created By</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                <div class="row margin_padding_0" style="margin: 20px 5px 0px 0px !important;">
+                    <div class="col col-md-auto margin_padding_0" style="margin-left: 20px !important;"><div class="mercy_button" style="width:100px;" id="btnLoadingPlan_Preview"><div class="mercy_text_center">Preview</div></div></div>
+                    <div class="col col-md-auto margin_padding_0" style="margin-left: 20px !important;"><div onclick="$('#modal_LoadingPlan').modal('hide');" class="mercy_button_2" style="width:100px;" id="btnLoadingPlan_Cancel"><div class="mercy_text_center">Cancel</div></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+// DataGrid
+var obj_html_Table;
+var obj_html_Table_LoadingPlan;
+
+// DropdownList
+var obj_html_Site = null;
+var obj_html_Company = null;
+var obj_html_Shipment_Type = null;
+var obj_html_Vessel = null;
+var obj_html_Buyer = null;
+
+// row
+var isNew = false;
+var is_Mode_Editor = false;
+var lineNumber_Data = 0;
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+var object_id_Deleted = [];
+
+var isNew_Plan = false;
+var is_Mode_Editor_Plan = false;
+var lineNumber_Data_Plan = 0;
+var object_Created_Count_Plan = 0;
+var object_id_additional_Plan = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created_Plan = [];
+var object_id_Deleted_Plan = [];
+
+// for DropdownList
+var ignore_trigger_change_ddl_Site = false;
+var ignore_trigger_change_ddl_Company = false;
+var ignore_trigger_change_ddl_Shipment_Type = false;
+var ignore_trigger_change_ddl_Vessel = false;
+var ignore_trigger_change_ddl_Buyer = false;
+
+var tunnelColumn = [];
+
+$(document).ready(function () {
+
+    $(document).attr('title', 'Loading Request - List : Mercy');
+
+    $(window).resize(function () {
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+
+    $('#btnAdd').click(function (e) {
+        openLoadingPlan();
+    });
+
+    $("#txtDateFrom").datepicker({
+        todayBtn: 1
+        , autoclose: true
+    }).on('changeDate', function (selected) {
+        Populate_DataGrid();
+    });
+    $('#txtDateFrom').datepicker('update', new Date());
+    
+    $('#btnLoadingPlan_Preview').click(function (e) {
+        LoadingPlan_Preview();
+    });
+
+    $('#txtSearch_Name').on('keyup', function (ev) {
+        // `13` is a key for `enter`
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            Populate_DataGrid();
+        }
+    })
+    
+    Create_ddl_Site();
+    Create_ddl_Company();
+    Create_ddl_Vessel();
+    Create_ddl_Buyer();
+    Create_ddl_Shipment_Type();
+    
+    Load_Page_List();
+});
+
+function Clear_DataGrid_(p_id) {
+    if (p_id === 'mercyTable') {
+        $('#mercyTableContainer').empty();
+    }
+    
+    try {
+        $('#' + p_id).DataTable().clear().destroy();
+        //$('#'+p_id).DataTable().destroy();
+        //$('#'+p_id+' tbody').empty();
+    }
+    catch (err) { }
+}
+
+function Clear_DataGrid() {
+    $('#mercyTableContainer').empty();
+    lineNumber_Data = 0;
+    object_id_Created = [];
+    object_id_Deleted = [];
+    
+    Create_Table();
+}
+
+function Create_Table() {
+    Clear_DataGrid_('mercyTable');
+    
+    var productColumn = '';
+    var tunnelColumnData = [];
+    var columnData = [
+        { "data": "Request_Id", "name": "Request_Id", "autoWidth": true },
+        {
+            render: function (data, type, full, meta) {
+                return lineNumber_Data_Plan;
+            },
+            visible: false
+        },
+        {
+            render: function (data, type, full, meta) {
+                return '<div style="width:40px !important;">' +
+                `<a href="/LoadingRequestv/Form?.id=${full.Request_Id}&Loading_Plan_Id=${full.Loading_Plan_Id}&RecordId=${full.RecordId}"><i class="fa fa-eye" style="${full.Submitted_By || meta.row % meta.settings._iDisplayLength === 0 ? '' : 'display: none;'}cursor: pointer;font-size: 20px;color:white" title="Detail Loading Request"></i></a>`
+                '</div>';
+            },
+            className: "mercy_action_icon",
+            orderable: false,
+            width: "10px"
+        },
+        {
+            "render": function (data, type, full, meta) {
+                return '<div style="width:100%;padding-bottom:10px;">' + full.Submitted_By + '</div><div style="width:100%;">' + full.SubmittedOn_Str + '</div>';
+            }
+            //, className: "mercy_text_center"
+            //, orderable: false
+            , width: "100px"
+        },
+        {
+            "render": function (data, type, full, meta) {
+                return full.CreatedOn_Str;
+            }
+            //, className: "mercy_text_center"
+            // , orderable: false
+            , width: "100px"
+        },
+        { "data": "Site_Str", "name": "Site_Str", "autoWidth": true, orderable: false },
+        { "data": "Tug", "name": "Tug", "autoWidth": true, orderable: false },
+        { "data": "Barge", "name": "Barge", "autoWidth": true, orderable: false },
+        { "data": "Estimate_Start_Loading", "name": "Estimate_Start_Loading", "autoWidth": true, orderable: false },
+        { "data": "Customer_1", "name": "Customer_1", "autoWidth": true, orderable: false },
+        { "data": "Customer_2", "name": "Customer_2", "autoWidth": true, orderable: false },
+        { "data": "Estimate_Quantity", "name": "Estimate_Quantity", "autoWidth": true, className: "mercy_text_right", orderable: false },
+        { "data": "Product", "name": "Product", "autoWidth": true, orderable: false },
+        { "data": "Remark", "name": "Remark", "autoWidth": true, orderable: false }
+    ];
+        var tunnelByProductColumn = `<td>Estimate Start Loading Bunyut</td>`;
+        var generalColumn = `<td rowspan="3">RecordId</td>
+                             <td rowspan="3">No_Line</td>
+                             <td rowspan="3"></td>
+                             <td rowspan="3">Submitted on</td>
+                             <td rowspan="3">Created On</td>
+                             <td rowspan="3">Site</td>
+                             <td rowspan="3">Tug Boat</td>
+                             <td rowspan="3">Barge</td>
+                             <td rowspan="2" colspan="1">Plan Start Loading</td>
+                             <td colspan="12">Plan Blending Loading</td>
+                             <td rowspan="2" colspan="2">Customer</td>
+                             <td rowspan="3">Estimate Quantity (TON)</td>
+                             <td rowspan="3">Product</td>
+                             <td rowspan="3">Remark</td>`
+        Object.keys(tunnelColumn).map(function (key) {
+            productColumn += `<td colspan="${tunnelColumn[key].length}">${key}</td>`
+        });
+        
+        for (var key in tunnelColumn) {
+            tunnelColumn[key].forEach(function (item) {
+                tunnelColumnData.push({ "data": `${item.Name}_Str`, "name": `${item.Name}`, "autoWidth": true });
+                tunnelByProductColumn += `<td>${item.Name}</td>`
+            });
+        }
+        tunnelByProductColumn += '<td></td><td></td>';
+        
+        columnData.splice(9, 0, tunnelColumnData);
+        var dataTableColumn = columnData.flat();
+        
+        $('#mercyTableContainer').append('<table id="mercyTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;"><thead>' +
+        '<tr>' + generalColumn + '</tr>' +
+        '<tr>' + productColumn + '</tr>' +
+        '<tr>' + tunnelByProductColumn + '</tr>' +
+        '</thead></table>')
+    
+    try {
+        obj_html_Table = $('#mercyTable').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": true
+            //, "ordering": false
+            , "columns": dataTableColumn
+            , "columnDefs": [{
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+                /*,{
+                    "targets": [7],
+                    "searchable": false,
+                    "orderable": false
+                }*/
+            ]
+            , "order": [[1, "asc"]]
+        });
+
+        obj_html_Table.on('draw', function () {
+            //lineNumber_Row++;
+            //console.log(lineNumber_Row);
+        });
+        
+        obj_html_Table.on('length.dt', function (e, settings, len) {
+            obj_html_Table.rows().invalidate().draw();
+        });
+        
+        obj_html_Table.columns.adjust().draw();
+    }
+    catch (err) {}
+    
+    // Resize Table: because this DataTable is newly created
+    resize_Table();
+}
+
+var show_Vessel_Buyer = '1';
+
+function populateTunnel(callback = () => {}) {
+    $.ajax({
+            url: api_Request + '/Api/Tunnel'
+            , type: 'POST'
+            , data: {
+                u_menu: get_user_menu,
+                u_relation: get_user_relation,
+                company: 'all',
+                txt: ''
+            }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+                
+                if (!data.Success) {
+                    alert(data.Message);
+                    
+                    window.location = '/NoAccess';
+                    return;
+                }
+                
+                tunnelColumn = groupBy(data.Items, key => key.Product_Str);
+                callback();
+            },
+            error: function (error) {
+                $(this).remove();
+            }
+        });
+}
+
+function Populate_DataGrid() {
+    var site = $("#ddl_Site").val();
+    var company = $("#ddl_Company").val();
+    var dateFrom = $("#txtDateFrom").val();
+    var dateTo = $("#txtDateTo").val();
+    var shipment_Type = $("#ddl_Shipment_Type").val();
+    var vessel = $("#ddl_Vessel").val();
+    var buyer = $("#ddl_Buyer").val();
+    var search = $("#txtSearch_Name").val();
+
+    Clear_DataGrid();
+    
+    populateTunnel(() => {
+       // data from AJAX
+           $.ajax({
+               url: api_Request + '/Api/LoadingRequest',
+               type: 'POST',
+               data: {
+                   u_menu: get_user_menu,
+                   u_relation: get_user_relation,
+                   show_Vessel_Buyer: show_Vessel_Buyer,
+                   site: site,
+                   company: company,
+                   dateFrom: dateFrom,
+                   dateTo: dateTo,
+                   shipment_Type: shipment_Type,
+                   vessel: vessel,
+                   buyer: buyer,
+                   txt: search
+               },
+               dataType: "json",
+               beforeSend: function (request) {
+                   request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+               },
+               cache: false,
+               success: function (data) {
+                   if ( ! $.trim(data)) {
+                       // empty data
+                       return;
+                   }
+                   
+                   if (!data.Success){
+                       alert(data.Message);
+                       
+                       window.location = '/NoAccess';
+                       return;
+                   }
+                   
+                   // Special Purpose, getting information of CurrentUser
+                   if (get_user_menu == '1'){
+                       after_GetUserInfo(data.User);
+                       uInfo = data.User;
+                       
+                       Create_Table();
+           
+                       Populate_Data_ddl_Site();
+                       Populate_Data_ddl_Company();
+                   }
+       
+                   if (show_Vessel_Buyer == '1'){
+                       Populate_Data_ddl_Vessel(data.Vessels);
+                       Populate_Data_ddl_Buyer(data.Buyers);
+                   }
+                   
+                   // reset
+                   get_user_menu = '0';
+                   get_user_relation = '0';
+                   show_Vessel_Buyer = '0';
+                   
+                   // we need "Permission" information
+                   permission = data.Permission;
+                   
+                   // make it "Intuitive"
+                   Display_Buttons();
+                   
+                   data.Items.forEach(
+                       function (item){
+                           isNew = false;
+                           object_Created_Count++;
+                           lineNumber_Data++;
+                           object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                           
+                           // save to Array
+                           object_id_Created.push(object_id_additional);
+                           
+                           // add to Table
+                           obj_html_Table.row.add(item).draw(false);
+                       }
+                   );
+                   
+                   // Resize Table: because this DataTable is filled with new Data
+                   resize_Table();
+               },
+               error: function (error) {
+                   $(this).remove();
+               }
+           }); 
+    });
+}
+
+function Create_ddl_Site() {
+    if (obj_html_Site != null) return;
+
+    obj_html_Site = $('#ddl_Site').select2({
+        placeholder: 'Select Site'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Site').change(function (e) {
+        OnChange_ddl_Site();
+    });
+}
+
+function OnChange_ddl_Site() {
+    if (ignore_trigger_change_ddl_Site) return;
+
+    Populate_DataGrid();
+}
+
+function Clear_ddl_Site() {
+    // Clear DropdownList
+    //$('#ddl_Site').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Site();
+}
+
+function Populate_Data_ddl_Site() {
+    try {
+        // add Label: "ALL"
+        var option = new Option('-- ALL', 'all', true, true);
+        obj_html_Site.append(option);//.trigger('change');
+
+        uInfo.Relations.Sites.forEach(
+            function (item) {
+                // create the option and append to Select2
+                option = new Option(item.SiteName, item.SiteId, true, true);
+                obj_html_Site.append(option);//.trigger('change');
+            }
+        );
+
+        // Inisial value for "Site"
+        ignore_trigger_change_ddl_Site = true;
+        $('#ddl_Site').val('all').trigger('change');
+        ignore_trigger_change_ddl_Site = false;
+    }catch(err){}
+}
+
+function Create_ddl_Company() {
+    if (obj_html_Company != null) return;
+
+    obj_html_Company = $('#ddl_Company').select2({
+        placeholder: 'Select Company'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Company').change(function (e) {
+        OnChange_ddl_Company();
+    });
+}
+
+function Create_ddl_Vessel() {
+    if (obj_html_Vessel != null) return;
+
+    obj_html_Vessel = $('#ddl_Vessel').select2({
+        placeholder: 'Select Vessel'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+    
+    $('#ddl_Vessel').change(function (e) {
+        OnChange_ddl_Vessel();
+    });
+}
+
+function Create_ddl_Buyer() {
+    if (obj_html_Buyer != null) return;
+
+    obj_html_Buyer = $('#ddl_Buyer').select2({
+        placeholder: 'Select Buyer'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+    
+    $('#ddl_Buyer').change(function (e) {
+        OnChange_ddl_Buyer();
+    });
+}
+
+function OnChange_ddl_Company() {
+    if (ignore_trigger_change_ddl_Company) return;
+
+    Populate_DataGrid();
+}
+
+function OnChange_ddl_Vessel() {
+    if (ignore_trigger_change_ddl_Vessel) return;
+
+    Populate_DataGrid();
+}
+
+function OnChange_ddl_Buyer() {
+    if (ignore_trigger_change_ddl_Buyer) return;
+
+    Populate_DataGrid();
+}
+
+function Clear_ddl_Company() {
+    // Clear DropdownList
+    //$('#ddl_Company').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Company();
+}
+
+function Clear_ddl_Vessel() {
+    // Clear DropdownList
+    //$('#ddl_Vessel').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Vessel();
+}
+
+function Clear_ddl_Buyer() {
+    // Clear DropdownList
+    //$('#ddl_Buyer').html('').select2({ data: { id: null, text: null } });
+
+    Create_ddl_Buyer();
+}
+
+function Populate_Data_ddl_Company() {
+    try {
+        // add Label: "ALL"
+        var option = new Option('-- ALL', 'all', true, true);
+        obj_html_Company.append(option);//.trigger('change');
+
+        uInfo.Relations.Companies.forEach(
+            function (item) {
+                // create the option and append to Select2
+                option = new Option(item.CompanyCode, item.CompanyCode, true, true);
+                obj_html_Company.append(option);//.trigger('change');
+            }
+        );
+
+        // Inisial value for "Company"
+        ignore_trigger_change_ddl_Company = true;
+        $('#ddl_Company').val('all').trigger('change');
+        ignore_trigger_change_ddl_Company = false;
+    }catch(err){}
+}
+
+function Populate_Data_ddl_Vessel(p_Vessels) {
+    try {
+        // add Label: "ALL"
+        var option = new Option('-- ALL', 'all', true, true);
+        obj_html_Vessel.append(option);//.trigger('change');
+        
+        p_Vessels.forEach(
+            function (item) {
+                // create the option and append to Select2
+                option = new Option(item, item, true, true);
+                obj_html_Vessel.append(option);//.trigger('change');
+            }
+        );
+        
+        // Inisial value for "Vessel"
+        ignore_trigger_change_ddl_Vessel = true;
+        $('#ddl_Vessel').val('all').trigger('change');
+        ignore_trigger_change_ddl_Vessel = false;
+    }catch(err){}
+}
+
+function Populate_Data_ddl_Buyer(p_Buyers) {
+    try {
+        // add Label: "ALL"
+        var option = new Option('-- ALL', 'all', true, true);
+        obj_html_Buyer.append(option);//.trigger('change');
+        
+        p_Buyers.forEach(
+            function (item) {
+                // create the option and append to Select2
+                option = new Option(item, item, true, true);
+                obj_html_Buyer.append(option);//.trigger('change');
+            }
+        );
+        
+        // Inisial value for "Buyer"
+        ignore_trigger_change_ddl_Buyer = true;
+        $('#ddl_Buyer').val('all').trigger('change');
+        ignore_trigger_change_ddl_Buyer = false;
+    }catch(err){}
+}
+
+function Create_ddl_Shipment_Type() {
+    $('#ddl_Shipment_Type').select2({
+        placeholder: 'Select'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#ddl_Shipment_Type').change(function (e) {
+        OnChange_ddl_Shipment_Type();
+    });
+}
+
+function OnChange_ddl_Shipment_Type() {
+    if (ignore_trigger_change_ddl_Shipment_Type) return;
+
+    Populate_DataGrid();
+}
+
+function Populate_DataGrid_LoadingPlan(){
+    Clear_DataGrid_LoadingPlan();
+    
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/LoadingRequest/Plan'
+        , type: 'GET'
+        , data: {}
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            data.Items.forEach(
+                function (item){
+                    xadsfa = item;
+                    isNew_Plan = false;
+                    object_Created_Count_Plan++;
+                    lineNumber_Data_Plan++;
+                    object_id_additional_Plan = '_' + object_Created_Count_Plan.toString() + '_' + lineNumber_Data_Plan.toString();
+                    
+                    // save to Array
+                    object_id_Created_Plan.push(object_id_additional_Plan);
+                    
+                    // add to Table
+                    obj_html_Table_LoadingPlan.row.add(item).draw(false);
+                }
+            );
+            
+            $("#tableLoadingPlan_wrapper").width(1050);
+        },
+        error: function (error){
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+var xadsfa;
+
+function Clear_DataGrid_LoadingPlan(){
+    lineNumber_Data_Plan = 0;
+    object_id_Created_Plan = [];
+    object_id_Deleted_Plan = [];
+    
+    Create_Table_LoadingPlan();
+}
+
+
+function Create_Table_LoadingPlan(){
+    Clear_DataGrid_('tableLoadingPlan');
+
+    try {
+        obj_html_Table_LoadingPlan = $('#tableLoadingPlan').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": true //"200px"
+            , "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                { "data": "RecordId", "name": "RecordId", visible: false, width: "20px" }
+                , {
+                    render: function (data, type, full, meta){
+                        return lineNumber_Data_Plan;
+                    }
+                    , visible: false
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return (isNew_Plan?'':lineNumber_Data_Plan.toString() + '.');
+                    }
+                    , className: "mercy_text_right"
+                    , orderable: false
+                    , width: "20px"
+                }
+                , {
+                    "render": function (data, type, full, meta) {
+                        return '<div style="width:100%;padding-top:0px;text-align:center;">' +
+                               '<input type="checkbox" id="chkId' + object_id_additional_Plan + '"/>' +
+                               '<input type="hidden" id="plan_RecordId' + object_id_additional_Plan + '" value="' + full.RecordId + '"/>' +
+                               '</div>'
+                               ; 
+                    }
+                    , orderable: false
+                    , width: "20px"
+                }
+                , { "data": "Shipment_Type", "name": "Shipment_Type", width: "100px", orderable: false }
+                , { "data": "Vessel", "name": "Vessel", width: "200px", orderable: false }
+                , { "data": "Buyer", "name": "Buyer", width: "200px", orderable: false }
+                , { "data": "CreatedOn_Str", "name": "CreatedOn_Str", width: "150px", orderable: false }
+                , { "data": "FullName", "name": "FullName", width: "170px", orderable: false }
+            ]
+            , "order": [[1, 'asc']]
+        });
+            
+        obj_html_Table_LoadingPlan.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        $("#tableLoadingPlan_wrapper").width(1050);
+    }catch(err){}
+}
+
+function openLoadingPlan() {
+    $("#modal_LoadingPlan").modal().appendTo("body");
+    
+    Populate_DataGrid_LoadingPlan();
+}
+
+function LoadingPlan_Preview(){
+    var selected = '';
+    var separator = '';
+    
+    $.each(object_id_Created_Plan, function(iaa, valx){
+        if ( $('#chkId' + valx).is(":checked")){
+            selected += separator + $('#plan_RecordId' + valx).val();
+            
+            separator = ',';
+        }
+    });
+    
+    if (selected == ''){
+        alert('No data is selected');
+        return;
+    }
+    
+    window.location = '/LoadingRequestv/Preview?selected='+selected;
+}
+
+function groupBy(data, key) {
+    return data.reduce((a, b) => ((a[key(b)] ||= []).push(b), a), {});
+}
+
+</script>

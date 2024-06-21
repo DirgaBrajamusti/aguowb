@@ -1,0 +1,1006 @@
+﻿@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style scoped>
+    .form-title {
+        color: #4752B1;
+        font-family: 'Poppins-SemiBold';
+        font-size: 15px;
+    }
+
+    .btn-info {
+        background-color: #00B4A5;
+    }
+
+    .btn-outline-info {
+        border: 1px solid #00B4A5;
+    }
+
+    .border-schemes {
+        border: 1px solid #4752B1;
+    }
+
+    .card-schemes {
+        height: 420px;
+        overflow: auto;
+    }
+
+    #tableSchemes_wrapper, #tableReqSchemes_wrapper {
+        width: auto !important;
+    }
+
+    .max-table-schemes {
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    .disabled-input {
+        background-color: #F1F1FC !important;
+        color: #232323 !important;
+    }
+
+    .table-vessel {
+        height: 400px;
+    }
+
+    .modal-lg {
+        max-width: 1000px;
+    }
+</style>
+
+<div class="col margin_padding_0 mercy_box_inner">
+    <div class="row margin_padding_0 mercy_page_Title">
+        Sample Registration
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Sample Registration > Add New
+    </div>
+    <div class="card mt-3 p-3 pb-4">
+        <div class="form-title mb-3">SETTING UP THE JOB</div>
+        <div class="row">
+            <div class="col-5">
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Site</p>
+                    <select id="ddl_Site" class="w-100 mercy_select mercy_input_text"></select>
+                </div>
+                <div>
+                    <p class="mercy_form_Label m-0">Date of Job</p>
+                    <div class="input-group date">
+                        <input id="txtDateJob" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy" placeholder="dd-M-yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Project</p>
+                    <select id="ddl_Project" class="w-100 mercy_select mercy_input_text"></select>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Received By</p>
+                    <input id="ddl_Received" class="pl-2 w-100 mercy_input mercy_input_text disabled-input" disabled>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Company</p>
+                    <select id="ddl_Company" class="w-100 mercy_select mercy_input_text"></select>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Client</p>
+                    <select id="ddl_Client" class="w-100 mercy_select mercy_input_text"></select>
+                </div>
+                <div class="mb-2">
+                    <p class="mercy_form_Label m-0">Ref Type</p>
+                    <select id="ddl_Ref" class="w-100 mercy_select mercy_input_text"></select>
+                </div>
+            </div>
+            <div class="col-2 px-4">
+                <button type="button" class="btn btn-info w-100 mb-3" id="btnNext">
+                    Next
+                </button>
+                <button type="button" class="btn btn-outline-info w-100 mb-3" id="btnCancel">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-3 p-3 pb-4">
+        <div class="form-title mb-3">SCHEMES</div>
+        <div class="row">
+            <div class="col-6">
+                <div class="card card-schemes d-flex align-content-between border-schemes p-4">
+                    <div class="max-table-schemes">
+                        <table id="tableSchemes" class="display nowrap table table-striped table-hover mercy_table mercy_table_header">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Schemes</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="d-inline-flex flex-row-reverse mt-auto">
+                        <button type="button" class="btn btn-info" id="btnAddSchemes">
+                            Add to Required Schemes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card card-schemes d-flex align-content-between border-schemes p-4">
+                    <div class="max-table-schemes">
+                        <table id="tableReqSchemes" class="display nowrap table table-striped table-hover mercy_table mercy_table_header">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Required Schemes</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="d-inline-flex flex-row-reverse mt-auto">
+                        <button type="button" class="btn btn-danger" id="btnRemoveSchemes">
+                            Remove from Required Schemes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalVessel" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" style="padding-top: 22px; padding-left: 22px;">
+                <div class="row margin_padding_0">
+                    <div id="titleGroupModal" class="title-modal font-weight-bold">Select Loading Vessel</div>
+                    <div style="width:10px;"><img src="/images/spinner.gif" style="padding: 0px 0px 0px 20px;display:none;" id="imgLoadingVessel" /></div>
+                    <div style="width:50px;"><div style="padding: 0px 0px 0px 20px;display:none;" class="text-danger" id="txtError" />Error</div></div>
+                </div>
+                <div class="row margin_padding_0 table-vessel">
+                    <table id="tableLoadingVessel" class="table table-striped table-hover mercy_table mercy_table_header display nowrap" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="min-width:20px !important;"></th>
+                                <th style="min-width:100px !important;">Shipment Number</th>
+                                <th style="min-width:200px !important;">Vessel Name</th>
+                                <th style="min-width:200px !important;">Dispatch ID</th>
+                                <th style="min-width:150px !important;">Customer</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="row margin_padding_0" style="margin: 20px 5px 0px 0px !important;">
+                    <div class="col col-md-auto margin_padding_0" style="margin-left: 20px !important;">
+                        <button type="button" class="btn btn-info" id="btnNextVessel" onclick="nextToLoading()">
+                            Next
+                        </button>
+                    </div>
+                    <div class="col col-md-auto margin_padding_0" style="margin-left: 20px !important;">
+                        <button type="button" class="btn btn-outline-info" id="btnCancelVessel" onclick="Close_Modal_Vessel()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+<script type="text/javascript">
+    let schemesList = [];
+
+    // Selection
+    var companySelect;
+    var siteSelect;
+    var clientSelect;
+    var projectSelect;
+    var refTypeSelect;
+
+    // table
+    let tableSchemes = null;
+    let tableReqSchemes = null;
+    let tableLoadingVessel = null;
+
+    // table vessel
+    var isNew_Vessel = false;
+    var is_Mode_Editor_Vessel = false;
+    var lineNumber_Data_Vessel = 0;
+    var object_Created_Count_Vessel = 0;
+    var object_id_additional_Vessel = '';
+    var object_id_Created_Vessel = [];
+    var object_id_Deleted_Vessel = [];
+
+    let selectedRow = [];
+    let selectedRowSchemes = [];
+
+    let vesselList = [];
+    let projectList = [];
+
+    $(document).ready(function () {
+        $(document).attr('title', 'Sample Registration - List : Mercy');
+
+        // init datepicker
+        $("#txtDateJob").datepicker({ todayBtn: 1, autoclose: true });
+        $('#txtDateJob').datepicker('update', new Date());
+
+        // Init dropdown selection
+        companySelect = $('#ddl_Company').select2({ placeholder: 'Select Company', width: '100%' });
+        siteSelect = $('#ddl_Site').select2({ placeholder: 'Select Site', width: '100%' });
+        clientSelect = $('#ddl_Client').select2({ placeholder: 'Select Client', width: '100%' });
+        projectSelect = $('#ddl_Project').select2({ placeholder: 'Select Project', width: '100%' });
+        refTypeSelect = $('#ddl_Ref').select2({ placeholder: 'Select Ref Type', width: '100%' });
+
+        // set dropdown on change function
+        $('#ddl_Company').change(function () {
+            Populate_Data_ddl_Client();
+            Populate_Data_ddl_RefType();
+        });
+        $('#ddl_Client').change(function () {
+            Populate_Data_ddl_Project();
+        });
+        $('#ddl_Project').change(function () {
+            Populate_Data_Schemes();
+        });
+
+        // setup btnNext on click
+        $('#btnNext').click(function () {
+            $(window).unbind('beforeunload');
+
+            if (!Validate_All()) return;
+
+            let result = null;
+            Check_Session();
+        });
+
+        $("#btnCancel").click(function () {
+            if (JSON.parse(localStorage.getItem('SecuritySession'))) {
+                Close_Session();
+                return;
+            }
+
+            localStorage.removeItem("SampleRegistrationData");
+            localStorage.removeItem("VesselData");
+            window.location = mercyUrl('/SampleRegistrationv');
+        })
+
+        $("#btnCancelVessel").click(function () {
+            localStorage.removeItem("VesselData");
+        })
+
+        get_user_menu = '1';
+        get_user_relation = '1';
+
+        Load_Page_Form();
+
+        create_table_schemes();
+        create_table_required_schemes();
+
+        $("#btnRemoveSchemes").removeClass("btn-danger").addClass("btn-secondary");
+        $("#btnRemoveSchemes").prop('disabled', true);
+
+        // detect back button browser
+        $(window).bind('beforeunload', function () {
+            localStorage.removeItem("SampleRegistrationData");
+            localStorage.removeItem("VesselData");
+        });
+    })
+
+    function Check_Session() {
+        $("#btnNext").text("Loading...");
+
+        let date = moment(new Date($("#txtDateJob").val())).format("YYYY-MM-DD");
+        let projectId = projectSelect.val();
+        let clientId = clientSelect.val();
+
+        $.ajax({
+            url: api_Request + '/Api/Session/ClaimSession',
+            type: 'GET',
+            data: { menus: [`sampleregistrationv_${date}_${projectId}_${clientId}`] },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                $("#btnNext").text("Next");
+
+                if (!data.Success) {
+                    alert(data.Message);
+                    return;
+                }
+
+                localStorage.setItem('SecuritySession', JSON.stringify([`sampleregistrationv_${date}_${projectId}_${clientId}`]));
+                localStorage.setItem('SessionTime', JSON.stringify(data.Items));
+                let schemeRequired = []
+
+                selectedRowSchemes.forEach(
+                    function (idx) {
+                        schemeRequired.push(schemesList[idx].Id);
+                    }
+                )
+
+                var sampleRegistrationData = {
+                    company: companySelect.val(),
+                    date: $("#txtDateJob").val(),
+                    site: {
+                        id: siteSelect.val(),
+                        name: $("#ddl_Site option:selected").text(),
+                    },
+                    client: {
+                        id: clientSelect.val(),
+                        name: $("#ddl_Client option:selected").text()
+                    },
+                    project: {
+                        id: projectSelect.val(),
+                        name: $("#ddl_Project option:selected").text()
+                    },
+                    refType: refTypeSelect.val(),
+                    schemes: schemeRequired,
+                    received: $("#ddl_Received").val(),
+                    typeProject: null
+                };
+
+                let selectedProject = projectList.filter(element => element.id === Number(sampleRegistrationData.project.id))[0];
+                sampleRegistrationData.typeProject = selectedProject.type;
+
+                localStorage.setItem('SampleRegistrationData', JSON.stringify(sampleRegistrationData));
+
+                // move page to details based on client
+                if (sampleRegistrationData.typeProject === "Vessel") {
+                    $("#modalVessel").modal().appendTo("body");
+
+                    Populate_DataGrid_Vessel();
+                } else {
+                    window.location = mercyUrl('/SampleRegistrationv/GeneralForm');
+                }
+            },
+            error: function (error) {
+                alert(error);
+                $("#btnNext").text("Next");
+
+                return null;
+            }
+        });
+    }
+
+    function DisplayData() {
+        $('#imgLoading').show();
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Get',
+            type: 'GET',
+            data: { u_menu: get_user_menu, u_relation: get_user_relation, '.id': paramid },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                $('#imgLoading').hide();
+
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                if (!data.Success) {
+                    // special case: Id not found
+                    if (data.Message.indexOf('not found') !== -1) {
+                        after_GetUserInfo(data.User);
+                        uInfo = data.User;
+                    }
+
+                    alert(data.Message);
+
+                    window.location = '/NoAccess';
+                    return;
+                }
+
+                // we need "Permission" information
+                permission = data.Permission;
+
+                // Special Purpose, getting information of CurrentUser
+                if (get_user_menu == '1') {
+                    after_GetUserInfo(data.User);
+                    uInfo = data.User;
+
+                    if (Mode_Create()) {
+                        Populate_Data_ddl_Site();
+                    }
+                }
+
+                // reset
+                get_user_menu = '0';
+                get_user_relation = '0';
+
+                // make it "Intuitive"
+                Display_Buttons_Form();
+
+                if (Mode_Create()) {
+                    $("#ddl_Received").val(data.User.Name)
+
+                    if (localStorage.getItem("SampleRegistrationData") !== null) {
+                        let data = JSON.parse(localStorage.getItem("SampleRegistrationData"));
+                        
+                        $("#txtDateJob").val(data.date).trigger("change");
+                        $("#ddl_Received").val(data.received).trigger("change");
+                    }
+
+                    return;
+                }
+
+                var item = data.Item;
+
+                // populate data here if edit mode
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    $("#btnAddSchemes").click(function () {
+        selectedRow = $(tableSchemes.$('input[type="checkbox"]').map(function () {
+            return $(this).prop("checked") ? $(this).val() : null;
+        }));
+
+        selectedRow = selectedRow.get();
+
+        if (selectedRowSchemes.length) {
+            selectedRow = selectedRow.filter(function (e) {
+                return selectedRowSchemes.indexOf(e) == -1;
+            });
+            selectedRow.forEach(
+                function (val) {
+                    selectedRowSchemes.push(val);
+                }
+            )
+        } else {
+            selectedRowSchemes = selectedRow;
+        }
+
+        for (let i = 0; i < selectedRow.length; i++) {
+            tableReqSchemes.row.add([selectedRow[i], schemesList[selectedRow[i]].Name]).draw(false);
+            $(`#schemes_${selectedRow[i]}`).attr("disabled", true);
+        }
+
+        if (selectedRowSchemes.length) {
+            $("#btnRemoveSchemes").removeClass("btn-secondary").addClass("btn-danger");
+            $("#btnRemoveSchemes").prop('disabled', false);
+        }
+
+        if (selectedRowSchemes.length === schemesList.length) {
+            $("#btnAddSchemes").removeClass("btn-info").addClass("btn-secondary");
+            $("#btnAddSchemes").prop('disabled', true);
+        }
+
+    })
+
+    $("#btnRemoveSchemes").click(function () {
+        selectedRow = $(tableReqSchemes.$('input[type="checkbox"]').map(function () {
+            return $(this).prop("checked") ? $(this).val() : null;
+        }));
+
+        selectedRow = selectedRow.get();
+
+        selectedRow.forEach(
+            function (id) {
+                tableReqSchemes.rows(function (idx, data, node) {
+                    return data[0] === id;
+                }).remove().draw();
+            }
+        )
+
+        selectedRowSchemes = selectedRowSchemes.filter(function (e) {
+            return selectedRow.indexOf(e) == -1;
+        });
+
+        for (let i = 0; i < selectedRow.length; i++) {
+            $(`#schemes_${selectedRow[i]}`).attr("disabled", false);
+            $(`#schemes_${selectedRow[i]}`).prop("checked", false);
+        }
+
+        if (!selectedRowSchemes.length) {
+            $("#btnRemoveSchemes").removeClass("btn-danger").addClass("btn-secondary");
+            $("#btnRemoveSchemes").prop('disabled', true);
+        }
+
+        if (selectedRowSchemes.length !== schemesList.length) {
+            $("#btnAddSchemes").removeClass("btn-secodary").addClass("btn-info");
+            $("#btnAddSchemes").prop('disabled', false);
+        }
+    })
+
+    function create_table_schemes() {
+        tableSchemes = $("#tableSchemes").DataTable({
+            responsive: true,
+            searching: false,
+            bPaginate: false,
+            bInfo: false,
+            columnDefs: [
+                {
+                    orderable: false,
+                    searchable: false,
+                    className: 'select-checkbox',
+                    targets: 0,
+                    render: function (data, type, full, meta) {
+                        return '<input type="checkbox" name="id[]" id="schemes_' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+                    }
+                }
+            ],
+            order: [[1, 'asc']]
+        })
+    }
+
+    function create_table_required_schemes() {
+        tableReqSchemes = $("#tableReqSchemes").DataTable({
+            responsive: true,
+            searching: false,
+            bPaginate: false,
+            bInfo: false,
+            columnDefs: [
+                {
+                    orderable: false,
+                    searchable: false,
+                    className: 'select-checkbox',
+                    targets: 0,
+                    render: function (data, type, full, meta) {
+                        return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                    }
+                }
+            ],
+            select: {
+                style: 'os',
+                selector: 'td:first-child'
+            },
+            order: [[1, 'asc']]
+        })
+    }
+
+    function Populate_Data_ddl_Company() {
+        $('#ddl_Company').empty();
+
+        try {
+            var siteId = $('#ddl_Site').val();
+            uInfo.Relations.Companies
+                .filter((item) => Number(item.SiteId) === Number(siteId))
+                .forEach(function (item) {
+                    companySelect.append(new Option(item.CompanyName, item.CompanyCode, true, true));
+                });
+
+
+            if (localStorage.getItem("SampleRegistrationData") !== null) {
+                let data = JSON.parse(localStorage.getItem("SampleRegistrationData"));
+                companySelect.val(data.company).trigger("change");
+
+                return;
+            }
+
+            $('#ddl_Company').val($("#ddl_Company option:first").val()).trigger('change');
+        } catch (err) { }
+    }
+
+    function Populate_Data_ddl_Site() {
+        try {
+            $('#ddl_Site').on('change', function () {
+                Populate_Data_ddl_Company();
+            });
+
+            uInfo.Relations.Sites
+                .forEach(function (item) {
+                    siteSelect.append(new Option(item.SiteName, item.SiteId, true, true));
+                });
+
+            if (localStorage.getItem("SampleRegistrationData") !== null) {
+                let data = JSON.parse(localStorage.getItem("SampleRegistrationData"));
+                siteSelect.val(data.site.id).trigger("change");
+
+                return;
+            }
+
+            $('#ddl_Site').val($("#ddl_Site option:first").val()).trigger('change');
+        } catch (err) { }
+    }
+
+    function Populate_Data_ddl_Client() {
+        clientSelect.empty();
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Get_ddl_Client_ByCompany',
+            type: 'GET',
+            data: { companyCode: companySelect.val() },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data) || !data.Success) {
+                    // empty data or failed
+                    return;
+                }
+
+                data.Items.forEach(function (item) {
+                    clientSelect.append(new Option(item.name, item.id, true, true));
+                });
+
+                if (localStorage.getItem("SampleRegistrationData") !== null) {
+                    let data = JSON.parse(localStorage.getItem("SampleRegistrationData"));
+                    clientSelect.val(data.client.id).trigger("change");
+
+                    return;
+                }
+
+                // Inisial value for "Client"
+                if (data.Items.length == 1) {
+                    clientSelect.val($("#ddl_Client option:first").val()).trigger('change');
+                    return
+                }
+
+                clientSelect.val('');
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function Populate_Data_ddl_Project() {
+        projectSelect.empty();
+
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Get_ddl_Project_ByClient',
+            type: 'GET',
+            data: { companyCode: companySelect.val(), clientId: clientSelect.val() },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data) || !data.Success) {
+                    // empty data or failed
+                    return;
+                }
+
+                projectList = data.Items;
+                data.Items.forEach(function (item) {
+                    projectSelect.append(new Option(item.name, item.id, true, true));
+                });
+
+                if (localStorage.getItem("SampleRegistrationData") !== null) {
+                    let data = JSON.parse(localStorage.getItem("SampleRegistrationData"));
+                    projectSelect.val(data.project.id).trigger("change");
+
+                    return;
+                }
+
+                // Inisial value for "Client"
+                if (data.Items.length == 1) {
+                    projectSelect.val($("#ddl_Project option:first").val()).trigger('change');
+                    return
+                }
+
+                projectSelect.val('');
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function Populate_Data_ddl_RefType() {
+        refTypeSelect.empty();
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/Get_ddl_RefType_ByCompany',
+            type: 'GET',
+            data: { companyCode: companySelect.val() },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data) || !data.Success) {
+                    // empty data or failed
+                    return;
+                }
+
+                data.Items.forEach(function (item) {
+                    refTypeSelect.append(new Option(item.name, item.id, true, true));
+                });
+
+                if (localStorage.getItem("SampleRegistrationData") !== null) {
+                    let data = JSON.parse(localStorage.getItem("SampleRegistrationData"));
+                    refTypeSelect.val(data.refType).trigger("change");
+
+                    return;
+                }
+
+                // Inisial value for "Client"
+                if (data.Items.length == 1) {
+                    refTypeSelect.val($("#ddl_Project option:first").val()).trigger('change');
+                    return
+                }
+
+                refTypeSelect.val('');
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function Populate_Data_Schemes() {
+        tableSchemes.clear().draw();
+        tableReqSchemes.clear().draw();
+        selectedRowSchemes = [];
+
+        $("#btnRemoveSchemes").removeClass("btn-danger").addClass("btn-secondary");
+        $("#btnRemoveSchemes").prop('disabled', true);
+
+        if (projectSelect.val()) {
+            $.ajax({
+                url: api_Request + '/Api/SampleRegistration/Get_Scheme',
+                type: 'GET',
+                data: { companyCode: companySelect.val(), clientId: clientSelect.val(), projectId: projectSelect.val() },
+                dataType: "json",
+                cache: false,
+                beforeSend: function (request) {
+                    request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+                },
+                success: function (data) {
+                    if (!$.trim(data) || !data.Success) {
+                        // empty data or failed
+                        return;
+                    }
+
+                    // populate schemes
+                    if (data.Items.length) {
+                        schemesList = data.Items;
+                        for (let i = 0; i < schemesList.length; i++) {
+                            tableSchemes.row.add([i, schemesList[i].Name]).draw(false);
+                            if (schemesList[i].IsRequired) {
+                                $(`#schemes_${i}`).prop('checked', true);
+                            }
+                        }
+
+                        $("#btnAddSchemes").trigger("click");
+                    }
+
+                    if (localStorage.getItem("SampleRegistrationData")) {
+                        let data = JSON.parse(localStorage.getItem("SampleRegistrationData"));
+
+                        if (clientSelect.val() === data.client) {
+                            data.schemes.forEach(
+                                function (idx) {
+                                    let foundIdx = schemesList.findIndex(element => element.Id === idx)
+                                    $(`#schemes_${foundIdx}`).prop('checked', true);
+                                }
+                            )
+
+                            $("#btnAddSchemes").trigger("click");
+                            return;
+                        }
+                    }
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+        }
+    }
+
+    function Validate_All() {
+        let result = false;
+
+        if (!$("#ddl_Company").val()) {
+            alert("Company must not be empty!");
+            return result;
+        }
+
+        if (!$("#ddl_Site").val()) {
+            alert("Site must not be empty");
+            return result;
+        }
+
+        if (!$("#txtDateJob").val()) {
+            alert("Date must not be empty");
+            return result;
+        }
+
+        if (!$("#ddl_Client").val()) {
+            alert("Client must not be empty");
+            return result;
+        }
+
+        if (!$("#ddl_Project").val()) {
+            alert("Project must not be empty!");
+            return result;
+        }
+
+        if (!$("#ddl_Ref").val()) {
+            alert("Ref must not be empty");
+            return result;
+        }
+
+        if (!$("#ddl_Received").val()) {
+            alert("Received must not be empty!");
+            return result;
+        }
+
+        if (!selectedRowSchemes.length) {
+            alert("Schemes must not be empty!");
+            return result;
+        } 
+
+        result = true;
+
+        return result;
+    }
+
+    function Create_Table_Vessel() {
+        Clear_DataGrid_('tableLoadingVessel');
+
+        try {
+            tableLoadingVessel = $('#tableLoadingVessel').DataTable({
+                bAutoWidth: false,
+                bFilter: false,
+                dom: '<"top">rt<"bottom"iflp><"clear">',
+                scrollX: true,
+                scrollY: '350px',
+                scrollCollapse: true,
+                paging: false,
+                fixedHeader: true,
+                bInfo: false,
+                columns: [
+                    {
+                        render: function (data, type, full, meta) {
+                            return '<input type="radio" name="vesselCheck" value="' + meta.row + '">';
+                        }
+                    },
+                    { "data": "ShipmentNumber", "name": "Company", "autoWidth": true },
+                    { "data": "Name", "name": "Company", "autoWidth": true },
+                    { "data": "DispatchId", "name": "Company", "autoWidth": true },
+                    { "data": "Customer", "name": "Company", "autoWidth": true }
+                ],
+                order: [[1, 'asc']]
+            });
+
+            tableLoadingVessel.on('draw', function () { });
+
+            // Resize Table: because this DataTable is newly created
+            resize_Table();
+        } catch (err) { }
+    }
+
+    function Close_Modal_Vessel() {
+        $('#modalVessel').modal('hide');
+    }
+
+    function Clear_DataGrid_(p_id) {
+        try {
+            $('#' + p_id).DataTable().clear().destroy();
+        }
+        catch (err) { }
+    }
+
+    function Clear_DataGrid_Vessel() {
+        lineNumber_Data_Vessel = 0;
+        object_id_Created_Vessel = [];
+        object_id_Deleted_Vessel = [];
+
+        Create_Table_Vessel();
+    }
+
+    function Populate_DataGrid_Vessel() {
+        $('#imgLoadingVessel').show();
+        $("#txtError").hide();
+        Clear_DataGrid_Vessel();
+
+        // data from AJAX
+        $.ajax({
+            url: api_Request + '/Api/SampleRegistration/GetVesselDetail'
+            , type: 'GET'
+            , data: { companyCode: companySelect.val() }
+            , dataType: "json"
+            , beforeSend: function (request) {
+                // Set "Token" in HTTP_Header
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            }
+            , cache: false
+            , success: function (data) {
+
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                vesselList = data.Data;
+
+                data.Data.forEach(
+                    function (item) {
+                        isNew_Vessel = false;
+                        object_Created_Count_Vessel++;
+                        lineNumber_Data_Vessel++;
+                        object_id_additional_Vessel = '_' + object_Created_Count_Vessel.toString() + '_' + lineNumber_Data_Vessel.toString();
+
+                        // save to Array
+                        object_id_Created_Vessel.push(object_id_additional_Vessel);
+
+                        // add to Table
+                        tableLoadingVessel.row.add(item).draw(false);
+                    }
+                );
+
+                resize_Table();
+                $('#imgLoadingVessel').hide();
+            },
+            error: function (error) {
+                $("#txtError").show();
+                $('#imgLoadingVessel').hide();
+                $(this).remove();
+            }
+        });
+    }
+
+    function nextToLoading() {
+        let selected = $('input[name=vesselCheck]:checked').val();
+
+        if (!selected) {
+            alert("Choose one vessel!")
+            return;
+        }
+
+        let vesselData = vesselList[selected];
+        localStorage.setItem('VesselData', JSON.stringify(vesselData));
+
+        window.location = mercyUrl('/SampleRegistrationv/LoadingForm');
+    }
+
+    function Close_Session() {
+        let SecuritySession = JSON.parse(localStorage.getItem('SecuritySession'));
+
+        $.ajax({
+            url: api_Request + '/Api/Session/CloseSession',
+            type: 'GET',
+            data: { menus: SecuritySession },
+            dataType: "json",
+            cache: false,
+            beforeSend: function (request) {
+                request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+            },
+            success: function (data) {
+                if (!$.trim(data)) {
+                    // empty data
+                    return;
+                }
+
+                localStorage.removeItem("SampleRegistrationData");
+                localStorage.removeItem("VesselData");
+                localStorage.removeItem("SecuritySession");
+                window.location = mercyUrl('/SampleRegistrationv');
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+</script>

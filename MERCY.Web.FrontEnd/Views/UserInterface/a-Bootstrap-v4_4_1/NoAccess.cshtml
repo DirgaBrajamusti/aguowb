@@ -1,0 +1,63 @@
+@using MERCY.Web.FrontEnd.Helpers;
+@{
+    string ui_name = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface = new UserInterface(ui_name);
+    string ui_Folder_ServerSide = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<div style="margin:20px 0px 0px 0px;">Sorry, you don't have access to requested page.</div>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+    $(document).attr('title', 'NoAccess : Mercy');
+    
+    get_user_menu = '1';
+    get_user_relation = '1';
+    
+    Show_UserInformation();
+});
+
+function Show_UserInformation() {
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/User/Info'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation}
+        , dataType: "json"
+        , beforeSend: function (request) {
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data) {
+           if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+
+            if ( ! data.Success){
+                window.location('/');
+                return;
+            }
+
+            after_GetUserInfo(data.User);
+            uInfo = data.User;
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // we need "Permission" information
+            permission = data.Permission;
+        },
+        error: function (error) {
+            $(this).remove();
+        }
+    });
+}
+
+</script>

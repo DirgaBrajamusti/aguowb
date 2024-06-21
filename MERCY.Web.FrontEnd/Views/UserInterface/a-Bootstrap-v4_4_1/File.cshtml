@@ -1,0 +1,404 @@
+@using MERCY.Web.FrontEnd.Helpers;
+
+@{
+    string ui_name               = @"a-Bootstrap-v4_4_1";
+    UserInterface userInterface  = new UserInterface(ui_name);
+    string ui_Folder_ServerSide  = userInterface.Folder_ServerSide;
+    string ui_Folder_Client_Side = userInterface.Folder_ClientSide;
+
+    Layout = ui_Folder_ServerSide + "_Layout.cshtml";
+}
+
+<style>
+#id_menu_ROMTransfer {
+    background-color: #000000;
+    border-radius: 4px;
+    /*opacity: 0.2;*/
+    background: rgba(0,0,0,0.2);
+    height: 52px;
+    margin: 5px 8px;
+}
+
+.filter_title {
+    color: #232323;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 17px;
+    opacity: 0.8700000047683716;
+    text-align: left;
+    height: 20px;
+}
+
+.select2-selection--single{
+    height: 34px !important;
+}
+.select2-selection__choice {
+    height: 34px !important;
+}
+.select2-selection__arrow{
+    height: 32px !important;
+}
+.active {
+    color: #00BDAA;
+    line-height: 14px;
+    text-align: left;
+    font-weight: bold;
+    font-style: italic;    
+}
+.inactive {
+    color: #FD5151;
+    line-height: 14px;
+    text-align: left;
+    font-weight: bold;
+    font-style: italic;    
+}
+.mercy_input_text_invalid {
+    border: 1px solid #DE0D0D;
+}
+
+#mercyTable_info{display:none;}
+
+</style>
+
+<link href="@ui_Folder_Client_Side/css/select2.min.css" rel="stylesheet" />
+<script src="@ui_Folder_Client_Side/js/select2.min.js"></script>
+
+<div class="col margin_padding_0">
+    <div class="row margin_padding_0 mercy_page_Title">
+        All uploaded - Excel files
+    </div>
+    <div class="row margin_padding_0 mercy_page_Title_2">
+        Upload File
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content" style="min-height:100px !important;">
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 220px;">
+                <div style="width:100%" class="filter_title">File Type</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <select class="shadow-none custom-select d-block w-100 mercy_select mercy_input_text" id="dll_FileType" style="width:100%;">
+                        <option value="all">-- ALL</option>
+                        <option value="@OurUtility.UPLOAD_Sampling_ROM">Sampling ROM</option>
+                        <option value="@OurUtility.UPLOAD_Geology_Pit_Monitoring">Geology - Pit Monitoring</option>
+                        <option value="@OurUtility.UPLOAD_Geology_Explorasi">Geology - Explorasi</option>
+                        <option value="@OurUtility.UPLOAD_BARGE_LOADING">BARGE LOADING</option>
+                        <option value="@OurUtility.UPLOAD_CRUSHING_PLANT">CRUSHING PLANT</option>
+                        <option value="@OurUtility.UPLOAD_BargeQualityPlan">Barge - Quality Plan</option>
+                        <option value="@OurUtility.UPLOAD_BargeLineUp">Barge - LineUp</option>
+                        <option value="@OurUtility.UPLOAD_SampleDetail">Sample Detail</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;">
+            <div style="width: 160px;">
+                <div style="width:100%" class="filter_title">Date</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div class="input-group date">
+                        <input id="txtDateFrom" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy" placeholder="dd-M-yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-auto margin_padding_0" style="padding: 15px 0px 0px 15px !important;" id="txtDateTo_outer">
+            <div style="width: 160px;">
+                <div style="width:100%" class="filter_title">To</div>
+                <div style="width:100%;padding:10px 0px !important;">
+                    <div class="input-group date">
+                        <input id="txtDateTo" class="mercy_select mercy_input_text mercy_date" style="width:100% !important;" data-date-format="dd-M-yyyy" placeholder="dd-M-yyyy" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text mercy_date_icon"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md margin_padding_0">
+            <div class="row margin_padding_0">
+            </div>
+        </div>
+    </div>
+    <div class="row margin_padding_0 mercy_box_inner_content">
+        <div class="col margin_padding_0" style="padding: 10px 20px !important;">
+            <div class="row margin_padding_0">
+                <table id="mercyTable" class="display nowrap table table-striped table-hover mercy_table mercy_table_header" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>No_Line</th>
+                            <th><div style="color:white;text-align: center !important;">Action</div></th>
+                            <th>No</th>
+                            <th>Created On</th>
+                            <th>Created By</th>
+                            <th>Company</th>
+                            <th>File Type</th>
+                            <th>FileName</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+// Flag
+var is_still_AJAX_dataList = false;
+
+// DataGrid
+var obj_html_Table;
+//var obj_html_Site;
+
+// row
+var isNew = false;
+var is_Mode_Editor = false;
+var lineNumber_Data = 0;
+var object_Created_Count = 0;
+var object_id_additional = ''; // pattern is: '_' + object_Created_Count + '_' + lineNumber_Data;
+var object_id_Created = [];
+var object_id_Deleted = [];
+
+$(document).ready(function (){
+    $(document).attr('title', 'Upload Files : Mercy');
+
+    $(window).resize(function (){
+        // Resize Table: because the Window is Resized
+        resize_Table();
+    });
+
+    $('#btnAdd').click(function (e){
+        processLink_Add();
+    });
+    
+    $('#btnSave').click(function (e){
+        SaveData();
+    });
+    
+    $('#btnViewData').click(function (e){
+        Populate_DataGrid();
+    });
+    
+    $("#txtDateFrom").datepicker({
+        todayBtn: 1
+        , autoclose: true
+    }).on('changeDate', function (selected) {
+        Populate_DataGrid();
+    });
+    $('#txtDateFrom').datepicker('update', new Date());
+    $("#txtDateTo").datepicker({
+        todayBtn: 1
+        , autoclose: true
+    }).on('changeDate', function (selected) {
+        Populate_DataGrid();
+    });
+    $('#txtDateTo').datepicker('update', new Date());
+    
+    Create_ddl_FileType();
+    Load_Page_List();
+});
+
+function Clear_DataGrid_(p_id){
+    try {
+        $('#' + p_id).DataTable().clear().destroy();
+        //$('#'+p_id).DataTable().destroy();
+    }catch(err){}
+    
+    try {
+        $('#'+p_id+' tbody').empty();
+    }catch(err){}
+}
+
+function Clear_DataGrid(){
+    Create_Table();
+}
+
+function Create_Table(){
+    Clear_DataGrid_('mercyTable');
+
+    try {
+        obj_html_Table = $('#mercyTable').DataTable({
+            "bAutoWidth": false
+            , "bFilter": false
+            , "dom": '<"top">rt<"bottom"iflp><"clear">'
+            , "scrollX": true
+            , "scrollY": false //"200px"
+            //, "scrollCollapse": true
+            , "paging": false
+            //, "ordering": false
+            , "columns": [
+                {
+                    "render": function (data, type, full, meta){
+                        return lineNumber_Data;
+                    }
+                }
+                , {
+                    render: function (data, type, full, meta) {
+                        return '<div style="width:100%;text-align:center;">'+
+                                '<a href="/Filev/Form?.id=' + full.RecordId +'&.type=' + full.FileType + '" style="cursor: pointer;' + (isNew?'display:none;':'') + '"><img src="images/iccoal_product.png" width="24" height="24" title="File detail"></a>' 
+                                '</div>'
+                                ;
+                    }
+                    , className: "mercy_action_icon"
+                    , orderable: false
+                    , width: "50px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return (isNew?'':lineNumber_Data.toString() + '.');
+                    }
+                    , className: "mercy_text_right"
+                    , orderable: false
+                    , width: "20px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return full.CreatedOn_Str
+                               ;
+                    }
+                    , orderable: false
+                    , width: "130px"
+                }
+                , {
+                    "render": function (data, type, full, meta){
+                        return full.CreatedBy_Str
+                               ;
+                    }
+                    , orderable: false
+                    , width: "150px"
+                }
+                , { "data": "Company", "name": "Company", orderable: false, width: "60px" }
+                , { "data": "FileType", "name": "FileType", orderable: false, width: "140px" }
+                , {
+                    "render": function (data, type, full, meta) { return '<a href="/Api/File/Download?.id=' + full.Link + '" target=_blank>' + full.FileName + '</a>'; }
+                }
+            ]
+            , "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
+            //, "order": [[3, 'desc'], [4, 'asc']]
+            , "order": [[0, 'asc']]
+        });
+
+        obj_html_Table.on('draw', function () {});
+        
+        // Resize Table: because this DataTable is newly created
+        resize_Table();
+    }catch(err){}
+}
+
+function Populate_DataGrid(){
+    if (is_still_AJAX_dataList) return;
+    
+    is_still_AJAX_dataList = true;
+    
+    // -- Date
+    var dateFrom = $("#txtDateFrom").data('datepicker').getFormattedDate('yyyy-mm-dd');
+    var dateTo = $("#txtDateTo").data('datepicker').getFormattedDate('yyyy-mm-dd');
+    
+    Clear_DataGrid();
+    
+    // reset
+    lineNumber_Data = 0;
+    object_id_Created = [];
+    object_id_Deleted = [];
+    
+    // data from AJAX
+    $.ajax({
+        url: api_Request + '/Api/File'
+        , type: 'POST'
+        , data: {u_menu:get_user_menu, u_relation:get_user_relation, fileType:$("#dll_FileType").val(), dateFrom: dateFrom, dateTo: dateTo }
+        , dataType: "json"
+        , beforeSend: function (request){
+            // Set "Token" in HTTP_Header
+            request.setRequestHeader(MERCY_Token, MERCY_Token_Value);
+        }
+        , cache: false
+        , success: function (data){
+            is_still_AJAX_dataList = false;
+            
+            if ( ! $.trim(data)) {
+                // empty data
+                return;
+            }
+            
+            if ( ! data.Success){
+                alert(data.Message);
+                
+                window.location = '/NoAccess';
+                return;
+            }
+            
+            // Special Purpose, getting information of CurrentUser
+            if (get_user_menu == '1'){
+                after_GetUserInfo(data.User);
+                uInfo = data.User;
+                
+                Create_Table();
+            }
+            
+            // reset
+            get_user_menu = '0';
+            get_user_relation = '0';
+            
+            // we need "Permission" information
+            permission = data.Permission;
+            
+            // assign Data to Table
+            /*try {
+                obj_html_Table.rows.add(data.Items); // add to DataTable instance
+                obj_html_Table.draw(); // always redraw
+            }catch(err){}*/
+            
+            data.Items.forEach(
+                function (item){
+                    isNew = false;
+                    object_Created_Count++;
+                    lineNumber_Data++;
+                    object_id_additional = '_' + object_Created_Count.toString() + '_' + lineNumber_Data.toString();
+                    
+                    // save to Array
+                    object_id_Created.push(object_id_additional);
+                    
+                    // add to Table
+                    obj_html_Table.row.add(item).draw(false);
+                }
+            );
+            
+            // Resize Table: because this DataTable is filled with new Data
+            resize_Table();
+        },
+        error: function (error){
+            is_still_AJAX_dataList = false;
+            
+            $(this).remove();
+        }
+    });
+}
+
+function Create_ddl_FileType() {
+    var obj_html_FileType = $('#dll_FileType').select2({
+        placeholder: 'Select File Type'
+        , tags: false
+        , multiple: false
+        //, tokenSeparators: [',', ' ']
+        //, minimumInputLength: 3
+        , minimumResultsForSearch: -1
+    });
+
+    $('#dll_FileType').change(function (e) {
+        OnChange_ddl_FileType();
+    });
+}
+
+function OnChange_ddl_FileType() {
+    Populate_DataGrid();
+}
+
+</script>
