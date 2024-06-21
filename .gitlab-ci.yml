@@ -1,0 +1,19 @@
+stages:
+  - build
+  - push
+
+variables:
+  DOCKER_DRIVER: windowsfilter
+
+build_image:
+  stage: build
+  tags:
+    - saas-windows-medium-amd64
+  before_script:
+    - Start-Service -Name "docker"
+  script:
+    - docker build -t ${CI_REGISTRY_IMAGE}:321 .
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker push ${CI_REGISTRY_IMAGE}:321
+  only:
+    - main
