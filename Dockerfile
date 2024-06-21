@@ -6,12 +6,14 @@ WORKDIR /app
 # copy csproj and restore as distinct layers
 COPY *.sln .
 COPY MERCY.Web.FrontEnd/*.csproj ./MERCY.Web.FrontEnd/
+COPY Mercy.Cmd.Scheduler/*.csproj ./Mercy.Cmd.Scheduler/
+COPY Mercy.Cmd.LECO/*.csproj ./Mercy.Cmd.LECO/
 COPY MERCY.Web.FrontEnd/*.config ./MERCY.Web.FrontEnd/
 RUN nuget restore
 
 # copy everything else and build app
-COPY <path-to>/. ./<path-to>/
-WORKDIR /app/<path-to>
+COPY MERCY.Web.FrontEnd/. ./MERCY.Web.FrontEnd/
+WORKDIR /app/MERCY.Web.FrontEnd
 RUN msbuild /p:Configuration=Release
 #RUN msbuild MERCY.Web.FrontEnd.csproj /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
