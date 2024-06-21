@@ -4,12 +4,18 @@ on:
   push:
     branches:
       - main  # Change this to your main branch name
-      
+
 jobs:
   build:
     name: Build and Push Docker Image
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v3
+    - name: Login to GitHub Packages
+      run: |
+        echo "## Login to GitHub Packages"
+        echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
     - name: Build Docker Image
       run: docker build -t my-image .
+    - name: Push Docker Image to GitHub Packages
+      run: docker push ghcr.io/dirgabrajamusti/aguowb:12312
