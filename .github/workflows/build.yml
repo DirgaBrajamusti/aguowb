@@ -9,15 +9,26 @@ jobs:
   build:
     name: Build and Push Docker Image
     runs-on: windows-2019
+
     steps:
     - uses: actions/checkout@v3
-    - name: Login to GitHub Packages
+
+    - name: Login to Azure
       run: |
-        echo "## Login to GitHub Packages"
-        echo ${{ secrets.ACTION_TOKEN }} | gh auth login --with-token
+        echo "## Login to Azure"
+        az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+
+    - name: Azure Container Registry Login
+      run: |
+        echo "## Login to ACR"
+        az acr login --name ${{ secrets.ACR_NAME }}
+
     - name: Build Docker Image
-      run: docker build -t ghcr.io/dirgabrajamusti/aguowb:mercy .
-    - name: Login
-      run: echo ${{ secrets.ACTION_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-    - name: Push Docker Image to GitHub Packages
-      run: docker push ghcr.io/dirgabrajamusti/aguowb:mercy
+      run: |
+        echo "## Build Docker Image"
+        docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/mercy-fe:test .
+
+    - name: Push Docker Image to ACR
+      run: |
+        echo "## Push Docker Image to ACR"
+        docker push ${{ secrets.ACR_NAME }}.azurecr.io/mercy-fe:test
