@@ -22,4 +22,4 @@ RUN msbuild MERCY.Web.BackEnd.csproj /p:DeployOnBuild=true /p:Configuration=Rele
 FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8 AS runtime
 
 WORKDIR /inetpub/wwwroot
-COPY --from=build /app/MERCY.Web.BackEnd/bin/. ./
+COPY --from=build /app/MERCY.Web.BackEnd/. ./
