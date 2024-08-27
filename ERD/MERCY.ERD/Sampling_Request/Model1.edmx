@@ -1,0 +1,455 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MERCY_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyCode" />
+          </Key>
+          <Property Name="CompanyCode" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="Is_DataROM_from_BI" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SamplingRequest">
+          <Key>
+            <PropertyRef Name="SamplingRequestId" />
+          </Key>
+          <Property Name="SamplingRequestId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestDate" Type="date" Nullable="false" />
+          <Property Name="Company" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="SamplingType" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="HAC_Text" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="PICArea" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CV" Type="bit" Nullable="false" />
+          <Property Name="TS" Type="bit" Nullable="false" />
+          <Property Name="TM" Type="bit" Nullable="false" />
+          <Property Name="PROX" Type="bit" Nullable="false" />
+          <Property Name="RD" Type="bit" Nullable="false" />
+          <Property Name="SIZE" Type="bit" Nullable="false" />
+          <Property Name="FLOW" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="Tonnage" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SamplingRequest_History">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SamplingRequestId" Type="bigint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SamplingRequest_Lab">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SamplingRequest" Type="bigint" Nullable="false" />
+          <Property Name="LabId" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SamplingRequest_ROM">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SamplingRequest" Type="bigint" Nullable="false" />
+          <Property Name="ROM_ID" Type="int" />
+          <Property Name="Block" Type="nvarchar" MaxLength="10" />
+          <Property Name="ROM_Name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="SamplingRequest_SEAM">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SamplingRequest" Type="bigint" Nullable="false" />
+          <Property Name="SEAM" Type="varchar" MaxLength="255" />
+          <Property Name="COMPANY_PIT_SEAM" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_SamplingRequest_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="SamplingRequest" Type="Self.SamplingRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyCode" />
+            </Principal>
+            <Dependent Role="SamplingRequest">
+              <PropertyRef Name="Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SamplingRequest_Lab_SamplingRequest">
+          <End Role="SamplingRequest" Type="Self.SamplingRequest" Multiplicity="1" />
+          <End Role="SamplingRequest_Lab" Type="Self.SamplingRequest_Lab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SamplingRequest">
+              <PropertyRef Name="SamplingRequestId" />
+            </Principal>
+            <Dependent Role="SamplingRequest_Lab">
+              <PropertyRef Name="SamplingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SamplingRequest_ROM_SamplingRequest">
+          <End Role="SamplingRequest" Type="Self.SamplingRequest" Multiplicity="1" />
+          <End Role="SamplingRequest_ROM" Type="Self.SamplingRequest_ROM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SamplingRequest">
+              <PropertyRef Name="SamplingRequestId" />
+            </Principal>
+            <Dependent Role="SamplingRequest_ROM">
+              <PropertyRef Name="SamplingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SamplingRequest_SEAM_SamplingRequest">
+          <End Role="SamplingRequest" Type="Self.SamplingRequest" Multiplicity="1" />
+          <End Role="SamplingRequest_SEAM" Type="Self.SamplingRequest_SEAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SamplingRequest">
+              <PropertyRef Name="SamplingRequestId" />
+            </Principal>
+            <Dependent Role="SamplingRequest_SEAM">
+              <PropertyRef Name="SamplingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MERCY_ModelStoreContainer">
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SamplingRequest" EntityType="Self.SamplingRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SamplingRequest_History" EntityType="Self.SamplingRequest_History" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SamplingRequest_Lab" EntityType="Self.SamplingRequest_Lab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SamplingRequest_ROM" EntityType="Self.SamplingRequest_ROM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SamplingRequest_SEAM" EntityType="Self.SamplingRequest_SEAM" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SamplingRequest_Company" Association="Self.FK_SamplingRequest_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="SamplingRequest" EntitySet="SamplingRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SamplingRequest_Lab_SamplingRequest" Association="Self.FK_SamplingRequest_Lab_SamplingRequest">
+            <End Role="SamplingRequest" EntitySet="SamplingRequest" />
+            <End Role="SamplingRequest_Lab" EntitySet="SamplingRequest_Lab" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SamplingRequest_ROM_SamplingRequest" Association="Self.FK_SamplingRequest_ROM_SamplingRequest">
+            <End Role="SamplingRequest" EntitySet="SamplingRequest" />
+            <End Role="SamplingRequest_ROM" EntitySet="SamplingRequest_ROM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SamplingRequest_SEAM_SamplingRequest" Association="Self.FK_SamplingRequest_SEAM_SamplingRequest">
+            <End Role="SamplingRequest" EntitySet="SamplingRequest" />
+            <End Role="SamplingRequest_SEAM" EntitySet="SamplingRequest_SEAM" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MERCY_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyCode" />
+          </Key>
+          <Property Name="CompanyCode" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="Is_DataROM_from_BI" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SamplingRequests" Relationship="Self.FK_SamplingRequest_Company" FromRole="Company" ToRole="SamplingRequest" />
+        </EntityType>
+        <EntityType Name="SamplingRequest">
+          <Key>
+            <PropertyRef Name="SamplingRequestId" />
+          </Key>
+          <Property Name="SamplingRequestId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Company" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SamplingType" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HAC_Text" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PICArea" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CV" Type="Boolean" Nullable="false" />
+          <Property Name="TS" Type="Boolean" Nullable="false" />
+          <Property Name="TM" Type="Boolean" Nullable="false" />
+          <Property Name="PROX" Type="Boolean" Nullable="false" />
+          <Property Name="RD" Type="Boolean" Nullable="false" />
+          <Property Name="SIZE" Type="Boolean" Nullable="false" />
+          <Property Name="FLOW" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="Tonnage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Company1" Relationship="Self.FK_SamplingRequest_Company" FromRole="SamplingRequest" ToRole="Company" />
+          <NavigationProperty Name="SamplingRequest_Lab" Relationship="Self.FK_SamplingRequest_Lab_SamplingRequest" FromRole="SamplingRequest" ToRole="SamplingRequest_Lab" />
+          <NavigationProperty Name="SamplingRequest_ROM" Relationship="Self.FK_SamplingRequest_ROM_SamplingRequest" FromRole="SamplingRequest" ToRole="SamplingRequest_ROM" />
+          <NavigationProperty Name="SamplingRequest_SEAM" Relationship="Self.FK_SamplingRequest_SEAM_SamplingRequest" FromRole="SamplingRequest" ToRole="SamplingRequest_SEAM" />
+        </EntityType>
+        <EntityType Name="SamplingRequest_History">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SamplingRequestId" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SamplingRequest_Lab">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SamplingRequest" Type="Int64" Nullable="false" />
+          <Property Name="LabId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SamplingRequest1" Relationship="Self.FK_SamplingRequest_Lab_SamplingRequest" FromRole="SamplingRequest_Lab" ToRole="SamplingRequest" />
+        </EntityType>
+        <EntityType Name="SamplingRequest_ROM">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SamplingRequest" Type="Int64" Nullable="false" />
+          <Property Name="ROM_ID" Type="Int32" />
+          <Property Name="Block" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ROM_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SamplingRequest1" Relationship="Self.FK_SamplingRequest_ROM_SamplingRequest" FromRole="SamplingRequest_ROM" ToRole="SamplingRequest" />
+        </EntityType>
+        <EntityType Name="SamplingRequest_SEAM">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SamplingRequest" Type="Int64" Nullable="false" />
+          <Property Name="SEAM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY_PIT_SEAM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SamplingRequest1" Relationship="Self.FK_SamplingRequest_SEAM_SamplingRequest" FromRole="SamplingRequest_SEAM" ToRole="SamplingRequest" />
+        </EntityType>
+        <Association Name="FK_SamplingRequest_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="SamplingRequest" Type="Self.SamplingRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyCode" />
+            </Principal>
+            <Dependent Role="SamplingRequest">
+              <PropertyRef Name="Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SamplingRequest_Lab_SamplingRequest">
+          <End Role="SamplingRequest" Type="Self.SamplingRequest" Multiplicity="1" />
+          <End Role="SamplingRequest_Lab" Type="Self.SamplingRequest_Lab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SamplingRequest">
+              <PropertyRef Name="SamplingRequestId" />
+            </Principal>
+            <Dependent Role="SamplingRequest_Lab">
+              <PropertyRef Name="SamplingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SamplingRequest_ROM_SamplingRequest">
+          <End Role="SamplingRequest" Type="Self.SamplingRequest" Multiplicity="1" />
+          <End Role="SamplingRequest_ROM" Type="Self.SamplingRequest_ROM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SamplingRequest">
+              <PropertyRef Name="SamplingRequestId" />
+            </Principal>
+            <Dependent Role="SamplingRequest_ROM">
+              <PropertyRef Name="SamplingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SamplingRequest_SEAM_SamplingRequest">
+          <End Role="SamplingRequest" Type="Self.SamplingRequest" Multiplicity="1" />
+          <End Role="SamplingRequest_SEAM" Type="Self.SamplingRequest_SEAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SamplingRequest">
+              <PropertyRef Name="SamplingRequestId" />
+            </Principal>
+            <Dependent Role="SamplingRequest_SEAM">
+              <PropertyRef Name="SamplingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="SamplingRequests" EntityType="Self.SamplingRequest" />
+          <EntitySet Name="SamplingRequest_History" EntityType="Self.SamplingRequest_History" />
+          <EntitySet Name="SamplingRequest_Lab" EntityType="Self.SamplingRequest_Lab" />
+          <EntitySet Name="SamplingRequest_ROM" EntityType="Self.SamplingRequest_ROM" />
+          <EntitySet Name="SamplingRequest_SEAM" EntityType="Self.SamplingRequest_SEAM" />
+          <AssociationSet Name="FK_SamplingRequest_Company" Association="Self.FK_SamplingRequest_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="SamplingRequest" EntitySet="SamplingRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SamplingRequest_Lab_SamplingRequest" Association="Self.FK_SamplingRequest_Lab_SamplingRequest">
+            <End Role="SamplingRequest" EntitySet="SamplingRequests" />
+            <End Role="SamplingRequest_Lab" EntitySet="SamplingRequest_Lab" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SamplingRequest_ROM_SamplingRequest" Association="Self.FK_SamplingRequest_ROM_SamplingRequest">
+            <End Role="SamplingRequest" EntitySet="SamplingRequests" />
+            <End Role="SamplingRequest_ROM" EntitySet="SamplingRequest_ROM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SamplingRequest_SEAM_SamplingRequest" Association="Self.FK_SamplingRequest_SEAM_SamplingRequest">
+            <End Role="SamplingRequest" EntitySet="SamplingRequests" />
+            <End Role="SamplingRequest_SEAM" EntitySet="SamplingRequest_SEAM" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MERCY_ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="MERCY_Model.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="Is_DataROM_from_BI" ColumnName="Is_DataROM_from_BI" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SamplingRequests">
+            <EntityTypeMapping TypeName="MERCY_Model.SamplingRequest">
+              <MappingFragment StoreEntitySet="SamplingRequest">
+                <ScalarProperty Name="SamplingRequestId" ColumnName="SamplingRequestId" />
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="SamplingType" ColumnName="SamplingType" />
+                <ScalarProperty Name="HAC_Text" ColumnName="HAC_Text" />
+                <ScalarProperty Name="PICArea" ColumnName="PICArea" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+                <ScalarProperty Name="PROX" ColumnName="PROX" />
+                <ScalarProperty Name="RD" ColumnName="RD" />
+                <ScalarProperty Name="SIZE" ColumnName="SIZE" />
+                <ScalarProperty Name="FLOW" ColumnName="FLOW" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="Tonnage" ColumnName="Tonnage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SamplingRequest_History">
+            <EntityTypeMapping TypeName="MERCY_Model.SamplingRequest_History">
+              <MappingFragment StoreEntitySet="SamplingRequest_History">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="SamplingRequestId" ColumnName="SamplingRequestId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SamplingRequest_Lab">
+            <EntityTypeMapping TypeName="MERCY_Model.SamplingRequest_Lab">
+              <MappingFragment StoreEntitySet="SamplingRequest_Lab">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="SamplingRequest" ColumnName="SamplingRequest" />
+                <ScalarProperty Name="LabId" ColumnName="LabId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SamplingRequest_ROM">
+            <EntityTypeMapping TypeName="MERCY_Model.SamplingRequest_ROM">
+              <MappingFragment StoreEntitySet="SamplingRequest_ROM">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="SamplingRequest" ColumnName="SamplingRequest" />
+                <ScalarProperty Name="ROM_ID" ColumnName="ROM_ID" />
+                <ScalarProperty Name="Block" ColumnName="Block" />
+                <ScalarProperty Name="ROM_Name" ColumnName="ROM_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SamplingRequest_SEAM">
+            <EntityTypeMapping TypeName="MERCY_Model.SamplingRequest_SEAM">
+              <MappingFragment StoreEntitySet="SamplingRequest_SEAM">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="SamplingRequest" ColumnName="SamplingRequest" />
+                <ScalarProperty Name="SEAM" ColumnName="SEAM" />
+                <ScalarProperty Name="COMPANY_PIT_SEAM" ColumnName="COMPANY_PIT_SEAM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

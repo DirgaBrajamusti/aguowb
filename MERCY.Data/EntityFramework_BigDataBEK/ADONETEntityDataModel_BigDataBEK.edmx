@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MERCYModel_BigDataBEK.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'BEK_Datamart_Dev.dbo.MERCY_PRODUCT_NEW' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        -->
+		<EntityType Name="MERCY_PRODUCT_NEW">
+			<Key>
+				<PropertyRef Name="ID"/>
+			</Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="available from" Type="date" />
+          <Property Name="available until" Type="date" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BEK_Datamart_Dev.dbo.MERCY_QUALITY_OUTLOOK' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MERCY_QUALITY_OUTLOOK">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Product_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="FirstDate" Type="date" />
+          <Property Name="Year" Type="int" />
+          <Property Name="months" Type="nvarchar" MaxLength="3" />
+          <Property Name="CV" Type="float" />
+          <Property Name="TS" Type="float" />
+          <Property Name="ash" Type="float" />
+          <Property Name="IM" Type="float" />
+          <Property Name="TM" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BEK_Datamart_Dev.dbo.MERCY_ROM_INFO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MERCY_ROM_INFO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="COMPANYCODE" Type="nvarchar" MaxLength="20" />
+          <Property Name="BLOCK" Type="varchar" MaxLength="7" />
+          <Property Name="ROM_NAME" Type="varchar" MaxLength="8000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BEK_Datamart_Dev.dbo.MERCY_ROM_QUALITY' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MERCY_ROM_QUALITY">
+          <Key>
+            <PropertyRef Name="ROM_ID" />
+          </Key>
+          <Property Name="ROM_ID" Type="int" Nullable="false" />
+          <Property Name="COMPANY_CODE" Type="varchar" MaxLength="3" />
+          <Property Name="PROCESS_DATE" Type="datetime" />
+          <Property Name="BLOCK" Type="nvarchar" MaxLength="255" />
+          <Property Name="ROM_NAME" Type="nvarchar" MaxLength="401" />
+          <Property Name="TON" Type="float" Nullable="false" />
+          <Property Name="CV" Type="float" />
+          <Property Name="TS" Type="float" />
+          <Property Name="ASH" Type="float" />
+          <Property Name="IM" Type="float" />
+          <Property Name="TM" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'BEK_Datamart_Dev.dbo.MERCY_SOURCE_NEW' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        -->
+		<EntityType Name="MERCY_SOURCE_NEW">
+			<Key>
+				<PropertyRef Name="COMPANY_CODE"/>
+				<PropertyRef Name="PIT"/>
+				<PropertyRef Name="SEAM"/>
+			</Key>
+          <Property Name="COMPANY_CODE" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="PIT" Type="nvarchar" MaxLength="255" Nullable="false"/>
+          <Property Name="SEAM" Type="nvarchar" MaxLength="256" Nullable="false"/>
+        </EntityType>
+        <EntityContainer Name="MERCYModel_BigDataBEKStoreContainer">
+	    <EntitySet Name="MERCY_PRODUCT_NEW" EntityType="Self.MERCY_PRODUCT_NEW" store:Type="Views" store:Schema="dbo">
+		    <DefiningQuery>
+				SELECT
+				[MERCY_PRODUCT_NEW].[ID] AS [ID],
+				[MERCY_PRODUCT_NEW].[ProductName] AS [ProductName]
+				[MERCY_PRODUCT_NEW].[available from] AS [Available_from]
+				[MERCY_PRODUCT_NEW].[available until] AS [Available_until]
+				FROM [dbo].[MERCY_PRODUCT_NEW] AS [MERCY_PRODUCT_NEW]
+			</DefiningQuery>
+	    </EntitySet>
+		<EntitySet Name="MERCY_SOURCE_NEW" EntityType="Self.MERCY_SOURCE_NEW" store:Type="Views" store:Schema="dbo">
+			<DefiningQuery>SELECT
+	[MERCY_SOURCE_NEW].[COMPANY_CODE] AS [COMPANY_CODE],
+	[MERCY_SOURCE_NEW].[PIT] AS [PIT],
+	[MERCY_SOURCE_NEW].[SEAM] AS [SEAM]
+	FROM [dbo].[MERCY_SOURCE_NEW] AS [MERCY_SOURCE_NEW]
+			</DefiningQuery>
+		</EntitySet>
+          <EntitySet Name="MERCY_QUALITY_OUTLOOK" EntityType="Self.MERCY_QUALITY_OUTLOOK" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MERCY_QUALITY_OUTLOOK].[id] AS [id], 
+    [MERCY_QUALITY_OUTLOOK].[Product_name] AS [Product_name], 
+    [MERCY_QUALITY_OUTLOOK].[FirstDate] AS [FirstDate], 
+    [MERCY_QUALITY_OUTLOOK].[Year] AS [Year], 
+    [MERCY_QUALITY_OUTLOOK].[months] AS [months], 
+    [MERCY_QUALITY_OUTLOOK].[CV] AS [CV], 
+    [MERCY_QUALITY_OUTLOOK].[TS] AS [TS], 
+    [MERCY_QUALITY_OUTLOOK].[ash] AS [ash], 
+    [MERCY_QUALITY_OUTLOOK].[IM] AS [IM], 
+    [MERCY_QUALITY_OUTLOOK].[TM] AS [TM]
+    FROM [dbo].[MERCY_QUALITY_OUTLOOK] AS [MERCY_QUALITY_OUTLOOK]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MERCY_ROM_INFO" EntityType="Self.MERCY_ROM_INFO" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MERCY_ROM_INFO].[ID] AS [ID], 
+    [MERCY_ROM_INFO].[COMPANYCODE] AS [COMPANYCODE], 
+    [MERCY_ROM_INFO].[BLOCK] AS [BLOCK], 
+    [MERCY_ROM_INFO].[ROM_NAME] AS [ROM_NAME]
+    FROM [dbo].[MERCY_ROM_INFO] AS [MERCY_ROM_INFO]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MERCY_ROM_QUALITY" EntityType="Self.MERCY_ROM_QUALITY" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MERCY_ROM_QUALITY].[ROM_ID] AS [ROM_ID], 
+    [MERCY_ROM_QUALITY].[COMPANY_CODE] AS [COMPANY_CODE], 
+    [MERCY_ROM_QUALITY].[PROCESS_DATE] AS [PROCESS_DATE], 
+    [MERCY_ROM_QUALITY].[BLOCK] AS [BLOCK], 
+    [MERCY_ROM_QUALITY].[ROM_NAME] AS [ROM_NAME], 
+    [MERCY_ROM_QUALITY].[TON] AS [TON], 
+    [MERCY_ROM_QUALITY].[CV] AS [CV], 
+    [MERCY_ROM_QUALITY].[TS] AS [TS], 
+    [MERCY_ROM_QUALITY].[ASH] AS [ASH], 
+    [MERCY_ROM_QUALITY].[IM] AS [IM], 
+    [MERCY_ROM_QUALITY].[TM] AS [TM]
+    FROM [dbo].[MERCY_ROM_QUALITY] AS [MERCY_ROM_QUALITY]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MERCYModel_BigDataBEK" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+		  <EntityType Name="MERCY_PRODUCT_NEW">
+			  <Key>
+				  <PropertyRef Name="ID" />
+			  </Key>
+			  <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity"/>
+			  <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+			  <Property Name="Available_from" Type="DateTime" Precision="0" />
+			  <Property Name="Available_until" Type="DateTime" Precision="0" />
+		  </EntityType>
+		  <EntityType Name="MERCY_QUALITY_OUTLOOK">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Product_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstDate" Type="DateTime" Precision="0" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="months" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CV" Type="Double" />
+          <Property Name="TS" Type="Double" />
+          <Property Name="ash" Type="Double" />
+          <Property Name="IM" Type="Double" />
+          <Property Name="TM" Type="Double" />
+        </EntityType>
+        <EntityType Name="MERCY_ROM_INFO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="COMPANYCODE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="BLOCK" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="ROM_NAME" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MERCY_ROM_QUALITY">
+          <Key>
+            <PropertyRef Name="ROM_ID" />
+          </Key>
+          <Property Name="ROM_ID" Type="Int32" Nullable="false" />
+          <Property Name="COMPANY_CODE" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="PROCESS_DATE" Type="DateTime" Precision="3" />
+          <Property Name="BLOCK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ROM_NAME" Type="String" MaxLength="401" FixedLength="false" Unicode="true" />
+          <Property Name="TON" Type="Double" Nullable="false" />
+          <Property Name="CV" Type="Double" />
+          <Property Name="TS" Type="Double" />
+          <Property Name="ASH" Type="Double" />
+          <Property Name="IM" Type="Double" />
+          <Property Name="TM" Type="Double" />
+        </EntityType>
+		  <EntityType Name="MERCY_SOURCE_NEW">
+			  <Key>
+				  <PropertyRef Name="COMPANY_CODE" />
+				  <PropertyRef Name="PIT" />
+				  <PropertyRef Name="SEAM" />
+			  </Key>
+			  <Property Name="COMPANY_CODE" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+			  <Property Name="PIT" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+			  <Property Name="SEAM" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+		  </EntityType>
+        <EntityContainer Name="MERCY_BigDataBEK_Ctx" annotation:LazyLoadingEnabled="true">
+			<EntitySet Name="MERCY_PRODUCT_NEW" EntityType="Self.MERCY_PRODUCT_NEW" />
+			<EntitySet Name="MERCY_SOURCE_NEW" EntityType="Self.MERCY_SOURCE_NEW"/>
+          <EntitySet Name="MERCY_QUALITY_OUTLOOK" EntityType="Self.MERCY_QUALITY_OUTLOOK" />
+          <EntitySet Name="MERCY_ROM_INFO" EntityType="Self.MERCY_ROM_INFO" />
+          <EntitySet Name="MERCY_ROM_QUALITY" EntityType="Self.MERCY_ROM_QUALITY" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MERCYModel_BigDataBEKStoreContainer" CdmEntityContainer="MERCY_BigDataBEK_Ctx">
+		    <EntitySetMapping Name="MERCY_PRODUCT_NEW">
+			    <EntityTypeMapping TypeName="MERCYModel_BigDataBEK.MERCY_PRODUCT_NEW">
+				    <MappingFragment StoreEntitySet="MERCY_PRODUCT_NEW">
+					    <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+					    <ScalarProperty Name="ID" ColumnName="ID" />
+						<ScalarProperty Name="Available_from" ColumnName="available from"/>
+						<ScalarProperty Name="Available_until" ColumnName="available until"/>
+				    </MappingFragment>
+			    </EntityTypeMapping>
+		    </EntitySetMapping>
+		  <EntitySetMapping Name="MERCY_QUALITY_OUTLOOK">
+            <EntityTypeMapping TypeName="MERCYModel_BigDataBEK.MERCY_QUALITY_OUTLOOK">
+              <MappingFragment StoreEntitySet="MERCY_QUALITY_OUTLOOK">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Product_name" ColumnName="Product_name" />
+                <ScalarProperty Name="FirstDate" ColumnName="FirstDate" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="months" ColumnName="months" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="ash" ColumnName="ash" />
+                <ScalarProperty Name="IM" ColumnName="IM" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MERCY_ROM_INFO">
+            <EntityTypeMapping TypeName="MERCYModel_BigDataBEK.MERCY_ROM_INFO">
+              <MappingFragment StoreEntitySet="MERCY_ROM_INFO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="COMPANYCODE" ColumnName="COMPANYCODE" />
+                <ScalarProperty Name="BLOCK" ColumnName="BLOCK" />
+                <ScalarProperty Name="ROM_NAME" ColumnName="ROM_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MERCY_ROM_QUALITY">
+            <EntityTypeMapping TypeName="MERCYModel_BigDataBEK.MERCY_ROM_QUALITY">
+              <MappingFragment StoreEntitySet="MERCY_ROM_QUALITY">
+                <ScalarProperty Name="ROM_ID" ColumnName="ROM_ID" />
+                <ScalarProperty Name="COMPANY_CODE" ColumnName="COMPANY_CODE" />
+                <ScalarProperty Name="PROCESS_DATE" ColumnName="PROCESS_DATE" />
+                <ScalarProperty Name="BLOCK" ColumnName="BLOCK" />
+                <ScalarProperty Name="ROM_NAME" ColumnName="ROM_NAME" />
+                <ScalarProperty Name="TON" ColumnName="TON" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="ASH" ColumnName="ASH" />
+                <ScalarProperty Name="IM" ColumnName="IM" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+			<EntitySetMapping Name="MERCY_SOURCE_NEW">
+				<EntityTypeMapping TypeName="MERCYModel_BigDataBEK.MERCY_SOURCE_NEW">
+					<MappingFragment StoreEntitySet="MERCY_SOURCE_NEW">
+						<ScalarProperty Name="SEAM" ColumnName="SEAM" />
+						<ScalarProperty Name="PIT" ColumnName="PIT" />
+						<ScalarProperty Name="COMPANY_CODE" ColumnName="COMPANY_CODE" />
+					</MappingFragment>
+				</EntityTypeMapping>
+			</EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

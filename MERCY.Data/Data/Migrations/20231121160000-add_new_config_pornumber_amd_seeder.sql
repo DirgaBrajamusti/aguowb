@@ -1,0 +1,10 @@
+﻿/* Up Script*/
+INSERT INTO dbo.Config
+	(Name, Value)
+VALUES
+	('PYRATE_OXIDATION_REACTION_NUMBER', 30.625);
+
+/* Down Script */
+
+DELETE FROM dbo.Config
+WHERE Name = 'PYRATE_OXIDATION_REACTION_NUMBER';

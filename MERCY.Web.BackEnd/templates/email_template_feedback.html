@@ -1,0 +1,144 @@
+<html>
+<head>
+<body>
+<style type="text/css">
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  margin: 0 auto; /* Center website */
+  max-width: 800px; /* Max width */
+  padding: 20px;
+}
+
+table.blueTable {
+border: 1px solid #1C6EA4;
+background-color: #EEEEEE;
+width: 100%;
+text-align: left;
+border-collapse: collapse;
+}
+
+table.blueTable td, table.blueTable th {
+border: 1px solid #AAAAAA;
+padding: 3px 2px;
+}
+
+table.blueTable tbody td {
+font-size: 13px;
+}
+
+table.blueTable tr:nth-child(even) {
+background: #D0E4F5;
+}
+
+table.blueTable thead {
+background: #1C6EA4;
+background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+border-bottom: 2px solid #444444;
+}
+
+table.blueTable thead th {
+font-size: 15px;
+font-weight: bold;
+color: #FFFFFF;
+border-left: 2px solid #D0E4F5;
+}
+
+table.blueTable thead th:first-child {
+border-left: none;
+}
+
+table.blueTable tfoot {
+font-size: 14px;
+font-weight: bold;
+color: #FFFFFF;
+background: #FFFFFF; /*#D0E4F5;*/
+background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+border-top: 2px solid #444444;
+}
+
+table.blueTable tfoot td {
+font-size: 14px;
+}
+
+table.blueTable tfoot .links {
+text-align: right;
+}
+
+table.blueTable tfoot .links a {
+display: inline-block;
+background: #1C6EA4;
+color: #FFFFFF;
+padding: 2px 8px;
+border-radius: 5px;
+}
+
+</style>
+<div>
+<p>Dear All,</p>
+<p>New lab analysis result customer feedback has been submitted by {UserName} on {Date}:</p>
+</div>
+<table style="height: 86px;" border="1" width="515" cellspacing="0" cellpadding="0" class="blueTable">
+<tbody>
+<tr>
+<td style="width: 100px;">Accuracy</td>
+<td style="width: 100px;">Objectivity</td>
+<td style="width: 100px;">Easy to Understand</td>
+<td style="width: 100px;">Detailed</td>
+<td style="width: 100px;">Puctuality</td>
+</tr>
+<tr>
+    <td style="width: 100px;">
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Accuracy_1}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Accuracy_2}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Accuracy_3}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Accuracy_4}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Accuracy_5}" /></span>
+    </td>
+    <td style="width: 100px;">
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Objectivity_1}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Objectivity_2}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Objectivity_3}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Objectivity_4}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Objectivity_5}" /></span>
+    </td>
+    <td style="width: 100px;">
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Easy_1}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Easy_2}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Easy_3}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Easy_4}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Easy_5}" /></span>
+    </td>
+    <td style="width: 100px;">
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Detailed_1}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Detailed_2}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Detailed_3}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Detailed_4}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Detailed_5}" /></span>
+    </td>
+    <td style="width: 100px;">
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Puctuality_1}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Puctuality_2}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Puctuality_3}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Puctuality_4}" /></span>
+        <span><img src="{MERCY_IMAGE_URL}{MERCY_Puctuality_5}" /></span>
+    </td>
+</tr>
+<tr>
+<td style="width: 500px;" colspan="5">Remark: {Remark}</td>
+</tr>
+</tbody>
+</table>
+<p>Best Regards,</p>
+<p></p>
+<hr style="border:3px solid #f1f1f1">
+</body>
+</head>
+</html>

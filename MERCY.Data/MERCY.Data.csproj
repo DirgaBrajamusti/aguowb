@@ -1,0 +1,727 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ADA91030-296A-4D44-8578-6284A6FD02E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MERCY.Data</RootNamespace>
+    <AssemblyName>MERCY.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EntityFramework\ADONETEntityDataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ADONETEntityDataModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ADONETEntityDataModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ADONETEntityDataModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\AnalysisJob.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\AnalysisRequest.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\AnalysisRequestSample.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\AnalysisRequest_Detail.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\AnalysisRequest_History.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\AnalysisRequest_Result.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\AnalysisResult.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\AnalysisResultHistory.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Apii.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\BargeLineUpMapping.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Barge_Survey_Condition.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Client.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\CoalInventory.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\CoalInventoryAttachment.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\CoalInventoryDetail.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Company.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\CompanyClientProjectScheme.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\CompanyProject.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\CompanyRefType.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\CompanyScheme.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\CompanyShift.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Config.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Consumable.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Consumable_History.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\DirectShipment.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Discussion.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Draft_Survey.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Feedback.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Fuel_Rob.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Group.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\HaulingRequest.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\HaulingRequest_Detail.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\HaulingRequest_Detail_PortionBlending.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\HaulingRequest_Detail_PortionBlending_Details.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\HaulingRequest_Detail_ROMTransfer.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Hopper.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Instrument.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\LabMaintenance.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\LabMaintenance_Complete.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\LabMaintenance_History.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\LoadingReport.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\LoadingReportHeader.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Actual.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Actual_Attachments.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Actual_Barge_Survey_Condition.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Actual_Cargo_Loaded.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Actual_Coal_Temperature.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Actual_Draft_Survey.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Actual_Fuel_Consumption.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Plan.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Plan_Detail_Barge.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Plan_Detail_Barge_Blending_Formula.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Plan_Detail_Barge_Quality.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Request.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Request_Loading_Plan.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Request_Loading_Plan_Detail_Barge.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Request_Loading_Plan_Detail_Barge_Blending_Formula.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Loading_Request_Loading_Plan_Detail_Barge_Quality.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\MaintenanceActivity.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Menu.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Permission.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\PortionBlending.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\PortionBlending_Details.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Port_Loading.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Product.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Project.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ReadRequest.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\RefType.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Reminder_History_Lab_Consumable.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Reminder_History_Lab_Maintenance.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ROM.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ROMLocation.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ROMLocationDetail.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ROMTransfer.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Sample.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SampleDetailAMD.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SampleDetailGeneral.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SampleDetailLoading.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SampleScheme.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SamplingRequest.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SamplingRequest_History.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SamplingRequest_Lab.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SamplingRequest_ROM.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\SamplingRequest_SEAM.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Scheme.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Session.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Shift.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Site.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Barge_Line_Up.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_BARGE_LOADING.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_BARGE_LOADING_COA.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_BARGE_LOADING_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Barge_Quality_Plan.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Barge_Quality_Plan_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_CRUSHING_PLANT.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_CRUSHING_PLANT_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_File.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Geology_Explorasi.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Geology_Explorasi_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Geology_Pit_Monitoring.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Geology_Pit_Monitoring_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_HAC.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_HAC_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_SampleDetail.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Sampling_ROM.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_Sampling_ROM_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TEMPORARY_VLU.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Tunnel.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\TunnelHistory.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Tunnel_Actual.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Tunnel_Actual_History.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UnitMeasurement.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Barge_Line_Up.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_BARGE_LOADING.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_BARGE_LOADING_COA.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_BARGE_LOADING_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Barge_Quality_Plan.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Barge_Quality_Plan_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_CRUSHING_PLANT.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_CRUSHING_PLANT_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Geology_AMD.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Geology_AMD_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Geology_Explorasi.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Geology_Explorasi_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Geology_Pit_Monitoring.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Geology_Pit_Monitoring_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_HAC.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_HAC_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_LECO_CV.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_LECO_TGA.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_LECO_TS.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Sampling_ROM.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_Sampling_ROM_Header.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UPLOAD_VLU.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\User.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UserCompany.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UserGroup.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\UserSite.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\User_Activity.cs">
+      <DependentUpon>ADONETEntityDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigDataBEK\ADONETEntityDataModel_BigDataBEK.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigDataBEK\ADONETEntityDataModel_BigDataBEK.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigDataBEK\ADONETEntityDataModel_BigDataBEK.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigDataBEK\MERCY_PRODUCT_NEW.cs">
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigDataBEK\MERCY_QUALITY_OUTLOOK.cs">
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigDataBEK\MERCY_ROM_INFO.cs">
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigDataBEK\MERCY_ROM_QUALITY.cs">
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigDataBEK\MERCY_SOURCE_NEW.cs">
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_PowerBI\ADONETEntityDataModel_PowerBI.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_PowerBI.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_PowerBI\ADONETEntityDataModel_PowerBI.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_PowerBI.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_PowerBI\ADONETEntityDataModel_PowerBI.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_PowerBI.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_PowerBI\MERCY_ROM_QUALITY_ODS.cs">
+      <DependentUpon>ADONETEntityDataModel_PowerBI.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigData\ADONETEntityDataModel_BigData.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_BigData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigData\ADONETEntityDataModel_BigData.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_BigData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigData\ADONETEntityDataModel_BigData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_BigData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigData\Mercy_Product.cs">
+      <DependentUpon>ADONETEntityDataModel_BigData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigData\Mercy_quality_outlook.cs">
+      <DependentUpon>ADONETEntityDataModel_BigData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigData\Mercy_ROM_Info.cs">
+      <DependentUpon>ADONETEntityDataModel_BigData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigData\Mercy_ROM_Quality.cs">
+      <DependentUpon>ADONETEntityDataModel_BigData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_BigData\Mercy_Source.cs">
+      <DependentUpon>ADONETEntityDataModel_BigData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_MineMarket\ADONETEntityDataModel_MineMarket.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_MineMarket.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_MineMarket\ADONETEntityDataModel_MineMarket.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADONETEntityDataModel_MineMarket.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_MineMarket\ADONETEntityDataModel_MineMarket.Designer.cs">
+      <DependentUpon>ADONETEntityDataModel_MineMarket.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EntityFramework_MineMarket\VW_MM_MERCY_BARGE.cs">
+      <DependentUpon>ADONETEntityDataModel_MineMarket.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_MineMarket\VW_MM_MERCY_STOCKPILE.cs">
+      <DependentUpon>ADONETEntityDataModel_MineMarket.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework_MineMarket\VW_MM_MERCY_VESSEL.cs">
+      <DependentUpon>ADONETEntityDataModel_MineMarket.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="EntityFramework\ADONETEntityDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ADONETEntityDataModel1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EntityFramework\ADONETEntityDataModel.edmx.diagram">
+      <DependentUpon>ADONETEntityDataModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="EntityFramework_BigData\ADONETEntityDataModel_BigData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ADONETEntityDataModel_BigData.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="EntityFramework_BigDataBEK\ADONETEntityDataModel_BigDataBEK.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ADONETEntityDataModel_BigDataBEK.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EntityFramework_BigDataBEK\ADONETEntityDataModel_BigDataBEK.edmx.diagram">
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="EntityFramework_PowerBI\ADONETEntityDataModel_PowerBI.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ADONETEntityDataModel_PowerBI.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EntityFramework_PowerBI\ADONETEntityDataModel_PowerBI.edmx.diagram">
+      <DependentUpon>ADONETEntityDataModel_PowerBI.edmx</DependentUpon>
+    </None>
+    <None Include="EntityFramework_BigData\ADONETEntityDataModel_BigData.edmx.diagram">
+      <DependentUpon>ADONETEntityDataModel_BigData.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="EntityFramework_MineMarket\ADONETEntityDataModel_MineMarket.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ADONETEntityDataModel_MineMarket.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EntityFramework_MineMarket\ADONETEntityDataModel_MineMarket.edmx.diagram">
+      <DependentUpon>ADONETEntityDataModel_MineMarket.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Data\Migrations\20231211120400-create-report-geology-amd-header-procedure.sql" />
+    <Content Include="Data\Migrations\20231211120400-create-report-geology-amd-procedure.sql" />
+    <Content Include="Data\Migrations\20231207204100-create-upload-geology-amd-tables.sql" />
+    <Content Include="Data\Migrations\20231205100000-add-sample-detail-amd-table.sql" />
+    <Content Include="Data\Migrations\20231130142600-add-new-tcm-sample-scheme-seeder.sql" />
+    <Content Include="Data\Migrations\20230207180900-update-procedure-sampling-report.sql" />
+    <Content Include="Data\Migrations\20230214084000-update-report-header-barge-loading-procedure.sql" />
+    <Content Include="Data\Migrations\20230215110400-update-report-analysist-request-procedures.sql" />
+    <Content Include="Data\Migrations\20230126152300-update-discussion-table.sql" />
+    <Content Include="Data\Migrations\20230112143200-add-new-column-in-samples.sql" />
+    <Content Include="Data\Migrations\20230104132200-add-new-column-in-company.sql" />
+    <Content Include="Data\Migrations\20230104164000-update-company-client-project-scheme-required.sql" />
+    <Content Include="Data\Migrations\20221229160535-add-new-column-in-analysis-request.sql" />
+    <Content Include="Data\Migrations\20221226224812-add-jbg-schemes-seeder.sql" />
+    <Content Include="Data\Migrations\20221201151547-fix-barge-crushing-report-query.sql" />
+    <Content Include="Data\Migrations\20220922074215-add-new-column-in-rom-location.sql" />
+    <Content Include="Data\Migrations\20210927073333-add-columns-in-sample.sql" />
+    <Content Include="Data\Migrations\20210923172129-add-new-column-to-analysis-job.sql" />
+    <Content Include="Data\Migrations\20210922160234-update-analysis-result-result-column.sql" />
+    <Content Include="Data\Migrations\20210914080106-add-analysis-result-history-table.sql" />
+    <Content Include="Data\Migrations\20210910132757-add-analysis-result-table.sql" />
+    <Content Include="Data\Migrations\20210909140224-update-scheme-table.sql" />
+    <Content Include="Data\Migrations\20210909135903-add-company-scheme.sql" />
+    <Content Include="Data\Migrations\20210906132521-add-column-in-permission.sql" />
+    <Content Include="Data\Migrations\20210906101303-add-column-in-project-and-scheme.sql" />
+    <Content Include="Data\Migrations\20210901135459-alter-sample-detail-loading-customer-column.sql" />
+    <Content Include="Data\Migrations\20210831080022-add-sample-detail-loading-table.sql" />
+    <Content Include="Data\Migrations\20210825133729-add-data-to-sample-table-and-relations.sql" />
+    <Content Include="Data\Migrations\20210825130916-add-sample-table-and-relations.sql" />
+    <Content Include="Data\Migrations\20210819105927-add-column-tunnel _history.sql" />
+    <Content Include="Data\Migrations\20210818150120-add-column-tunnel.sql" />
+    <Content Include="Data\Migrations\20210816102013-add-column-and-update-tunnel.sql" />
+    <Content Include="Data\Migrations\20210910092321-create-sessions-table.sql" />
+    <Content Include="Data\Migrations\20231121160000-add_new_config_pornumber_amd_seeder.sql" />
+    <Content Include="Data\Migrations\20231121140000-add_new_column_analysis_requests.sql" />
+    <Content Include="Data\Migrations\20230418082400-update_existing_externalid_to_newformat_sample.sql" />
+    <Content Include="Data\Migrations\20230329134000-add-new-imm-scheme-seeder.sql" />
+    <Content Include="EntityFramework\ADONETEntityDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADONETEntityDataModel.edmx</DependentUpon>
+      <LastGenOutput>ADONETEntityDataModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityFramework\ADONETEntityDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADONETEntityDataModel.edmx</DependentUpon>
+      <LastGenOutput>ADONETEntityDataModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityFramework_BigDataBEK\ADONETEntityDataModel_BigDataBEK.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.edmx</DependentUpon>
+      <LastGenOutput>ADONETEntityDataModel_BigDataBEK.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityFramework_BigDataBEK\ADONETEntityDataModel_BigDataBEK.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADONETEntityDataModel_BigDataBEK.edmx</DependentUpon>
+      <LastGenOutput>ADONETEntityDataModel_BigDataBEK.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityFramework_PowerBI\ADONETEntityDataModel_PowerBI.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADONETEntityDataModel_PowerBI.edmx</DependentUpon>
+      <LastGenOutput>ADONETEntityDataModel_PowerBI.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityFramework_PowerBI\ADONETEntityDataModel_PowerBI.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADONETEntityDataModel_PowerBI.edmx</DependentUpon>
+      <LastGenOutput>ADONETEntityDataModel_PowerBI.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityFramework_BigData\ADONETEntityDataModel_BigData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADONETEntityDataModel_BigData.edmx</DependentUpon>
+      <LastGenOutput>ADONETEntityDataModel_BigData.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityFramework_BigData\ADONETEntityDataModel_BigData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADONETEntityDataModel_BigData.edmx</DependentUpon>
+      <LastGenOutput>ADONETEntityDataModel_BigData.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityFramework_MineMarket\ADONETEntityDataModel_MineMarket.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ADONETEntityDataModel_MineMarket.Context.cs</LastGenOutput>
+      <DependentUpon>ADONETEntityDataModel_MineMarket.edmx</DependentUpon>
+    </Content>
+    <Content Include="EntityFramework_MineMarket\ADONETEntityDataModel_MineMarket.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ADONETEntityDataModel_MineMarket.cs</LastGenOutput>
+      <DependentUpon>ADONETEntityDataModel_MineMarket.edmx</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

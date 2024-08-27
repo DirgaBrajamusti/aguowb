@@ -1,0 +1,964 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MERCY_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyCode" />
+          </Key>
+          <Property Name="CompanyCode" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="Is_DataROM_from_BI" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HaulingRequest">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateFrom" Type="date" Nullable="false" />
+          <Property Name="DateTo" Type="date" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="HaulingRequest_Detail">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HaulingRequest" Type="bigint" Nullable="false" />
+          <Property Name="DataType" Type="varchar" MaxLength="255" />
+          <Property Name="DataId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HaulingRequest_Detail_PortionBlending">
+          <Key>
+            <PropertyRef Name="RecordIdx" />
+          </Key>
+          <Property Name="RecordIdx" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HaulingRequest" Type="bigint" Nullable="false" />
+          <Property Name="RecordId_Snapshot" Type="bigint" Nullable="false" />
+          <Property Name="Company" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Product" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="BlendingDate" Type="date" Nullable="false" />
+          <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="NoHauling" Type="bit" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CV" Type="float" Nullable="false" />
+          <Property Name="TS" Type="float" Nullable="false" />
+          <Property Name="ASH" Type="float" Nullable="false" />
+          <Property Name="IM" Type="float" Nullable="false" />
+          <Property Name="TM" Type="float" Nullable="false" />
+          <Property Name="Ton" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Hopper" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Tunnel" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="HaulingRequest_Detail_PortionBlending_Details">
+          <Key>
+            <PropertyRef Name="RecordIdx" />
+          </Key>
+          <Property Name="RecordIdx" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HaulingRequest" Type="bigint" Nullable="false" />
+          <Property Name="RecordId_Snapshot" Type="bigint" Nullable="false" />
+          <Property Name="PortionBlending" Type="bigint" Nullable="false" />
+          <Property Name="ROMQuality_RecordId" Type="bigint" Nullable="false" />
+          <Property Name="block" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ROM_Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ROM_ID" Type="int" Nullable="false" />
+          <Property Name="CV" Type="float" Nullable="false" />
+          <Property Name="TS" Type="float" Nullable="false" />
+          <Property Name="ASH" Type="float" Nullable="false" />
+          <Property Name="IM" Type="float" Nullable="false" />
+          <Property Name="TM" Type="float" Nullable="false" />
+          <Property Name="Ton" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Portion" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HaulingRequest_Detail_ROMTransfer">
+          <Key>
+            <PropertyRef Name="RecordIdx" />
+          </Key>
+          <Property Name="RecordIdx" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HaulingRequest" Type="bigint" Nullable="false" />
+          <Property Name="RecordId_Snapshot" Type="bigint" Nullable="false" />
+          <Property Name="Company" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="TransferDate" Type="date" Nullable="false" />
+          <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="Source_ROM_ID" Type="int" />
+          <Property Name="Source_Block" Type="nvarchar" MaxLength="255" />
+          <Property Name="Source_ROM_Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Destination_ROM_ID" Type="int" />
+          <Property Name="Destination_Block" Type="nvarchar" MaxLength="255" />
+          <Property Name="Destination_ROM_Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Remark" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PortionBlending">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Company" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Product" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="BlendingDate" Type="date" Nullable="false" />
+          <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="NoHauling" Type="bit" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CV" Type="float" Nullable="false" />
+          <Property Name="TS" Type="float" Nullable="false" />
+          <Property Name="ASH" Type="float" Nullable="false" />
+          <Property Name="IM" Type="float" Nullable="false" />
+          <Property Name="TM" Type="float" Nullable="false" />
+          <Property Name="Ton" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Hopper" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Tunnel" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PortionBlending_Details">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PortionBlending" Type="bigint" Nullable="false" />
+          <Property Name="ROMQuality_RecordId" Type="bigint" Nullable="false" />
+          <Property Name="block" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ROM_Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ROM_ID" Type="int" Nullable="false" />
+          <Property Name="CV" Type="float" Nullable="false" />
+          <Property Name="TS" Type="float" Nullable="false" />
+          <Property Name="ASH" Type="float" Nullable="false" />
+          <Property Name="IM" Type="float" Nullable="false" />
+          <Property Name="TM" Type="float" Nullable="false" />
+          <Property Name="Ton" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Portion" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ROMTransfer">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Company" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="TransferDate" Type="date" Nullable="false" />
+          <Property Name="Shift" Type="int" Nullable="false" />
+          <Property Name="Source_ROM_ID" Type="int" />
+          <Property Name="Source_Block" Type="nvarchar" MaxLength="255" />
+          <Property Name="Source_ROM_Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Destination_ROM_ID" Type="int" />
+          <Property Name="Destination_Block" Type="nvarchar" MaxLength="255" />
+          <Property Name="Destination_ROM_Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Remark" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Tunnel">
+          <Key>
+            <PropertyRef Name="TunnelId" />
+          </Key>
+		  <Property Name="EffectiveDate" Type="datetime" />
+		  <Property Name="Approval" Type="varchar" MaxLength="50" />
+          <Property Name="TunnelId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyCode" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tunnel_Actual">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HaulingRequest_Reference" Type="bigint" Nullable="false" />
+          <Property Name="TunnelId" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="Time" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Remark" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_HaulingRequest_Detail_HaulingRequest">
+          <End Role="HaulingRequest" Type="Self.HaulingRequest" Multiplicity="1" />
+          <End Role="HaulingRequest_Detail" Type="Self.HaulingRequest_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="HaulingRequest_Detail">
+              <PropertyRef Name="HaulingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest">
+          <End Role="HaulingRequest" Type="Self.HaulingRequest" Multiplicity="1" />
+          <End Role="HaulingRequest_Detail_PortionBlending_Details" Type="Self.HaulingRequest_Detail_PortionBlending_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="HaulingRequest_Detail_PortionBlending_Details">
+              <PropertyRef Name="HaulingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HaulingRequest_Detail_PortionBlending_HaulingRequest">
+          <End Role="HaulingRequest" Type="Self.HaulingRequest" Multiplicity="1" />
+          <End Role="HaulingRequest_Detail_PortionBlending" Type="Self.HaulingRequest_Detail_PortionBlending" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="HaulingRequest_Detail_PortionBlending">
+              <PropertyRef Name="HaulingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest">
+          <End Role="HaulingRequest" Type="Self.HaulingRequest" Multiplicity="1" />
+          <End Role="HaulingRequest_Detail_ROMTransfer" Type="Self.HaulingRequest_Detail_ROMTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="HaulingRequest_Detail_ROMTransfer">
+              <PropertyRef Name="HaulingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tunnel_Actual_HaulingRequest_Reference">
+          <End Role="HaulingRequest_Detail_PortionBlending" Type="Self.HaulingRequest_Detail_PortionBlending" Multiplicity="1" />
+          <End Role="Tunnel_Actual" Type="Self.Tunnel_Actual" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest_Detail_PortionBlending">
+              <PropertyRef Name="RecordIdx" />
+            </Principal>
+            <Dependent Role="Tunnel_Actual">
+              <PropertyRef Name="HaulingRequest_Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tunnel_Actual_TunnelId">
+          <End Role="Tunnel" Type="Self.Tunnel" Multiplicity="1" />
+          <End Role="Tunnel_Actual" Type="Self.Tunnel_Actual" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tunnel">
+              <PropertyRef Name="TunnelId" />
+            </Principal>
+            <Dependent Role="Tunnel_Actual">
+              <PropertyRef Name="TunnelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tunnel_CompanyCode">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Tunnel" Type="Self.Tunnel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyCode" />
+            </Principal>
+            <Dependent Role="Tunnel">
+              <PropertyRef Name="CompanyCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PK_PortionBlending_Details_PortionBlending">
+          <End Role="PortionBlending" Type="Self.PortionBlending" Multiplicity="1" />
+          <End Role="PortionBlending_Details" Type="Self.PortionBlending_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PortionBlending">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="PortionBlending_Details">
+              <PropertyRef Name="PortionBlending" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MERCY_ModelStoreContainer">
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HaulingRequest" EntityType="Self.HaulingRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HaulingRequest_Detail" EntityType="Self.HaulingRequest_Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HaulingRequest_Detail_PortionBlending" EntityType="Self.HaulingRequest_Detail_PortionBlending" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HaulingRequest_Detail_PortionBlending_Details" EntityType="Self.HaulingRequest_Detail_PortionBlending_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HaulingRequest_Detail_ROMTransfer" EntityType="Self.HaulingRequest_Detail_ROMTransfer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PortionBlending" EntityType="Self.PortionBlending" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PortionBlending_Details" EntityType="Self.PortionBlending_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROMTransfer" EntityType="Self.ROMTransfer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tunnel" EntityType="Self.Tunnel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tunnel_Actual" EntityType="Self.Tunnel_Actual" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_HaulingRequest_Detail_HaulingRequest" Association="Self.FK_HaulingRequest_Detail_HaulingRequest">
+            <End Role="HaulingRequest" EntitySet="HaulingRequest" />
+            <End Role="HaulingRequest_Detail" EntitySet="HaulingRequest_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest" Association="Self.FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest">
+            <End Role="HaulingRequest" EntitySet="HaulingRequest" />
+            <End Role="HaulingRequest_Detail_PortionBlending_Details" EntitySet="HaulingRequest_Detail_PortionBlending_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HaulingRequest_Detail_PortionBlending_HaulingRequest" Association="Self.FK_HaulingRequest_Detail_PortionBlending_HaulingRequest">
+            <End Role="HaulingRequest" EntitySet="HaulingRequest" />
+            <End Role="HaulingRequest_Detail_PortionBlending" EntitySet="HaulingRequest_Detail_PortionBlending" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest" Association="Self.FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest">
+            <End Role="HaulingRequest" EntitySet="HaulingRequest" />
+            <End Role="HaulingRequest_Detail_ROMTransfer" EntitySet="HaulingRequest_Detail_ROMTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tunnel_Actual_HaulingRequest_Reference" Association="Self.FK_Tunnel_Actual_HaulingRequest_Reference">
+            <End Role="HaulingRequest_Detail_PortionBlending" EntitySet="HaulingRequest_Detail_PortionBlending" />
+            <End Role="Tunnel_Actual" EntitySet="Tunnel_Actual" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tunnel_Actual_TunnelId" Association="Self.FK_Tunnel_Actual_TunnelId">
+            <End Role="Tunnel" EntitySet="Tunnel" />
+            <End Role="Tunnel_Actual" EntitySet="Tunnel_Actual" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tunnel_CompanyCode" Association="Self.FK_Tunnel_CompanyCode">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Tunnel" EntitySet="Tunnel" />
+          </AssociationSet>
+          <AssociationSet Name="PK_PortionBlending_Details_PortionBlending" Association="Self.PK_PortionBlending_Details_PortionBlending">
+            <End Role="PortionBlending" EntitySet="PortionBlending" />
+            <End Role="PortionBlending_Details" EntitySet="PortionBlending_Details" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MERCY_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyCode" />
+          </Key>
+          <Property Name="CompanyCode" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="Is_DataROM_from_BI" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tunnels" Relationship="MERCY_Model.FK_Tunnel_CompanyCode" FromRole="Company" ToRole="Tunnel" />
+        </EntityType>
+        <EntityType Name="HaulingRequest">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateFrom" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateTo" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="HaulingRequest_Detail" Relationship="Self.FK_HaulingRequest_Detail_HaulingRequest" FromRole="HaulingRequest" ToRole="HaulingRequest_Detail" />
+          <NavigationProperty Name="HaulingRequest_Detail_PortionBlending_Details" Relationship="Self.FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest" FromRole="HaulingRequest" ToRole="HaulingRequest_Detail_PortionBlending_Details" />
+          <NavigationProperty Name="HaulingRequest_Detail_PortionBlending" Relationship="Self.FK_HaulingRequest_Detail_PortionBlending_HaulingRequest" FromRole="HaulingRequest" ToRole="HaulingRequest_Detail_PortionBlending" />
+          <NavigationProperty Name="HaulingRequest_Detail_ROMTransfer" Relationship="Self.FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest" FromRole="HaulingRequest" ToRole="HaulingRequest_Detail_ROMTransfer" />
+        </EntityType>
+        <EntityType Name="HaulingRequest_Detail">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HaulingRequest" Type="Int64" Nullable="false" />
+          <Property Name="DataType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DataId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="HaulingRequest1" Relationship="Self.FK_HaulingRequest_Detail_HaulingRequest" FromRole="HaulingRequest_Detail" ToRole="HaulingRequest" />
+        </EntityType>
+        <EntityType Name="HaulingRequest_Detail_PortionBlending">
+          <Key>
+            <PropertyRef Name="RecordIdx" />
+          </Key>
+          <Property Name="RecordIdx" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HaulingRequest" Type="Int64" Nullable="false" />
+          <Property Name="RecordId_Snapshot" Type="Int64" Nullable="false" />
+          <Property Name="Company" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BlendingDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="NoHauling" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CV" Type="Double" Nullable="false" />
+          <Property Name="TS" Type="Double" Nullable="false" />
+          <Property Name="ASH" Type="Double" Nullable="false" />
+          <Property Name="IM" Type="Double" Nullable="false" />
+          <Property Name="TM" Type="Double" Nullable="false" />
+          <Property Name="Ton" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Hopper" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tunnel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="HaulingRequest1" Relationship="Self.FK_HaulingRequest_Detail_PortionBlending_HaulingRequest" FromRole="HaulingRequest_Detail_PortionBlending" ToRole="HaulingRequest" />
+          <NavigationProperty Name="Tunnel_Actual" Relationship="MERCY_Model.FK_Tunnel_Actual_HaulingRequest_Reference" FromRole="HaulingRequest_Detail_PortionBlending" ToRole="Tunnel_Actual" />
+        </EntityType>
+        <EntityType Name="HaulingRequest_Detail_PortionBlending_Details">
+          <Key>
+            <PropertyRef Name="RecordIdx" />
+          </Key>
+          <Property Name="RecordIdx" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HaulingRequest" Type="Int64" Nullable="false" />
+          <Property Name="RecordId_Snapshot" Type="Int64" Nullable="false" />
+          <Property Name="PortionBlending" Type="Int64" Nullable="false" />
+          <Property Name="ROMQuality_RecordId" Type="Int64" Nullable="false" />
+          <Property Name="block" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ROM_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ROM_ID" Type="Int32" Nullable="false" />
+          <Property Name="CV" Type="Double" Nullable="false" />
+          <Property Name="TS" Type="Double" Nullable="false" />
+          <Property Name="ASH" Type="Double" Nullable="false" />
+          <Property Name="IM" Type="Double" Nullable="false" />
+          <Property Name="TM" Type="Double" Nullable="false" />
+          <Property Name="Ton" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Portion" Type="Double" Nullable="false" />
+          <NavigationProperty Name="HaulingRequest1" Relationship="Self.FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest" FromRole="HaulingRequest_Detail_PortionBlending_Details" ToRole="HaulingRequest" />
+        </EntityType>
+        <EntityType Name="HaulingRequest_Detail_ROMTransfer">
+          <Key>
+            <PropertyRef Name="RecordIdx" />
+          </Key>
+          <Property Name="RecordIdx" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HaulingRequest" Type="Int64" Nullable="false" />
+          <Property Name="RecordId_Snapshot" Type="Int64" Nullable="false" />
+          <Property Name="Company" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TransferDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Source_ROM_ID" Type="Int32" />
+          <Property Name="Source_Block" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Source_ROM_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Destination_ROM_ID" Type="Int32" />
+          <Property Name="Destination_Block" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Destination_ROM_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="HaulingRequest1" Relationship="Self.FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest" FromRole="HaulingRequest_Detail_ROMTransfer" ToRole="HaulingRequest" />
+        </EntityType>
+        <EntityType Name="PortionBlending">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Company" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BlendingDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="NoHauling" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CV" Type="Double" Nullable="false" />
+          <Property Name="TS" Type="Double" Nullable="false" />
+          <Property Name="ASH" Type="Double" Nullable="false" />
+          <Property Name="IM" Type="Double" Nullable="false" />
+          <Property Name="TM" Type="Double" Nullable="false" />
+          <Property Name="Ton" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Hopper" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tunnel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PortionBlending_Details" Relationship="Self.PK_PortionBlending_Details_PortionBlending" FromRole="PortionBlending" ToRole="PortionBlending_Details" />
+        </EntityType>
+        <EntityType Name="PortionBlending_Details">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PortionBlending" Type="Int64" Nullable="false" />
+          <Property Name="ROMQuality_RecordId" Type="Int64" Nullable="false" />
+          <Property Name="block" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ROM_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ROM_ID" Type="Int32" Nullable="false" />
+          <Property Name="CV" Type="Double" Nullable="false" />
+          <Property Name="TS" Type="Double" Nullable="false" />
+          <Property Name="ASH" Type="Double" Nullable="false" />
+          <Property Name="IM" Type="Double" Nullable="false" />
+          <Property Name="TM" Type="Double" Nullable="false" />
+          <Property Name="Ton" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Portion" Type="Double" Nullable="false" />
+          <NavigationProperty Name="PortionBlending1" Relationship="Self.PK_PortionBlending_Details_PortionBlending" FromRole="PortionBlending_Details" ToRole="PortionBlending" />
+        </EntityType>
+        <EntityType Name="ROMTransfer">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Company" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TransferDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Source_ROM_ID" Type="Int32" />
+          <Property Name="Source_Block" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Source_ROM_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Destination_ROM_ID" Type="Int32" />
+          <Property Name="Destination_Block" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Destination_ROM_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK_HaulingRequest_Detail_HaulingRequest">
+          <End Role="HaulingRequest" Type="Self.HaulingRequest" Multiplicity="1" />
+          <End Role="HaulingRequest_Detail" Type="Self.HaulingRequest_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="HaulingRequest_Detail">
+              <PropertyRef Name="HaulingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest">
+          <End Role="HaulingRequest" Type="Self.HaulingRequest" Multiplicity="1" />
+          <End Role="HaulingRequest_Detail_PortionBlending_Details" Type="Self.HaulingRequest_Detail_PortionBlending_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="HaulingRequest_Detail_PortionBlending_Details">
+              <PropertyRef Name="HaulingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HaulingRequest_Detail_PortionBlending_HaulingRequest">
+          <End Role="HaulingRequest" Type="Self.HaulingRequest" Multiplicity="1" />
+          <End Role="HaulingRequest_Detail_PortionBlending" Type="Self.HaulingRequest_Detail_PortionBlending" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="HaulingRequest_Detail_PortionBlending">
+              <PropertyRef Name="HaulingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest">
+          <End Role="HaulingRequest" Type="Self.HaulingRequest" Multiplicity="1" />
+          <End Role="HaulingRequest_Detail_ROMTransfer" Type="Self.HaulingRequest_Detail_ROMTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="HaulingRequest_Detail_ROMTransfer">
+              <PropertyRef Name="HaulingRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PK_PortionBlending_Details_PortionBlending">
+          <End Role="PortionBlending" Type="Self.PortionBlending" Multiplicity="1" />
+          <End Role="PortionBlending_Details" Type="Self.PortionBlending_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PortionBlending">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="PortionBlending_Details">
+              <PropertyRef Name="PortionBlending" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="HaulingRequests" EntityType="Self.HaulingRequest" />
+          <EntitySet Name="HaulingRequest_Detail" EntityType="Self.HaulingRequest_Detail" />
+          <EntitySet Name="HaulingRequest_Detail_PortionBlending" EntityType="Self.HaulingRequest_Detail_PortionBlending" />
+          <EntitySet Name="HaulingRequest_Detail_PortionBlending_Details" EntityType="Self.HaulingRequest_Detail_PortionBlending_Details" />
+          <EntitySet Name="HaulingRequest_Detail_ROMTransfer" EntityType="Self.HaulingRequest_Detail_ROMTransfer" />
+          <EntitySet Name="PortionBlendings" EntityType="Self.PortionBlending" />
+          <EntitySet Name="PortionBlending_Details" EntityType="Self.PortionBlending_Details" />
+          <EntitySet Name="ROMTransfers" EntityType="Self.ROMTransfer" />
+          <AssociationSet Name="FK_HaulingRequest_Detail_HaulingRequest" Association="Self.FK_HaulingRequest_Detail_HaulingRequest">
+            <End Role="HaulingRequest" EntitySet="HaulingRequests" />
+            <End Role="HaulingRequest_Detail" EntitySet="HaulingRequest_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest" Association="Self.FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest">
+            <End Role="HaulingRequest" EntitySet="HaulingRequests" />
+            <End Role="HaulingRequest_Detail_PortionBlending_Details" EntitySet="HaulingRequest_Detail_PortionBlending_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HaulingRequest_Detail_PortionBlending_HaulingRequest" Association="Self.FK_HaulingRequest_Detail_PortionBlending_HaulingRequest">
+            <End Role="HaulingRequest" EntitySet="HaulingRequests" />
+            <End Role="HaulingRequest_Detail_PortionBlending" EntitySet="HaulingRequest_Detail_PortionBlending" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest" Association="Self.FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest">
+            <End Role="HaulingRequest" EntitySet="HaulingRequests" />
+            <End Role="HaulingRequest_Detail_ROMTransfer" EntitySet="HaulingRequest_Detail_ROMTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="PK_PortionBlending_Details_PortionBlending" Association="Self.PK_PortionBlending_Details_PortionBlending">
+            <End Role="PortionBlending" EntitySet="PortionBlendings" />
+            <End Role="PortionBlending_Details" EntitySet="PortionBlending_Details" />
+          </AssociationSet>
+          <EntitySet Name="Tunnels" EntityType="MERCY_Model.Tunnel" />
+          <EntitySet Name="Tunnel_Actual" EntityType="MERCY_Model.Tunnel_Actual" />
+          <AssociationSet Name="FK_Tunnel_CompanyCode" Association="MERCY_Model.FK_Tunnel_CompanyCode">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Tunnel" EntitySet="Tunnels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tunnel_Actual_HaulingRequest_Reference" Association="MERCY_Model.FK_Tunnel_Actual_HaulingRequest_Reference">
+            <End Role="HaulingRequest_Detail_PortionBlending" EntitySet="HaulingRequest_Detail_PortionBlending" />
+            <End Role="Tunnel_Actual" EntitySet="Tunnel_Actual" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tunnel_Actual_TunnelId" Association="MERCY_Model.FK_Tunnel_Actual_TunnelId">
+            <End Role="Tunnel" EntitySet="Tunnels" />
+            <End Role="Tunnel_Actual" EntitySet="Tunnel_Actual" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Tunnel">
+          <Key>
+            <PropertyRef Name="TunnelId" />
+          </Key>
+          <Property Name="TunnelId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyCode" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="MERCY_Model.FK_Tunnel_CompanyCode" FromRole="Tunnel" ToRole="Company" />
+          <NavigationProperty Name="Tunnel_Actual" Relationship="MERCY_Model.FK_Tunnel_Actual_TunnelId" FromRole="Tunnel" ToRole="Tunnel_Actual" />
+        </EntityType>
+        <EntityType Name="Tunnel_Actual">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HaulingRequest_Reference" Type="Int64" Nullable="false" />
+          <Property Name="TunnelId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="Time" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="HaulingRequest_Detail_PortionBlending" Relationship="MERCY_Model.FK_Tunnel_Actual_HaulingRequest_Reference" FromRole="Tunnel_Actual" ToRole="HaulingRequest_Detail_PortionBlending" />
+          <NavigationProperty Name="Tunnel" Relationship="MERCY_Model.FK_Tunnel_Actual_TunnelId" FromRole="Tunnel_Actual" ToRole="Tunnel" />
+        </EntityType>
+        <Association Name="FK_Tunnel_CompanyCode">
+          <End Type="MERCY_Model.Company" Role="Company" Multiplicity="1" />
+          <End Type="MERCY_Model.Tunnel" Role="Tunnel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyCode" />
+            </Principal>
+            <Dependent Role="Tunnel">
+              <PropertyRef Name="CompanyCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tunnel_Actual_HaulingRequest_Reference">
+          <End Type="MERCY_Model.HaulingRequest_Detail_PortionBlending" Role="HaulingRequest_Detail_PortionBlending" Multiplicity="1" />
+          <End Type="MERCY_Model.Tunnel_Actual" Role="Tunnel_Actual" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HaulingRequest_Detail_PortionBlending">
+              <PropertyRef Name="RecordIdx" />
+            </Principal>
+            <Dependent Role="Tunnel_Actual">
+              <PropertyRef Name="HaulingRequest_Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tunnel_Actual_TunnelId">
+          <End Type="MERCY_Model.Tunnel" Role="Tunnel" Multiplicity="1" />
+          <End Type="MERCY_Model.Tunnel_Actual" Role="Tunnel_Actual" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tunnel">
+              <PropertyRef Name="TunnelId" />
+            </Principal>
+            <Dependent Role="Tunnel_Actual">
+              <PropertyRef Name="TunnelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MERCY_ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="MERCY_Model.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="Is_DataROM_from_BI" ColumnName="Is_DataROM_from_BI" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HaulingRequests">
+            <EntityTypeMapping TypeName="MERCY_Model.HaulingRequest">
+              <MappingFragment StoreEntitySet="HaulingRequest">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HaulingRequest_Detail">
+            <EntityTypeMapping TypeName="MERCY_Model.HaulingRequest_Detail">
+              <MappingFragment StoreEntitySet="HaulingRequest_Detail">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="HaulingRequest" ColumnName="HaulingRequest" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="DataId" ColumnName="DataId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HaulingRequest_Detail_PortionBlending">
+            <EntityTypeMapping TypeName="MERCY_Model.HaulingRequest_Detail_PortionBlending">
+              <MappingFragment StoreEntitySet="HaulingRequest_Detail_PortionBlending">
+                <ScalarProperty Name="RecordIdx" ColumnName="RecordIdx" />
+                <ScalarProperty Name="HaulingRequest" ColumnName="HaulingRequest" />
+                <ScalarProperty Name="RecordId_Snapshot" ColumnName="RecordId_Snapshot" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="BlendingDate" ColumnName="BlendingDate" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="NoHauling" ColumnName="NoHauling" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="ASH" ColumnName="ASH" />
+                <ScalarProperty Name="IM" ColumnName="IM" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+                <ScalarProperty Name="Ton" ColumnName="Ton" />
+                <ScalarProperty Name="Hopper" ColumnName="Hopper" />
+                <ScalarProperty Name="Tunnel" ColumnName="Tunnel" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HaulingRequest_Detail_PortionBlending_Details">
+            <EntityTypeMapping TypeName="MERCY_Model.HaulingRequest_Detail_PortionBlending_Details">
+              <MappingFragment StoreEntitySet="HaulingRequest_Detail_PortionBlending_Details">
+                <ScalarProperty Name="RecordIdx" ColumnName="RecordIdx" />
+                <ScalarProperty Name="HaulingRequest" ColumnName="HaulingRequest" />
+                <ScalarProperty Name="RecordId_Snapshot" ColumnName="RecordId_Snapshot" />
+                <ScalarProperty Name="PortionBlending" ColumnName="PortionBlending" />
+                <ScalarProperty Name="ROMQuality_RecordId" ColumnName="ROMQuality_RecordId" />
+                <ScalarProperty Name="block" ColumnName="block" />
+                <ScalarProperty Name="ROM_Name" ColumnName="ROM_Name" />
+                <ScalarProperty Name="ROM_ID" ColumnName="ROM_ID" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="ASH" ColumnName="ASH" />
+                <ScalarProperty Name="IM" ColumnName="IM" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+                <ScalarProperty Name="Ton" ColumnName="Ton" />
+                <ScalarProperty Name="Portion" ColumnName="Portion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HaulingRequest_Detail_ROMTransfer">
+            <EntityTypeMapping TypeName="MERCY_Model.HaulingRequest_Detail_ROMTransfer">
+              <MappingFragment StoreEntitySet="HaulingRequest_Detail_ROMTransfer">
+                <ScalarProperty Name="RecordIdx" ColumnName="RecordIdx" />
+                <ScalarProperty Name="HaulingRequest" ColumnName="HaulingRequest" />
+                <ScalarProperty Name="RecordId_Snapshot" ColumnName="RecordId_Snapshot" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Source_ROM_ID" ColumnName="Source_ROM_ID" />
+                <ScalarProperty Name="Source_Block" ColumnName="Source_Block" />
+                <ScalarProperty Name="Source_ROM_Name" ColumnName="Source_ROM_Name" />
+                <ScalarProperty Name="Destination_ROM_ID" ColumnName="Destination_ROM_ID" />
+                <ScalarProperty Name="Destination_Block" ColumnName="Destination_Block" />
+                <ScalarProperty Name="Destination_ROM_Name" ColumnName="Destination_ROM_Name" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PortionBlendings">
+            <EntityTypeMapping TypeName="MERCY_Model.PortionBlending">
+              <MappingFragment StoreEntitySet="PortionBlending">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="BlendingDate" ColumnName="BlendingDate" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="NoHauling" ColumnName="NoHauling" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="ASH" ColumnName="ASH" />
+                <ScalarProperty Name="IM" ColumnName="IM" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+                <ScalarProperty Name="Ton" ColumnName="Ton" />
+                <ScalarProperty Name="Hopper" ColumnName="Hopper" />
+                <ScalarProperty Name="Tunnel" ColumnName="Tunnel" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PortionBlending_Details">
+            <EntityTypeMapping TypeName="MERCY_Model.PortionBlending_Details">
+              <MappingFragment StoreEntitySet="PortionBlending_Details">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="PortionBlending" ColumnName="PortionBlending" />
+                <ScalarProperty Name="ROMQuality_RecordId" ColumnName="ROMQuality_RecordId" />
+                <ScalarProperty Name="block" ColumnName="block" />
+                <ScalarProperty Name="ROM_Name" ColumnName="ROM_Name" />
+                <ScalarProperty Name="ROM_ID" ColumnName="ROM_ID" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="ASH" ColumnName="ASH" />
+                <ScalarProperty Name="IM" ColumnName="IM" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+                <ScalarProperty Name="Ton" ColumnName="Ton" />
+                <ScalarProperty Name="Portion" ColumnName="Portion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROMTransfers">
+            <EntityTypeMapping TypeName="MERCY_Model.ROMTransfer">
+              <MappingFragment StoreEntitySet="ROMTransfer">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="Source_ROM_ID" ColumnName="Source_ROM_ID" />
+                <ScalarProperty Name="Source_Block" ColumnName="Source_Block" />
+                <ScalarProperty Name="Source_ROM_Name" ColumnName="Source_ROM_Name" />
+                <ScalarProperty Name="Destination_ROM_ID" ColumnName="Destination_ROM_ID" />
+                <ScalarProperty Name="Destination_Block" ColumnName="Destination_Block" />
+                <ScalarProperty Name="Destination_ROM_Name" ColumnName="Destination_ROM_Name" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tunnels">
+            <EntityTypeMapping TypeName="MERCY_Model.Tunnel">
+              <MappingFragment StoreEntitySet="Tunnel">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
+                <ScalarProperty Name="TunnelId" ColumnName="TunnelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tunnel_Actual">
+            <EntityTypeMapping TypeName="MERCY_Model.Tunnel_Actual">
+              <MappingFragment StoreEntitySet="Tunnel_Actual">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TunnelId" ColumnName="TunnelId" />
+                <ScalarProperty Name="HaulingRequest_Reference" ColumnName="HaulingRequest_Reference" />
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

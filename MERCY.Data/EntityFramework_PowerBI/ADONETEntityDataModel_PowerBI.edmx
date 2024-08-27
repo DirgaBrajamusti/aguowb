@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MERCYModel_PowerBI.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BEK_Datamart_Dev.dwh.MERCY_ROM_QUALITY_ODS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MERCY_ROM_QUALITY_ODS">
+          <Key>
+            <PropertyRef Name="ROM_ID" />
+          </Key>
+          <Property Name="ROM_ID" Type="int" Nullable="false" />
+          <Property Name="COMPANY_CODE" Type="varchar" MaxLength="3" />
+          <Property Name="PROCESS_DATE" Type="datetime" />
+          <Property Name="BLOCK" Type="nvarchar" MaxLength="255" />
+          <Property Name="ROM_NAME" Type="nvarchar" MaxLength="401" />
+          <Property Name="TON" Type="float" Nullable="false" />
+          <Property Name="CV" Type="float" />
+          <Property Name="TS" Type="float" />
+          <Property Name="ASH" Type="float" />
+          <Property Name="IM" Type="float" />
+          <Property Name="TM" Type="float" />
+        </EntityType>
+        <EntityContainer Name="MERCYModel_PowerBIStoreContainer">
+          <EntitySet Name="MERCY_ROM_QUALITY_ODS" EntityType="Self.MERCY_ROM_QUALITY_ODS" store:Type="Views" store:Schema="dwh">
+            <DefiningQuery>SELECT 
+                [MERCY_ROM_QUALITY_ODS].[ROM_ID] AS [ROM_ID], 
+                [MERCY_ROM_QUALITY_ODS].[COMPANY_CODE] AS [COMPANY_CODE], 
+                [MERCY_ROM_QUALITY_ODS].[PROCESS_DATE] AS [PROCESS_DATE], 
+                [MERCY_ROM_QUALITY_ODS].[BLOCK] AS [BLOCK], 
+                [MERCY_ROM_QUALITY_ODS].[ROM_NAME] AS [ROM_NAME], 
+                [MERCY_ROM_QUALITY_ODS].[TON] AS [TON], 
+                [MERCY_ROM_QUALITY_ODS].[CV] AS [CV], 
+                [MERCY_ROM_QUALITY_ODS].[TS] AS [TS], 
+                [MERCY_ROM_QUALITY_ODS].[ASH] AS [ASH], 
+                [MERCY_ROM_QUALITY_ODS].[IM] AS [IM], 
+                [MERCY_ROM_QUALITY_ODS].[TM] AS [TM]
+                FROM [dwh].[MERCY_ROM_QUALITY_ODS] AS [MERCY_ROM_QUALITY_ODS]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MERCYModel_PowerBI" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MERCY_ROM_QUALITY_ODS">
+          <Key>
+            <PropertyRef Name="ROM_ID" />
+          </Key>
+          <Property Name="ROM_ID" Type="Int32" Nullable="false" />
+          <Property Name="COMPANY_CODE" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="PROCESS_DATE" Type="DateTime" Precision="3" />
+          <Property Name="BLOCK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ROM_NAME" Type="String" MaxLength="401" FixedLength="false" Unicode="true" />
+          <Property Name="TON" Type="Double" Nullable="false" />
+          <Property Name="CV" Type="Double" />
+          <Property Name="TS" Type="Double" />
+          <Property Name="ASH" Type="Double" />
+          <Property Name="IM" Type="Double" />
+          <Property Name="TM" Type="Double" />
+        </EntityType>
+        <EntityContainer Name="MERCY_PowerBI_Ctx" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MERCY_ROM_QUALITY_ODS" EntityType="Self.MERCY_ROM_QUALITY_ODS" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MERCYModel_PowerBIStoreContainer" CdmEntityContainer="MERCY_PowerBI_Ctx">
+          <EntitySetMapping Name="MERCY_ROM_QUALITY_ODS">
+            <EntityTypeMapping TypeName="MERCYModel_PowerBI.MERCY_ROM_QUALITY_ODS">
+              <MappingFragment StoreEntitySet="MERCY_ROM_QUALITY_ODS">
+                <ScalarProperty Name="ROM_ID" ColumnName="ROM_ID" />
+                <ScalarProperty Name="COMPANY_CODE" ColumnName="COMPANY_CODE" />
+                <ScalarProperty Name="PROCESS_DATE" ColumnName="PROCESS_DATE" />
+                <ScalarProperty Name="BLOCK" ColumnName="BLOCK" />
+                <ScalarProperty Name="ROM_NAME" ColumnName="ROM_NAME" />
+                <ScalarProperty Name="TON" ColumnName="TON" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="ASH" ColumnName="ASH" />
+                <ScalarProperty Name="IM" ColumnName="IM" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

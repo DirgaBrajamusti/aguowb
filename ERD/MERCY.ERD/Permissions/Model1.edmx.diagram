@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1bb2b276806d43d7ad7e6b39e8a461eb" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="MERCY_Model.Apii" Width="1.5" PointX="1.125" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.Company" Width="1.5" PointX="12.5" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.Group" Width="1.5" PointX="4.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.Menu" Width="1.5" PointX="1.125" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.Permission" Width="1.5" PointX="3.125" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.Site" Width="1.5" PointX="14.375" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.User" Width="1.5" PointX="8.125" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.UserCompany" Width="1.5" PointX="10.375" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.UserGroup" Width="1.5" PointX="5.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.UserSite" Width="1.5" PointX="10" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="MERCY_Model.FK_Apii_MenuId" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK__Company__SiteId__0080C572" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_UserCompany_CompanyCode" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_Permission_GroupId" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_UserGroup_GroupId" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_Permission_MenuId" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_UserSite_SiteId" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_UserCompany_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_UserGroup_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_UserSite_UserId" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

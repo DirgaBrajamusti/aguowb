@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0c904dc3f3d64c27a3910706a22ac80d" Name="Diagram1">
+        <EntityTypeShape EntityType="MERCYModel_BigData.Mercy_Product" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel_BigData.Mercy_quality_outlook" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel_BigData.Mercy_ROM_Info" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel_BigData.Mercy_ROM_Quality" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="MERCYModel_BigData.Mercy_Source" Width="1.5" PointX="2.75" PointY="4.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

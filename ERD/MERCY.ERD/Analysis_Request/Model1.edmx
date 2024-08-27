@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MERCY_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AnalysisRequest">
+          <Key>
+            <PropertyRef Name="AnalysisRequestId" />
+          </Key>
+          <Property Name="AnalysisRequestId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Company" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="AnalysisType" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="DeliveryDate" Type="date" Nullable="false" />
+          <Property Name="Sender" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LetterNo" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="TM" Type="bit" Nullable="false" />
+          <Property Name="PROX" Type="bit" Nullable="false" />
+          <Property Name="TS" Type="bit" Nullable="false" />
+          <Property Name="CV" Type="bit" Nullable="false" />
+          <Property Name="RD" Type="bit" Nullable="false" />
+          <Property Name="CSN" Type="bit" Nullable="false" />
+          <Property Name="AA" Type="bit" Nullable="false" />
+          <Property Name="HGI" Type="bit" Nullable="false" />
+          <Property Name="Ultimate" Type="bit" Nullable="false" />
+          <Property Name="Chlorine" Type="bit" Nullable="false" />
+          <Property Name="Phosporus" Type="bit" Nullable="false" />
+          <Property Name="Fluorine" Type="bit" Nullable="false" />
+          <Property Name="Lead" Type="bit" Nullable="false" />
+          <Property Name="Zink" Type="bit" Nullable="false" />
+          <Property Name="AFT" Type="bit" Nullable="false" />
+          <Property Name="TraceElement" Type="bit" Nullable="false" />
+          <Property Name="Others" Type="bit" Nullable="false" />
+          <Property Name="Others_Text" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="CoverLetter" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CoverLetter2" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AnalysisRequest_Detail">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnalysisRequest" Type="bigint" Nullable="false" />
+          <Property Name="SampleID" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="From" Type="int" Nullable="false" />
+          <Property Name="To" Type="int" Nullable="false" />
+          <Property Name="Thick" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SampleType" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="SEAM" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="LabId" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="AnalysisRequest_History">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnalysisRequestId" Type="bigint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AnalysisRequest_Result">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnalysisRequest" Type="bigint" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyCode" />
+          </Key>
+          <Property Name="CompanyCode" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="int" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" />
+          <Property Name="DeletedBy" Type="int" Nullable="false" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="Is_DataROM_from_BI" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AnalysisRequest_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="AnalysisRequest" Type="Self.AnalysisRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyCode" />
+            </Principal>
+            <Dependent Role="AnalysisRequest">
+              <PropertyRef Name="Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnalysisRequest_Detail_AnalysisRequest">
+          <End Role="AnalysisRequest" Type="Self.AnalysisRequest" Multiplicity="1" />
+          <End Role="AnalysisRequest_Detail" Type="Self.AnalysisRequest_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnalysisRequest">
+              <PropertyRef Name="AnalysisRequestId" />
+            </Principal>
+            <Dependent Role="AnalysisRequest_Detail">
+              <PropertyRef Name="AnalysisRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnalysisRequest_Result_AnalysisRequest">
+          <End Role="AnalysisRequest" Type="Self.AnalysisRequest" Multiplicity="1" />
+          <End Role="AnalysisRequest_Result" Type="Self.AnalysisRequest_Result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnalysisRequest">
+              <PropertyRef Name="AnalysisRequestId" />
+            </Principal>
+            <Dependent Role="AnalysisRequest_Result">
+              <PropertyRef Name="AnalysisRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MERCY_ModelStoreContainer">
+          <EntitySet Name="AnalysisRequest" EntityType="Self.AnalysisRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AnalysisRequest_Detail" EntityType="Self.AnalysisRequest_Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AnalysisRequest_History" EntityType="Self.AnalysisRequest_History" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AnalysisRequest_Result" EntityType="Self.AnalysisRequest_Result" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AnalysisRequest_Company" Association="Self.FK_AnalysisRequest_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="AnalysisRequest" EntitySet="AnalysisRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnalysisRequest_Detail_AnalysisRequest" Association="Self.FK_AnalysisRequest_Detail_AnalysisRequest">
+            <End Role="AnalysisRequest" EntitySet="AnalysisRequest" />
+            <End Role="AnalysisRequest_Detail" EntitySet="AnalysisRequest_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnalysisRequest_Result_AnalysisRequest" Association="Self.FK_AnalysisRequest_Result_AnalysisRequest">
+            <End Role="AnalysisRequest" EntitySet="AnalysisRequest" />
+            <End Role="AnalysisRequest_Result" EntitySet="AnalysisRequest_Result" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MERCY_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AnalysisRequest">
+          <Key>
+            <PropertyRef Name="AnalysisRequestId" />
+          </Key>
+          <Property Name="AnalysisRequestId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Company" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisType" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Sender" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LetterNo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TM" Type="Boolean" Nullable="false" />
+          <Property Name="PROX" Type="Boolean" Nullable="false" />
+          <Property Name="TS" Type="Boolean" Nullable="false" />
+          <Property Name="CV" Type="Boolean" Nullable="false" />
+          <Property Name="RD" Type="Boolean" Nullable="false" />
+          <Property Name="CSN" Type="Boolean" Nullable="false" />
+          <Property Name="AA" Type="Boolean" Nullable="false" />
+          <Property Name="HGI" Type="Boolean" Nullable="false" />
+          <Property Name="Ultimate" Type="Boolean" Nullable="false" />
+          <Property Name="Chlorine" Type="Boolean" Nullable="false" />
+          <Property Name="Phosporus" Type="Boolean" Nullable="false" />
+          <Property Name="Fluorine" Type="Boolean" Nullable="false" />
+          <Property Name="Lead" Type="Boolean" Nullable="false" />
+          <Property Name="Zink" Type="Boolean" Nullable="false" />
+          <Property Name="AFT" Type="Boolean" Nullable="false" />
+          <Property Name="TraceElement" Type="Boolean" Nullable="false" />
+          <Property Name="Others" Type="Boolean" Nullable="false" />
+          <Property Name="Others_Text" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="CoverLetter" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CoverLetter2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Company1" Relationship="Self.FK_AnalysisRequest_Company" FromRole="AnalysisRequest" ToRole="Company" />
+          <NavigationProperty Name="AnalysisRequest_Detail" Relationship="Self.FK_AnalysisRequest_Detail_AnalysisRequest" FromRole="AnalysisRequest" ToRole="AnalysisRequest_Detail" />
+          <NavigationProperty Name="AnalysisRequest_Result" Relationship="Self.FK_AnalysisRequest_Result_AnalysisRequest" FromRole="AnalysisRequest" ToRole="AnalysisRequest_Result" />
+        </EntityType>
+        <EntityType Name="AnalysisRequest_Detail">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnalysisRequest" Type="Int64" Nullable="false" />
+          <Property Name="SampleID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="From" Type="Int32" Nullable="false" />
+          <Property Name="To" Type="Int32" Nullable="false" />
+          <Property Name="Thick" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SampleType" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SEAM" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LabId" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AnalysisRequest1" Relationship="Self.FK_AnalysisRequest_Detail_AnalysisRequest" FromRole="AnalysisRequest_Detail" ToRole="AnalysisRequest" />
+        </EntityType>
+        <EntityType Name="AnalysisRequest_History">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnalysisRequestId" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="AnalysisRequest_Result">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnalysisRequest" Type="Int64" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AnalysisRequest1" Relationship="Self.FK_AnalysisRequest_Result_AnalysisRequest" FromRole="AnalysisRequest_Result" ToRole="AnalysisRequest" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyCode" />
+          </Key>
+          <Property Name="CompanyCode" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeletedBy" Type="Int32" Nullable="false" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="Is_DataROM_from_BI" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AnalysisRequests" Relationship="Self.FK_AnalysisRequest_Company" FromRole="Company" ToRole="AnalysisRequest" />
+        </EntityType>
+        <Association Name="FK_AnalysisRequest_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="AnalysisRequest" Type="Self.AnalysisRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyCode" />
+            </Principal>
+            <Dependent Role="AnalysisRequest">
+              <PropertyRef Name="Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnalysisRequest_Detail_AnalysisRequest">
+          <End Role="AnalysisRequest" Type="Self.AnalysisRequest" Multiplicity="1" />
+          <End Role="AnalysisRequest_Detail" Type="Self.AnalysisRequest_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnalysisRequest">
+              <PropertyRef Name="AnalysisRequestId" />
+            </Principal>
+            <Dependent Role="AnalysisRequest_Detail">
+              <PropertyRef Name="AnalysisRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnalysisRequest_Result_AnalysisRequest">
+          <End Role="AnalysisRequest" Type="Self.AnalysisRequest" Multiplicity="1" />
+          <End Role="AnalysisRequest_Result" Type="Self.AnalysisRequest_Result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnalysisRequest">
+              <PropertyRef Name="AnalysisRequestId" />
+            </Principal>
+            <Dependent Role="AnalysisRequest_Result">
+              <PropertyRef Name="AnalysisRequest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AnalysisRequests" EntityType="Self.AnalysisRequest" />
+          <EntitySet Name="AnalysisRequest_Detail" EntityType="Self.AnalysisRequest_Detail" />
+          <EntitySet Name="AnalysisRequest_History" EntityType="Self.AnalysisRequest_History" />
+          <EntitySet Name="AnalysisRequest_Result" EntityType="Self.AnalysisRequest_Result" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <AssociationSet Name="FK_AnalysisRequest_Company" Association="Self.FK_AnalysisRequest_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="AnalysisRequest" EntitySet="AnalysisRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnalysisRequest_Detail_AnalysisRequest" Association="Self.FK_AnalysisRequest_Detail_AnalysisRequest">
+            <End Role="AnalysisRequest" EntitySet="AnalysisRequests" />
+            <End Role="AnalysisRequest_Detail" EntitySet="AnalysisRequest_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnalysisRequest_Result_AnalysisRequest" Association="Self.FK_AnalysisRequest_Result_AnalysisRequest">
+            <End Role="AnalysisRequest" EntitySet="AnalysisRequests" />
+            <End Role="AnalysisRequest_Result" EntitySet="AnalysisRequest_Result" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MERCY_ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="AnalysisRequests">
+            <EntityTypeMapping TypeName="MERCY_Model.AnalysisRequest">
+              <MappingFragment StoreEntitySet="AnalysisRequest">
+                <ScalarProperty Name="AnalysisRequestId" ColumnName="AnalysisRequestId" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="AnalysisType" ColumnName="AnalysisType" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="Sender" ColumnName="Sender" />
+                <ScalarProperty Name="LetterNo" ColumnName="LetterNo" />
+                <ScalarProperty Name="TM" ColumnName="TM" />
+                <ScalarProperty Name="PROX" ColumnName="PROX" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="RD" ColumnName="RD" />
+                <ScalarProperty Name="CSN" ColumnName="CSN" />
+                <ScalarProperty Name="AA" ColumnName="AA" />
+                <ScalarProperty Name="HGI" ColumnName="HGI" />
+                <ScalarProperty Name="Ultimate" ColumnName="Ultimate" />
+                <ScalarProperty Name="Chlorine" ColumnName="Chlorine" />
+                <ScalarProperty Name="Phosporus" ColumnName="Phosporus" />
+                <ScalarProperty Name="Fluorine" ColumnName="Fluorine" />
+                <ScalarProperty Name="Lead" ColumnName="Lead" />
+                <ScalarProperty Name="Zink" ColumnName="Zink" />
+                <ScalarProperty Name="AFT" ColumnName="AFT" />
+                <ScalarProperty Name="TraceElement" ColumnName="TraceElement" />
+                <ScalarProperty Name="Others" ColumnName="Others" />
+                <ScalarProperty Name="Others_Text" ColumnName="Others_Text" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="CoverLetter" ColumnName="CoverLetter" />
+                <ScalarProperty Name="CoverLetter2" ColumnName="CoverLetter2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnalysisRequest_Detail">
+            <EntityTypeMapping TypeName="MERCY_Model.AnalysisRequest_Detail">
+              <MappingFragment StoreEntitySet="AnalysisRequest_Detail">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="AnalysisRequest" ColumnName="AnalysisRequest" />
+                <ScalarProperty Name="SampleID" ColumnName="SampleID" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="Thick" ColumnName="Thick" />
+                <ScalarProperty Name="SampleType" ColumnName="SampleType" />
+                <ScalarProperty Name="SEAM" ColumnName="SEAM" />
+                <ScalarProperty Name="LabId" ColumnName="LabId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnalysisRequest_History">
+            <EntityTypeMapping TypeName="MERCY_Model.AnalysisRequest_History">
+              <MappingFragment StoreEntitySet="AnalysisRequest_History">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="AnalysisRequestId" ColumnName="AnalysisRequestId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnalysisRequest_Result">
+            <EntityTypeMapping TypeName="MERCY_Model.AnalysisRequest_Result">
+              <MappingFragment StoreEntitySet="AnalysisRequest_Result">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="AnalysisRequest" ColumnName="AnalysisRequest" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="MERCY_Model.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="Is_DataROM_from_BI" ColumnName="Is_DataROM_from_BI" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

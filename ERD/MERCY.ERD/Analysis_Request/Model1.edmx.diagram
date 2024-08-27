@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6e41b4df28e94351bee4d36c9ef284f7" Name="Diagram1">
+        <EntityTypeShape EntityType="MERCY_Model.AnalysisRequest" Width="2" PointX="7.875" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.AnalysisRequest_Detail" Width="2" PointX="5.125" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.AnalysisRequest_History" Width="2.125" PointX="2.5" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.AnalysisRequest_Result" Width="2.25" PointX="2.875" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.Company" Width="1.5" PointX="10.875" PointY="0.625" IsExpanded="true" />
+        <AssociationConnector Association="MERCY_Model.FK_AnalysisRequest_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_AnalysisRequest_Detail_AnalysisRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_AnalysisRequest_Result_AnalysisRequest" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

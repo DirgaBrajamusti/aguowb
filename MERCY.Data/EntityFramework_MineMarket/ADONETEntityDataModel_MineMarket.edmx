@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MERCYModel_MineMarket.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DW_ITM.dbo.VW_MM_MERCY_BARGE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VW_MM_MERCY_BARGE">
+          <Key>
+            <PropertyRef Name="COMPANYCODE" />
+            <PropertyRef Name="TON_ACTUAL" />
+          </Key>
+          <Property Name="COMPANYCODE" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SERVICE_TRIP" Type="nvarchar" MaxLength="255" />
+          <Property Name="BARGENAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_ARRIVAL_DATE" Type="datetime" />
+          <Property Name="END_ACTUAL_DATE" Type="datetime" />
+          <Property Name="PRODUCTNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TON_ACTUAL" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'DW_ITM.dbo.VW_MM_MERCY_STOCKPILE' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        --><EntityType Name="VW_MM_MERCY_STOCKPILE">
+			<Key>
+				<PropertyRef Name="STOCKPILEID" />
+			</Key>
+          <Property Name="STOCKPILEID" Type="int" Nullable="false"/>
+          <Property Name="ALIAS1" Type="nvarchar" MaxLength="255" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="DATECREATED" Type="datetime" />
+          <Property Name="DATEMODIFIED" Type="datetime" />
+          <Property Name="OPENDATE" Type="datetime" />
+          <Property Name="CLOSEDATE" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'DW_ITM.dbo.VW_MM_MERCY_VESSEL' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        --><EntityType Name="VW_MM_MERCY_VESSEL">
+			<Key>
+				<PropertyRef Name="SHIPMENT_IDENTIFIER" />
+			</Key>
+          <Property Name="SHIPMENT_IDENTIFIER" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="VESSEL_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="CUSTOMER_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="CUSTOMER_LONG_NAME" Type="nvarchar" MaxLength="255" />
+          <Property Name="DO" Type="nvarchar" MaxLength="100" />
+          <Property Name="ETA" Type="datetime" />
+          <Property Name="ATA" Type="datetime" />
+          <Property Name="CONTRACT" Type="nvarchar" MaxLength="255" />
+          <Property Name="PRODUCT" Type="nvarchar" MaxLength="100" />
+          <Property Name="TON_ACTUAL" Type="float" />
+        </EntityType>
+        <EntityContainer Name="MERCYModel_MineMarketStoreContainer">
+			<EntitySet Name="VW_MM_MERCY_STOCKPILE" EntityType="Self.VW_MM_MERCY_STOCKPILE" store:Type="Views" store:Schema="dbo">
+				<DefiningQuery>
+					SELECT
+					[VW_MM_MERCY_STOCKPILE].[STOCKPILEID] AS [STOCKPILEID],
+					[VW_MM_MERCY_STOCKPILE].[ALIAS1] AS [ALIAS1],
+					[VW_MM_MERCY_STOCKPILE].[NAME] AS [NAME],
+					[VW_MM_MERCY_STOCKPILE].[DATECREATED] AS [DATECREATED],
+					[VW_MM_MERCY_STOCKPILE].[DATEMODIFIED] AS [DATEMODIFIED],
+					[VW_MM_MERCY_STOCKPILE].[OPENDATE] AS [OPENDATE],
+					[VW_MM_MERCY_STOCKPILE].[CLOSEDATE] AS [CLOSEDATE]
+					FROM [dbo].[VW_MM_MERCY_STOCKPILE] AS [VW_MM_MERCY_STOCKPILE]
+				</DefiningQuery>
+			</EntitySet>
+			<EntitySet Name="VW_MM_MERCY_VESSEL" EntityType="Self.VW_MM_MERCY_VESSEL" store:Type="Views" store:Schema="dbo">
+				<DefiningQuery>
+					SELECT
+					[VW_MM_MERCY_VESSEL].[SHIPMENT_IDENTIFIER] AS [SHIPMENT_IDENTIFIER],
+					[VW_MM_MERCY_VESSEL].[VESSEL_NAME] AS [VESSEL_NAME],
+					[VW_MM_MERCY_VESSEL].[CUSTOMER_NAME] AS [CUSTOMER_NAME],
+					[VW_MM_MERCY_VESSEL].[CUSTOMER_LONG_NAME] AS [CUSTOMER_LONG_NAME],
+					[VW_MM_MERCY_VESSEL].[DO] AS [DO],
+					[VW_MM_MERCY_VESSEL].[ETA] AS [ETA],
+					[VW_MM_MERCY_VESSEL].[ATA] AS [ATA],
+					[VW_MM_MERCY_VESSEL].[CONTRACT] AS [CONTRACT],
+					[VW_MM_MERCY_VESSEL].[PRODUCT] AS [PRODUCT],
+					[VW_MM_MERCY_VESSEL].[TON_ACTUAL] AS [TON_ACTUAL]
+					FROM [dbo].[VW_MM_MERCY_VESSEL] AS [VW_MM_MERCY_VESSEL]
+				</DefiningQuery>
+			</EntitySet>
+          <EntitySet Name="VW_MM_MERCY_BARGE" EntityType="Self.VW_MM_MERCY_BARGE" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_MM_MERCY_BARGE].[COMPANYCODE] AS [COMPANYCODE], 
+    [VW_MM_MERCY_BARGE].[SERVICE_TRIP] AS [SERVICE_TRIP], 
+    [VW_MM_MERCY_BARGE].[BARGENAME] AS [BARGENAME], 
+    [VW_MM_MERCY_BARGE].[START_ARRIVAL_DATE] AS [START_ARRIVAL_DATE], 
+    [VW_MM_MERCY_BARGE].[END_ACTUAL_DATE] AS [END_ACTUAL_DATE], 
+    [VW_MM_MERCY_BARGE].[PRODUCTNAME] AS [PRODUCTNAME], 
+    [VW_MM_MERCY_BARGE].[TON_ACTUAL] AS [TON_ACTUAL]
+    FROM [dbo].[VW_MM_MERCY_BARGE] AS [VW_MM_MERCY_BARGE]
+</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MERCYModel_MineMarket" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+		  <EntityContainer Name="MERCY_MineMarket_Ctx" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="VW_MM_MERCY_BARGE" EntityType="MERCYModel_MineMarket.VW_MM_MERCY_BARGE" />
+          <EntitySet Name="VW_MM_MERCY_VESSEL" EntityType="MERCYModel_MineMarket.VW_MM_MERCY_VESSEL" />
+          <EntitySet Name="VW_MM_MERCY_STOCKPILE" EntityType="MERCYModel_MineMarket.VW_MM_MERCY_STOCKPILE" />
+        </EntityContainer>
+        <EntityType Name="VW_MM_MERCY_STOCKPILE">
+          <Key>
+            <PropertyRef Name="STOCKPILEID" />
+          </Key>
+          <Property Name="STOCKPILEID" Type="Int32" Nullable="false" />
+          <Property Name="ALIAS1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+          <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+          <Property Name="OPENDATE" Type="DateTime" Precision="3" />
+          <Property Name="CLOSEDATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="VW_MM_MERCY_BARGE">
+          <Key>
+            <PropertyRef Name="COMPANYCODE" />
+            <PropertyRef Name="TON_ACTUAL" />
+          </Key>
+          <Property Name="COMPANYCODE" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SERVICE_TRIP" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BARGENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_ARRIVAL_DATE" Type="DateTime" Precision="3" />
+          <Property Name="END_ACTUAL_DATE" Type="DateTime" Precision="3" />
+          <Property Name="PRODUCTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TON_ACTUAL" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VW_MM_MERCY_VESSEL">
+          <Key>
+            <PropertyRef Name="SHIPMENT_IDENTIFIER" />
+          </Key>
+			<Property Name="SHIPMENT_IDENTIFIER" Type="String" MaxLength="20" Nullable="false" />
+			<Property Name="VESSEL_NAME" Type="String" MaxLength="50" />
+			<Property Name="CUSTOMER_NAME" Type="String" MaxLength="100" />
+			<Property Name="CUSTOMER_LONG_NAME" Type="String" MaxLength="255" />
+			<Property Name="DO" Type="String" MaxLength="100" />
+			<Property Name="ETA" Type="DateTime" />
+			<Property Name="ATA" Type="DateTime" />
+			<Property Name="CONTRACT" Type="String" MaxLength="255" />
+			<Property Name="PRODUCT" Type="String" MaxLength="100" />
+			<Property Name="TON_ACTUAL" Type="Double" />
+          
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MERCYModel_MineMarketStoreContainer" CdmEntityContainer="MERCY_MineMarket_Ctx">
+          <EntitySetMapping Name="VW_MM_MERCY_BARGE">
+            <EntityTypeMapping TypeName="MERCYModel_MineMarket.VW_MM_MERCY_BARGE">
+              <MappingFragment StoreEntitySet="VW_MM_MERCY_BARGE">
+                <ScalarProperty Name="TON_ACTUAL" ColumnName="TON_ACTUAL" />
+                <ScalarProperty Name="PRODUCTNAME" ColumnName="PRODUCTNAME" />
+                <ScalarProperty Name="END_ACTUAL_DATE" ColumnName="END_ACTUAL_DATE" />
+                <ScalarProperty Name="START_ARRIVAL_DATE" ColumnName="START_ARRIVAL_DATE" />
+                <ScalarProperty Name="BARGENAME" ColumnName="BARGENAME" />
+                <ScalarProperty Name="SERVICE_TRIP" ColumnName="SERVICE_TRIP" />
+                <ScalarProperty Name="COMPANYCODE" ColumnName="COMPANYCODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+			<EntitySetMapping Name="VW_MM_MERCY_VESSEL">
+				<EntityTypeMapping TypeName="MERCYModel_MineMarket.VW_MM_MERCY_VESSEL">
+					<MappingFragment StoreEntitySet="VW_MM_MERCY_VESSEL">
+						<ScalarProperty Name="TON_ACTUAL" ColumnName="TON_ACTUAL" />
+						<ScalarProperty Name="SHIPMENT_IDENTIFIER" ColumnName="SHIPMENT_IDENTIFIER" />
+						<ScalarProperty Name="VESSEL_NAME" ColumnName="VESSEL_NAME" />
+						<ScalarProperty Name="CUSTOMER_NAME" ColumnName="CUSTOMER_NAME" />
+						<ScalarProperty Name="CUSTOMER_LONG_NAME" ColumnName="CUSTOMER_LONG_NAME" />
+						<ScalarProperty Name="DO" ColumnName="DO" />
+						<ScalarProperty Name="ETA" ColumnName="ETA" />
+						<ScalarProperty Name="ATA" ColumnName="ATA" />
+						<ScalarProperty Name="CONTRACT" ColumnName="CONTRACT" />
+						<ScalarProperty Name="PRODUCT" ColumnName="PRODUCT" />
+					</MappingFragment>
+				</EntityTypeMapping>
+
+			</EntitySetMapping>
+			<EntitySetMapping Name="VW_MM_MERCY_STOCKPILE">
+				<EntityTypeMapping TypeName="MERCYModel_MineMarket.VW_MM_MERCY_STOCKPILE">
+					<MappingFragment StoreEntitySet="VW_MM_MERCY_STOCKPILE">
+						<ScalarProperty Name="STOCKPILEID" ColumnName="STOCKPILEID" />
+						<ScalarProperty Name="ALIAS1" ColumnName="ALIAS1" />
+						<ScalarProperty Name="NAME" ColumnName="NAME" />
+						<ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+						<ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+						<ScalarProperty Name="OPENDATE" ColumnName="OPENDATE" />
+						<ScalarProperty Name="CLOSEDATE" ColumnName="CLOSEDATE" />
+					</MappingFragment>
+				</EntityTypeMapping>
+
+			</EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c18f5a94cf2e4d0598fa1a9b74a73f08" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="MERCY_Model.Company" Width="2.125" PointX="15.25" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.HaulingRequest" Width="2.125" PointX="3.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.HaulingRequest_Detail" Width="2.125" PointX="0.5" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.HaulingRequest_Detail_PortionBlending" Width="2.875" PointX="8.625" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.HaulingRequest_Detail_PortionBlending_Details" Width="3.25" PointX="3.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.HaulingRequest_Detail_ROMTransfer" Width="3" PointX="12.125" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.PortionBlending" Width="1.875" PointX="9.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.PortionBlending_Details" Width="2.375" PointX="6.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MERCY_Model.ROMTransfer" Width="2.125" PointX="12.25" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="MERCY_Model.FK_HaulingRequest_Detail_HaulingRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_HaulingRequest_Detail_PortionBlending_HaulingRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="MERCY_Model.PK_PortionBlending_Details_PortionBlending" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MERCY_Model.Tunnel" Width="1.5" PointX="15.875" PointY="7.625" />
+        <EntityTypeShape EntityType="MERCY_Model.Tunnel_Actual" Width="1.5" PointX="13.125" PointY="10.625" />
+        <AssociationConnector Association="MERCY_Model.FK_Tunnel_CompanyCode" />
+        <AssociationConnector Association="MERCY_Model.FK_Tunnel_Actual_HaulingRequest_Reference" />
+        <AssociationConnector Association="MERCY_Model.FK_Tunnel_Actual_TunnelId" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

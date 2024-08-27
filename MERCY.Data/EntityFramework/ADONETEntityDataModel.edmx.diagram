@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7389013c70f3453fa2118cdfa5e1ebaf" Name="Diagram1" ZoomLevel="56">
+        <EntityTypeShape EntityType="MERCYModel.AnalysisRequest" Width="1.5" PointX="5.25" PointY="47" />
+        <EntityTypeShape EntityType="MERCYModel.AnalysisRequest_Detail" Width="1.5" PointX="7.5" PointY="46.5" />
+        <EntityTypeShape EntityType="MERCYModel.AnalysisRequest_History" Width="1.5" PointX="7.75" PointY="10.75" />
+        <EntityTypeShape EntityType="MERCYModel.AnalysisRequest_Result" Width="1.5" PointX="7.5" PointY="52.5" />
+        <EntityTypeShape EntityType="MERCYModel.Apii" Width="1.5" PointX="3" PointY="3.25" />
+        <EntityTypeShape EntityType="MERCYModel.Barge_Survey_Condition" Width="1.5" PointX="8.25" PointY="71.25" />
+        <EntityTypeShape EntityType="MERCYModel.Company" Width="1.5" PointX="3" PointY="29.375" />
+        <EntityTypeShape EntityType="MERCYModel.Config" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.Consumable" Width="1.5" PointX="13" PointY="3.25" />
+        <EntityTypeShape EntityType="MERCYModel.Consumable_History" Width="1.5" PointX="19.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.DirectShipment" Width="1.5" PointX="9.75" PointY="10.75" />
+        <EntityTypeShape EntityType="MERCYModel.Discussion" Width="1.5" PointX="11.75" PointY="10.75" />
+        <EntityTypeShape EntityType="MERCYModel.Draft_Survey" Width="1.5" PointX="8.25" PointY="65.25" />
+        <EntityTypeShape EntityType="MERCYModel.Feedback" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.Fuel_Rob" Width="1.5" PointX="8.25" PointY="68.25" />
+        <EntityTypeShape EntityType="MERCYModel.Group" Width="1.5" PointX="0.75" PointY="15.375" />
+        <EntityTypeShape EntityType="MERCYModel.HaulingRequest" Width="1.5" PointX="3" PointY="57.375" />
+        <EntityTypeShape EntityType="MERCYModel.HaulingRequest_Detail" Width="1.5" PointX="5.25" PointY="67.75" />
+        <EntityTypeShape EntityType="MERCYModel.HaulingRequest_Detail_PortionBlending" Width="1.5" PointX="5.25" PointY="56.125" />
+        <EntityTypeShape EntityType="MERCYModel.HaulingRequest_Detail_PortionBlending_Details" Width="1.5" PointX="5.25" PointY="62.875" />
+        <EntityTypeShape EntityType="MERCYModel.HaulingRequest_Detail_ROMTransfer" Width="1.5" PointX="5.25" PointY="70.5" />
+        <EntityTypeShape EntityType="MERCYModel.Hopper" Width="1.5" PointX="5.25" PointY="25.875" />
+        <EntityTypeShape EntityType="MERCYModel.Instrument" Width="1.5" PointX="7.75" PointY="5.625" />
+        <EntityTypeShape EntityType="MERCYModel.LabMaintenance" Width="1.5" PointX="10" PointY="4.5" />
+        <EntityTypeShape EntityType="MERCYModel.LabMaintenance_Complete" Width="1.5" PointX="19.75" PointY="7.75" />
+        <EntityTypeShape EntityType="MERCYModel.LabMaintenance_History" Width="1.5" PointX="19.75" PointY="13.75" />
+        <EntityTypeShape EntityType="MERCYModel.Loading_Actual" Width="1.5" PointX="8.25" PointY="56" />
+        <EntityTypeShape EntityType="MERCYModel.Loading_Actual_Attachments" Width="1.5" PointX="10.5" PointY="71.875" />
+        <EntityTypeShape EntityType="MERCYModel.Loading_Actual_Barge_Survey_Condition" Width="1.5" PointX="10.5" PointY="64.5" />
+        <EntityTypeShape EntityType="MERCYModel.Loading_Actual_Cargo_Loaded" Width="1.5" PointX="10.5" PointY="42.5" />
+        <EntityTypeShape EntityType="MERCYModel.Loading_Actual_Coal_Temperature" Width="1.5" PointX="10.5" PointY="60.75" />
+        <EntityTypeShape EntityType="MERCYModel.Loading_Actual_Draft_Survey" Width="1.5" PointX="10.5" PointY="52.5" />
+        <EntityTypeShape EntityType="MERCYModel.Loading_Actual_Fuel_Consumption" Width="1.5" PointX="10.5" PointY="56.625" />
+        <EntityTypeShape EntityType="MERCYModel.MaintenanceActivity" Width="1.5" PointX="7.75" PointY="1.75" />
+        <EntityTypeShape EntityType="MERCYModel.Menu" Width="1.5" PointX="0.75" PointY="2.625" />
+        <EntityTypeShape EntityType="MERCYModel.Port_Loading" Width="1.5" PointX="5.25" PointY="37.25" />
+        <EntityTypeShape EntityType="MERCYModel.PortionBlending" Width="1.5" PointX="9.75" PointY="16.125" />
+        <EntityTypeShape EntityType="MERCYModel.PortionBlending_Details" Width="1.5" PointX="12" PointY="16.875" />
+        <EntityTypeShape EntityType="MERCYModel.Product" Width="1.5" PointX="5.25" PointY="11.5" />
+        <EntityTypeShape EntityType="MERCYModel.ReadRequest" Width="1.5" PointX="19.75" PointY="19.75" />
+        <EntityTypeShape EntityType="MERCYModel.Reminder_History_Lab_Consumable" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.Reminder_History_Lab_Maintenance" Width="1.5" PointX="21.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.ROM" Width="1.5" PointX="5.25" PointY="29.375" />
+        <EntityTypeShape EntityType="MERCYModel.ROMTransfer" Width="1.5" PointX="21.75" PointY="3.75" />
+        <EntityTypeShape EntityType="MERCYModel.SamplingRequest" Width="1.5" PointX="5.25" PointY="17.625" />
+        <EntityTypeShape EntityType="MERCYModel.SamplingRequest_History" Width="1.5" PointX="21.75" PointY="9.75" />
+        <EntityTypeShape EntityType="MERCYModel.SamplingRequest_Lab" Width="1.5" PointX="7.5" PointY="21.625" />
+        <EntityTypeShape EntityType="MERCYModel.SamplingRequest_ROM" Width="1.5" PointX="7.5" PointY="18.75" />
+        <EntityTypeShape EntityType="MERCYModel.SamplingRequest_SEAM" Width="1.5" PointX="7.5" PointY="16" />
+        <EntityTypeShape EntityType="MERCYModel.Site" Width="1.5" PointX="0.75" PointY="27.25" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Barge_Line_Up" Width="1.5" PointX="11.75" PointY="21.75" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_BARGE_LOADING" Width="1.5" PointX="17.25" PointY="5" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_BARGE_LOADING_COA" Width="1.5" PointX="21.75" PointY="12.75" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_BARGE_LOADING_Header" Width="1.5" PointX="15" PointY="10.25" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Barge_Quality_Plan" Width="1.5" PointX="17.25" PointY="78.75" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Barge_Quality_Plan_Header" Width="1.5" PointX="15" PointY="81.25" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_CRUSHING_PLANT" Width="1.5" PointX="17.25" PointY="20.625" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_CRUSHING_PLANT_Header" Width="1.5" PointX="15" PointY="24.875" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_File" Width="1.5" PointX="12.75" PointY="44.375" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Geology_Explorasi" Width="1.5" PointX="17.25" PointY="43.75" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Geology_Explorasi_Header" Width="1.5" PointX="15" PointY="46.125" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Geology_Pit_Monitoring" Width="1.5" PointX="17.25" PointY="34.25" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Geology_Pit_Monitoring_Header" Width="1.5" PointX="15" PointY="36.625" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_HAC" Width="1.5" PointX="17.25" PointY="53.25" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_HAC_Header" Width="1.5" PointX="15" PointY="54.625" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_SampleDetail" Width="1.5" PointX="23.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Sampling_ROM" Width="1.5" PointX="17.25" PointY="70.375" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_Sampling_ROM_Header" Width="1.5" PointX="15" PointY="72" />
+        <EntityTypeShape EntityType="MERCYModel.TEMPORARY_VLU" Width="1.5" PointX="15" PointY="61.125" />
+        <EntityTypeShape EntityType="MERCYModel.Tunnel_Actual" Width="1.5" PointX="7.5" PointY="42.375" />
+        <EntityTypeShape EntityType="MERCYModel.Tunnel_Actual_History" Width="1.5" PointX="23.75" PointY="8.75" />
+        <EntityTypeShape EntityType="MERCYModel.UnitMeasurement" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Barge_Line_Up" Width="1.5" PointX="23.75" PointY="17.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_BARGE_LOADING" Width="1.5" PointX="19.75" PointY="23.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_BARGE_LOADING_COA" Width="1.5" PointX="21.75" PointY="23.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_BARGE_LOADING_Header" Width="1.5" PointX="23.75" PointY="23.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Barge_Quality_Plan" Width="1.5" PointX="25.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Barge_Quality_Plan_Header" Width="1.5" PointX="25.75" PointY="7.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_CRUSHING_PLANT" Width="1.5" PointX="25.75" PointY="12.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Geology_Explorasi" Width="1.5" PointX="27.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Geology_Explorasi_Header" Width="1.5" PointX="27.75" PointY="7.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Geology_Pit_Monitoring" Width="1.5" PointX="27.75" PointY="12.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Geology_Pit_Monitoring_Header" Width="1.5" PointX="27.75" PointY="19.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_HAC" Width="1.5" PointX="27.75" PointY="24.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_HAC_Header" Width="1.5" PointX="23.75" PointY="28.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_LECO_CV" Width="1.5" PointX="29.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_LECO_TGA" Width="1.5" PointX="29.75" PointY="5.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_LECO_TS" Width="1.5" PointX="10.75" PointY="29.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Sampling_ROM" Width="1.5" PointX="29.75" PointY="11.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Sampling_ROM_Header" Width="1.5" PointX="29.75" PointY="18.75" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_VLU" Width="1.5" PointX="29.75" PointY="23.75" />
+        <EntityTypeShape EntityType="MERCYModel.User" Width="1.5" PointX="0.75" PointY="19.625" />
+        <EntityTypeShape EntityType="MERCYModel.User_Activity" Width="1.5" PointX="7.75" PointY="26.75" />
+        <EntityTypeShape EntityType="MERCYModel.UserCompany" Width="1.5" PointX="8.25" PointY="30.625" />
+        <EntityTypeShape EntityType="MERCYModel.UserGroup" Width="1.5" PointX="3" PointY="21.5" />
+        <EntityTypeShape EntityType="MERCYModel.UserSite" Width="1.5" PointX="3" PointY="25.5" />
+        <AssociationConnector Association="MERCYModel.FK_AnalysisRequest_Company" />
+        <AssociationConnector Association="MERCYModel.FK_AnalysisRequest_Detail_AnalysisRequest" />
+        <AssociationConnector Association="MERCYModel.FK_AnalysisRequest_Result_AnalysisRequest" />
+        <AssociationConnector Association="MERCYModel.FK_Apii_MenuId" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Barge_Survey_Condition_Barge_Survey_Condition_Id" />
+        <AssociationConnector Association="MERCYModel.FK__Company__SiteId__7093AB15" />
+        <AssociationConnector Association="MERCYModel.FK_Hopper_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_Port_Loading_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_Product_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_ROM_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_SamplingRequest_Company" />
+        <AssociationConnector Association="MERCYModel.FK_UserCompany_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_Consumable_Instrument" />
+        <AssociationConnector Association="MERCYModel.FK_Consumable_UnitType" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Draft_Survey_Draft_Survey_Id" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Fuel_Consumption_Fuel_Rob_Id" />
+        <AssociationConnector Association="MERCYModel.FK_UserGroup_GroupId" />
+        <AssociationConnector Association="MERCYModel.FK_HaulingRequest_Detail_HaulingRequest" />
+        <AssociationConnector Association="MERCYModel.FK_HaulingRequest_Detail_PortionBlending_Details_HaulingRequest" />
+        <AssociationConnector Association="MERCYModel.FK_HaulingRequest_Detail_PortionBlending_HaulingRequest" />
+        <AssociationConnector Association="MERCYModel.FK_HaulingRequest_Detail_ROMTransfer_HaulingRequest" />
+        <AssociationConnector Association="MERCYModel.FK_Tunnel_Actual_HaulingRequest_Reference" />
+        <AssociationConnector Association="MERCYModel.FK_LabMaintenance_Instrument" />
+        <AssociationConnector Association="MERCYModel.FK_LabMaintenance_Category" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Attachments_ActualId" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Barge_Survey_Condition_ActualId" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Cargo_Loaded_ActualId" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Coal_Temperature_ActualId" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Draft_Survey_ActualId" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Fuel_Consumption_ActualId" />
+        <AssociationConnector Association="MERCYModel.PK_PortionBlending_Details_PortionBlending" />
+        <AssociationConnector Association="MERCYModel.FK_SamplingRequest_Lab_SamplingRequest" />
+        <AssociationConnector Association="MERCYModel.FK_SamplingRequest_ROM_SamplingRequest" />
+        <AssociationConnector Association="MERCYModel.FK_SamplingRequest_SEAM_SamplingRequest" />
+        <AssociationConnector Association="MERCYModel.FK_UserSite_SiteId" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_BARGE_LOADING_Header" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_BARGE_LOADING_Header_File_Physical" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_Barge_Quality_Plan_Header" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_Barge_Quality_Plan_Header_File_Physical" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_CRUSHING_PLANT_Header" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_CRUSHING_PLANT_Header_File_Physical" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_Geology_Explorasi_Header_File_Physical" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_Geology_Pit_Monitoring_Header_File_Physical" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_HAC_Header_File_Physical" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_Sampling_ROM_Header_File_Physical" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_VLU_File_Physical" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_Geology_Explorasi_Header" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_Geology_Pit_Monitoring_Header" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_HAC_Header" />
+        <AssociationConnector Association="MERCYModel.FK_TEMPORARY_Sampling_ROM_Header" />
+        <AssociationConnector Association="MERCYModel.FK_UserCompany_UserId" />
+        <AssociationConnector Association="MERCYModel.FK_UserGroup_UserId" />
+        <AssociationConnector Association="MERCYModel.FK_UserSite_UserId" />
+        <EntityTypeShape EntityType="MERCYModel.Client" Width="1.5" PointX="6" PointY="34" />
+        <EntityTypeShape EntityType="MERCYModel.RefType" Width="1.5" PointX="6" PointY="83.875" />
+        <EntityTypeShape EntityType="MERCYModel.Tunnel" Width="1.5" PointX="5.25" PointY="6" />
+        <AssociationConnector Association="MERCYModel.FK_Tunnel_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_Loading_Actual_Cargo_Loaded_TunnelId" />
+        <AssociationConnector Association="MERCYModel.FK_Tunnel_Actual_TunnelId" />
+        <EntityTypeShape EntityType="MERCYModel.Project" Width="1.5" PointX="28.375" PointY="31" />
+        <EntityTypeShape EntityType="MERCYModel.JobNumber" Width="1.5" PointX="30.375" PointY="30.875" />
+        <EntityTypeShape EntityType="MERCYModel.Permission" Width="1.5" PointX="3" PointY="8.375" />
+        <AssociationConnector Association="MERCYModel.FK_Permission_GroupId" />
+        <AssociationConnector Association="MERCYModel.FK_Permission_MenuId" />
+        <AssociationConnector Association="MERCYModel.FK_Sample_JobNumberId" />
+        <EntityTypeShape EntityType="MERCYModel.Session" Width="1.5" PointX="14.375" PointY="15.75" />
+        <EntityTypeShape EntityType="MERCYModel.AnalysisResult" Width="1.5" PointX="21.75" PointY="55.5" />
+        <EntityTypeShape EntityType="MERCYModel.CompanyScheme" Width="1.5" PointX="34.625" PointY="17.375" />
+        <EntityTypeShape EntityType="MERCYModel.Scheme" Width="1.5" PointX="32.375" PointY="3.125" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyScheme_CompanyId" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyScheme_SchemeId" />
+        <EntityTypeShape EntityType="MERCYModel.AnalysisResultHistory" Width="1.5" PointX="24" PointY="55.625" />
+        <AssociationConnector Association="MERCYModel.FK_AnalysisResult_AnalysisResultId" />
+        <EntityTypeShape EntityType="MERCYModel.CompanyRefType" Width="1.5" PointX="10.25" PointY="48.5" />
+        <EntityTypeShape EntityType="MERCYModel.SampleDetailGeneral" Width="1.5" PointX="34.875" PointY="32.625" />
+        <EntityTypeShape EntityType="MERCYModel.SampleDetailLoading" Width="1.5" PointX="34.875" PointY="27" />
+        <EntityTypeShape EntityType="MERCYModel.SampleScheme" Width="1.5" PointX="36.875" PointY="17" />
+        <EntityTypeShape EntityType="MERCYModel.TunnelHistory" Width="1.5" PointX="7.5" PointY="74.375" />
+        <AssociationConnector Association="MERCYModel.FK_AnalysisResult_SampleSchemeId1" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyRefType_CompanyId1" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyRefType_RefTypeId1" />
+        <AssociationConnector Association="MERCYModel.FK_SampleScheme_SchemeId1" />
+        <AssociationConnector Association="MERCYModel.FK_TunnelHistory_TunnelId1" />
+        <EntityTypeShape EntityType="MERCYModel.CompanyProject" Width="1.5" PointX="30.625" PointY="36.25" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyProject_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyProject_ProjectId" />
+        <EntityTypeShape EntityType="MERCYModel.AnalysisJob" Width="1.5" PointX="30.625" PointY="40.375" />
+        <AssociationConnector Association="MERCYModel.FK_Analyst_Job_Project" />
+        <EntityTypeShape EntityType="MERCYModel.LoadingReport" Width="1.5" PointX="34.625" PointY="8.125" />
+        <EntityTypeShape EntityType="MERCYModel.LoadingReportHeader" Width="1.5" PointX="32.375" PointY="10.25" />
+        <AssociationConnector Association="MERCYModel.FK_LoadingReport_HeaderId" />
+        <EntityTypeShape EntityType="MERCYModel.AnalysisRequestSample" Width="1.5" PointX="40.125" PointY="42.375" />
+        <AssociationConnector Association="MERCYModel.FK_AnalysisRequestSample_AnalysisRequestId" />
+        <EntityTypeShape EntityType="MERCYModel.CompanyClientProjectScheme" Width="1.5" PointX="37.625" PointY="20.75" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyClientProjectScheme_ClientId" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyClientProjectScheme_CompanyId" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyClientProjectScheme_ProjectId" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyClientProjectScheme_SchemeId" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_CRUSHING_PLANT_Header" Width="1.5" PointX="13.375" PointY="30.75" />
+        <EntityTypeShape EntityType="MERCYModel.BargeLineUpMapping" Width="1.5" PointX="14.375" PointY="19.75" />
+        <EntityTypeShape EntityType="MERCYModel.CoalInventoryDetail" Width="1.5" PointX="19.75" PointY="70.625" />
+        <EntityTypeShape EntityType="MERCYModel.ROMLocation" Width="1.5" PointX="5.25" PointY="79.625" />
+        <EntityTypeShape EntityType="MERCYModel.ROMLocationDetail" Width="1.5" PointX="7.5" PointY="79.625" />
+        <AssociationConnector Association="MERCYModel.FK_CoalInventoryDetail_ROMLocationDetailId" />
+        <AssociationConnector Association="MERCYModel.FK_ROMLocation_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_ROMLocationDetail_ROMLocationId" />
+        <AssociationConnector Association="MERCYModel.FK_TunnelHistory_StockMovementTunnelId" />
+        <EntityTypeShape EntityType="MERCYModel.CoalInventoryAttachment" Width="1.5" PointX="19.75" PointY="62.75" />
+        <EntityTypeShape EntityType="MERCYModel.Sample" Width="1.5" PointX="37.875" PointY="25.5" />
+        <AssociationConnector Association="MERCYModel.FK_Sample_AnalystJob" />
+        <AssociationConnector Association="MERCYModel.FK_AnalysisRequestSample_SampleId" />
+        <AssociationConnector Association="MERCYModel.FK_Sample_CompanyId" />
+        <AssociationConnector Association="MERCYModel.FK_Sample_SiteId" />
+        <AssociationConnector Association="MERCYModel.FK_Sample_TunnelId" />
+        <AssociationConnector Association="MERCYModel.FK_SampleDetailGeneral_Sample_SampleId" />
+        <AssociationConnector Association="MERCYModel.FK_SampleLoading_SampleId" />
+        <AssociationConnector Association="MERCYModel.FK_SampleScheme_SampleId" />
+        <EntityTypeShape EntityType="MERCYModel.CoalInventory" Width="1.5" PointX="17.5" PointY="62" />
+        <AssociationConnector Association="MERCYModel.FK_CoalInventory_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_CoalInventory_ROMLocationId" />
+        <AssociationConnector Association="MERCYModel.FK_CoalInventoryAttachmen_CoalInventoryId" />
+        <AssociationConnector Association="MERCYModel.FK_CoalInventoryDetail_CoalInventoryId" />
+        <EntityTypeShape EntityType="MERCYModel.CompanyShift" Width="1.5" PointX="8.25" PointY="34.25" />
+        <EntityTypeShape EntityType="MERCYModel.Shift" Width="1.5" PointX="6" PointY="87.375" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyShiftCompany_CompanyCode" />
+        <AssociationConnector Association="MERCYModel.FK_CompanyShiftShift_Shift" />
+        <AssociationConnector Association="MERCYModel.FK_MaintenanceActivitySiteId" />
+        <AssociationConnector Association="MERCYModel.FK_LabMaintenanceSiteId" />
+        <AssociationConnector Association="MERCYModel.FK_Instrument_SiteId" />
+        <AssociationConnector Association="MERCYModel.FK_Consumable_SiteId" />
+        <EntityTypeShape EntityType="MERCYModel.SampleDetailAMD" Width="1.5" PointX="40.125" PointY="27" />
+        <AssociationConnector Association="MERCYModel.FK_SampleAMD_SampleId" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Geology_AMD" Width="1.5" PointX="24.625" PointY="34.125" />
+        <EntityTypeShape EntityType="MERCYModel.UPLOAD_Geology_AMD_Header" Width="1.5" PointX="22.375" PointY="35.125" />
+        <AssociationConnector Association="MERCYModel.FK_UPLOADGeologyAMD_UPLOADGeologyAMDHeader" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
