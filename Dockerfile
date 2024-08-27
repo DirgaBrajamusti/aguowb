@@ -4,13 +4,14 @@ FROM mcr.microsoft.com/dotnet/framework/sdk:4.8 AS build
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
-COPY *.sln .
-COPY MERCY.Data/*.csproj ./MERCY.Data/
-COPY MERCY.Web.BackEnd/*.config ./MERCY.Web.BackEnd/
+# COPY *.sln .
+COPY . .
+# COPY MERCY.Data/*.csproj ./MERCY.Data/
+# COPY MERCY.Web.BackEnd/*.config ./MERCY.Web.BackEnd/
 RUN nuget restore
 
 # copy everything else and build app
-COPY MERCY.Web.BackEnd/. ./MERCY.Web.BackEnd/
+# COPY MERCY.Web.BackEnd/. ./MERCY.Web.BackEnd/
 WORKDIR /app/MERCY.Web.BackEnd
 RUN msbuild MERCY.Web.BackEnd.csproj /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 # RUN msbuild /p:Configuration=Release
